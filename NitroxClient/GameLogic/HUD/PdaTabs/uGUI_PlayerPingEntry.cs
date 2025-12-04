@@ -12,6 +12,7 @@ using NitroxModel.Packets;
 using UnityEngine;
 using UnityEngine.UI;
 using UWE;
+using TMPro;
 
 namespace NitroxClient.GameLogic.HUD.PdaTabs;
 
@@ -19,6 +20,8 @@ public class uGUI_PlayerPingEntry : uGUI_PingEntry
 {
     private uGUI_PlayerListTab parent;
     private INitroxPlayer player;
+    private NetworkPingManager pingManager;
+    private TextMeshProUGUI pingLabel; // 延迟显示标签
 
     public string PlayerName => player?.PlayerName ?? string.Empty;
     public bool IsLocalPlayer => player is LocalPlayer;
@@ -75,13 +78,25 @@ public class uGUI_PlayerPingEntry : uGUI_PingEntry
     {
         this.id = id;
         this.parent = parent;
+        this.pingManager = NitroxServiceLocator.LocateService<NetworkPingManager>();
 
         gameObject.SetActive(true);
         visibilityIcon.sprite = spriteVisible;
-        icon.SetForegroundSprite(SpriteManager.Get(SpriteManager.Group.Tab, "TabInventory"));
+        // 新版游戏兼容性修复 - 直接使用Sprite
+        try
+        {
+            var tabSprite = SpriteManager.Get(SpriteManager.Group.Tab, "TabInventory");
+            icon.SetForegroundSprite(tabSprite);
+        }
+        catch (System.ArgumentException)
+        {
+            // 如果类型转换失败，使用默认图标或跳过
+            Log.Warn("Failed to set tab inventory sprite for player ping entry");
+        }
         showPing = true;
 
         UpdateLabel(name);
+        SetupPingDisplay(); // 设置延迟显示
         OnLanguageChanged();
 
         CoroutineHost.StartCoroutine(AssignSprites());
@@ -98,6 +113,19 @@ public class uGUI_PlayerPingEntry : uGUI_PingEntry
 
     public new void Uninitialize()
     {
+        // 取消延迟更新事件订阅
+        if (pingManager != null)
+        {
+            pingManager.OnPingUpdated -= OnPingUpdated;
+        }
+        
+        // 清理延迟显示组件
+        if (pingLabel != null)
+        {
+            GameObject.Destroy(pingLabel.gameObject);
+            pingLabel = null;
+        }
+        
         base.Uninitialize();
         player = null;
     }
@@ -105,6 +133,76 @@ public class uGUI_PlayerPingEntry : uGUI_PingEntry
     public void UpdateLabel(string text)
     {
         label.text = text;
+        UpdatePingDisplay(); // 同时更新延迟显示
+    }
+    
+    /// <summary>
+    /// 设置延迟显示UI组件
+    /// </summary>
+    private void SetupPingDisplay()
+    {
+        Log.Info($"[PING] 检查延迟显示设置 | IsLocalPlayer: {IsLocalPlayer} | PingManager存在: {pingManager != null} | 玩家名: {player?.PlayerName}");
+        
+        // 为所有玩家显示延迟，但优先本地玩家
+        if (pingManager != null)
+        {
+            // 为本地玩家或当前玩家创建延迟显示标签
+            GameObject pingObject = new("PingDisplay");
+            pingObject.transform.SetParent(label.transform.parent);
+            
+            // 设置位置（在玩家名称右侧，更靠近一些）
+            RectTransform pingRect = pingObject.AddComponent<RectTransform>();
+            pingRect.anchoredPosition = new Vector2(120f, 0f); // 更近的位置
+            pingRect.sizeDelta = new Vector2(120f, 20f); // 稍微宽一点
+            
+            // 创建文本组件
+            pingLabel = pingObject.AddComponent<TextMeshProUGUI>();
+            pingLabel.text = "延迟: --ms";
+            pingLabel.fontSize = 11f;
+            pingLabel.color = Color.white; // 使用白色更醒目
+            pingLabel.alignment = TextAlignmentOptions.Left;
+            
+            // 立即显示初始延迟信息
+            UpdatePingDisplay();
+            
+            // 监听延迟更新事件
+            pingManager.OnPingUpdated += OnPingUpdated;
+            
+            Log.Info($"[PING] 已为玩家 '{player?.PlayerName}' 设置延迟显示组件");
+        }
+        else
+        {
+            Log.Warn($"[PING] 无法为玩家 '{player?.PlayerName}' 设置延迟显示 - PingManager为null");
+        }
+    }
+    
+    /// <summary>
+    /// 延迟更新回调
+    /// </summary>
+    private void OnPingUpdated(long averagePing)
+    {
+        if (pingLabel != null)
+        {
+            Log.Debug($"[PING] 收到延迟更新事件 | 玩家: {player?.PlayerName} | 平均延迟: {averagePing}ms");
+            UpdatePingDisplay();
+        }
+    }
+    
+    /// <summary>
+    /// 更新延迟显示
+    /// </summary>
+    private void UpdatePingDisplay()
+    {
+        if (pingLabel != null && pingManager != null)
+        {
+            string displayText = pingManager.GetPingDisplayText();
+            pingLabel.text = displayText;
+            Log.Debug($"[PING] 更新玩家 '{player?.PlayerName}' 的延迟显示: {displayText}");
+        }
+        else
+        {
+            Log.Debug($"[PING] 无法更新延迟显示 | Label存在: {pingLabel != null} | Manager存在: {pingManager != null}");
+        }
     }
 
     public void UpdateEntryForNewPlayer(INitroxPlayer newPlayer, LocalPlayer localPlayer, IPacketSender packetSender)

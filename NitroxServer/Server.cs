@@ -76,17 +76,17 @@ public class Server
         StringBuilder builder = new("\n");
         if (viewerPerms is Perms.CONSOLE)
         {
-            builder.AppendLine($" - Save location: {Path.Combine(KeyValueStore.Instance.GetSavesFolderDir(), Name)}");
+            builder.AppendLine($" - 保存位置: {Path.Combine(KeyValueStore.Instance.GetSavesFolderDir(), Name)}");
         }
         builder.AppendLine($"""
-         - Aurora's state: {world.StoryManager.GetAuroraStateSummary()}
-         - Current time: day {world.TimeKeeper.Day} ({Math.Floor(world.TimeKeeper.ElapsedSeconds)}s)
-         - Scheduled goals stored: {world.GameData.StoryGoals.ScheduledGoals.Count}
-         - Story goals completed: {world.GameData.StoryGoals.CompletedGoals.Count}
-         - Radio messages stored: {world.GameData.StoryGoals.RadioQueue.Count}
-         - World gamemode: {serverConfig.GameMode}
-         - Encyclopedia entries: {world.GameData.PDAState.EncyclopediaEntries.Count}
-         - Known tech: {world.GameData.PDAState.KnownTechTypes.Count}
+         - 极光号状态: {world.StoryManager.GetAuroraStateSummary()}
+         - 当前时间: 第 {world.TimeKeeper.Day} 天 ({Math.Floor(world.TimeKeeper.ElapsedSeconds)}秒)
+         - 计划目标存储: {world.GameData.StoryGoals.ScheduledGoals.Count}
+         - 故事目标已完成: {world.GameData.StoryGoals.CompletedGoals.Count}
+         - 无线电消息存储: {world.GameData.StoryGoals.RadioQueue.Count}
+         - 世界游戏模式: {serverConfig.GameMode}
+         - 百科全书条目: {world.GameData.PDAState.EncyclopediaEntries.Count}
+         - 已知技术: {world.GameData.PDAState.KnownTechTypes.Count}
         """);
 
         return builder.ToString();
@@ -278,16 +278,16 @@ public class Server
     {
         Task<IPAddress> localIp = Task.Run(NetHelper.GetLanIp);
         Task<IPAddress> wanIp = NetHelper.GetWanIpAsync();
-        Task<IPAddress> hamachiIp = Task.Run(NetHelper.GetHamachiIp);
+        Task<IEnumerable<(IPAddress Address, string NetworkName)>> vpnIps = Task.Run(NetHelper.GetVpnIps);
 
         List<string> options = ["127.0.0.1 - You (Local)"];
         if (await wanIp != null)
         {
             options.Add("{ip:l} - Friends on another internet network (Port Forwarding)");
         }
-        if (await hamachiIp != null)
+        foreach ((IPAddress? vpnAddress, string? vpnName) in await vpnIps)
         {
-            options.Add($"{hamachiIp.Result} - Friends using Hamachi (VPN)");
+            options.Add($"{vpnAddress} - Friends using {vpnName} (VPN)");
         }
         // LAN IP could be null if all Ethernet/Wi-Fi interfaces are disabled.
         if (await localIp != null)

@@ -3,7 +3,7 @@ using NitroxModel.DataStructures.GameLogic;
 using NitroxModel_Subnautica.DataStructures;
 using NitroxServer.GameLogic.Entities;
 
-namespace NitroxServer_Subnautica.GameLogic.Entities;
+namespace Nitrox.Server.Subnautica.GameLogic.Entities;
 
 public class SimulationWhitelist : ISimulationWhitelist
 {

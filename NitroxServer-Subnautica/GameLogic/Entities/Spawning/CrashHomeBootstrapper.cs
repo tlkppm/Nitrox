@@ -3,7 +3,7 @@ using NitroxModel.DataStructures.GameLogic.Entities.Metadata;
 using NitroxServer.GameLogic.Entities.Spawning;
 using NitroxServer.Helper;
 
-namespace NitroxServer_Subnautica.GameLogic.Entities.Spawning.EntityBootstrappers;
+namespace Nitrox.Server.Subnautica.GameLogic.Entities.Spawning.EntityBootstrappers;
 
 public class CrashHomeBootstrapper : IEntityBootstrapper
 {

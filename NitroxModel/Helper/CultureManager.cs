@@ -5,20 +5,15 @@ namespace NitroxModel.Helper;
 
 public static class CultureManager
 {
-    public static readonly CultureInfo CultureInfo = new("en-US");
+    public static readonly CultureInfo CultureInfo = new("zh-CN");
 
     /// <summary>
-    ///     Internal Subnautica files are setup using US english number formats and dates.  To ensure
-    ///     that we parse all of these appropriately, we will set the default cultureInfo to en-US.
-    ///     This must best done for any thread that is spun up and needs to read from files (unless
-    ///     we were to migrate to 4.5.)  Failure to set the context can result in very strange behaviour
-    ///     throughout the entire application.  This originally manifested itself as a duplicate spawning
-    ///     issue for players in Europe.  This was due to incorrect parsing of probability tables.
+    ///     设置简体中文文化信息，同时确保数字格式保持与Subnautica内部文件兼容。
+    ///     专业版启动器默认使用简体中文界面，但保持英文数字格式以确保文件解析正确。
     /// </summary>
     public static void ConfigureCultureInfo()
     {
-        // Although we loaded the en-US cultureInfo, let's make sure to set these in case the
-        // default was overriden by the user.
+        // 虽然我们使用中文文化信息，但仍需保持英文数字格式以确保文件解析正确
         CultureInfo.NumberFormat.NumberDecimalSeparator = ".";
         CultureInfo.NumberFormat.NumberGroupSeparator = ",";
 

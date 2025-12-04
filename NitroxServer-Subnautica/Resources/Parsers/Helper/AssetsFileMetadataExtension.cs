@@ -1,7 +1,7 @@
 using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 
-namespace NitroxServer_Subnautica.Resources.Parsers.Helper;
+namespace Nitrox.Server.Subnautica.Resources.Parsers.Helper;
 
 public static class AssetsFileMetadataExtension
 {

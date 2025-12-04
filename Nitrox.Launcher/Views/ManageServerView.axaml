@@ -78,7 +78,7 @@
                         FontSize="7.5"
                         Foreground="{DynamicResource BrandSubText}"
                         HorizontalAlignment="Center"
-                        Text="Click to change icon" />
+                        Text="点击更换图标" />
                 </StackPanel>
 
 
@@ -111,11 +111,11 @@
                         <Panel>
                             <StackPanel IsVisible="{Binding ServerIsOnline}" Orientation="Horizontal">
                                 <Ellipse Fill="{DynamicResource BrandOnColor}" Margin="0,0,6,0" />
-                                <TextBlock IsVisible="{Binding ServerIsOnline}" Text="Online" />
+                                <TextBlock IsVisible="{Binding ServerIsOnline}" Text="在线" />
                             </StackPanel>
                             <StackPanel IsVisible="{Binding !ServerIsOnline}" Orientation="Horizontal">
                                 <Ellipse Fill="{DynamicResource BrandOffColor}" Margin="0,0,6,0" />
-                                <TextBlock IsVisible="{Binding !ServerIsOnline}" Text="Offline" />
+                                <TextBlock IsVisible="{Binding !ServerIsOnline}" Text="离线" />
                             </StackPanel>
                         </Panel>
                         <TextBlock Text="{Binding Server.GameMode, Converter={converters:ToStringConverter}, FallbackValue=Survival}" />
@@ -123,7 +123,7 @@
                             <Run Text="{Binding Server.Players, FallbackValue=0}" />
                             <Run Text="/" />
                             <Run Text="{Binding Server.MaxPlayers, FallbackValue=100}" />
-                            <Run Text="playing" />
+                            <Run Text="玩家在线" />
                         </TextBlock>
                     </StackPanel>
 
@@ -146,13 +146,13 @@
                             <Button
                                 Classes="abort"
                                 Command="{Binding UndoCommand}"
-                                Content="UNDO"
+                                Content="撤销"
                                 HorizontalAlignment="Stretch"
                                 HotKey="Ctrl+Alt+Z" />
                             <Button
                                 Classes="primary"
                                 Command="{Binding SaveCommand}"
-                                Content="SAVE"
+                                Content="保存"
                                 HorizontalAlignment="Stretch"
                                 HotKey="Ctrl+S"
                                 Margin="5,0,0,0" />
@@ -180,11 +180,11 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="SERVER NAME" />
+                            Text="服务器名称" />
                         <TextBox
                             IsEnabled="{Binding !ServerIsOnline}"
                             Text="{Binding ServerName, Converter={converters:TrimConverter}}"
-                            Watermark="My server">
+                            Watermark="我的服务器">
                             <Interaction.Behaviors>
                                 <behaviors:FocusOnViewShowBehavior />
                             </Interaction.Behaviors>
@@ -196,12 +196,12 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="PASSWORD" />
+                            Text="服务器密码" />
                         <TextBox
                             Classes="revealPasswordButton"
                             IsEnabled="{Binding !ServerIsOnline}"
                             Text="{Binding ServerPassword, Converter={converters:TrimConverter}}"
-                            Watermark="Server password" />
+                            Watermark="输入服务器密码" />
                     </StackPanel>
                 </Grid>
 
@@ -210,7 +210,7 @@
                         FontSize="10"
                         FontWeight="700"
                         Opacity=".5"
-                        Text="GAMEMODE" />
+                        Text="游戏模式" />
                     <controls:RadioButtonGroup
                         Classes="radioGroup"
                         Enum="{x:Type server:NitroxGameMode}"
@@ -224,19 +224,19 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="SEED" />
+                            Text="世界种子" />
                         <TextBox
                             IsEnabled="{Binding !ServerIsOnline}"
                             IsReadOnly="{Binding !Server.IsNewServer}"
                             MaxLength="10"
                             Text="{Binding ServerSeed, Converter={converters:ToStringConverter}, ConverterParameter=upper}"
-                            Watermark="Server seed">
+                            Watermark="世界种子">
                             <TextBox.Styles>
                                 <Style Selector="TextBox[IsReadOnly=False]">
-                                    <Setter Property="ToolTip.Tip" Value="Leave blank to automatically generate one" />
+                                    <Setter Property="ToolTip.Tip" Value="留空将自动生成种子" />
                                 </Style>
                                 <Style Selector="TextBox[IsReadOnly=True]">
-                                    <Setter Property="ToolTip.Tip" Value="Seed cannot be changed for servers that have been run" />
+                                    <Setter Property="ToolTip.Tip" Value="已运行的服务器无法更改种子" />
                                 </Style>
                             </TextBox.Styles>
                         </TextBox>
@@ -247,13 +247,13 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="DEFAULT PERMISSIONS" />
+                            Text="默认权限" />
                         <ComboBox
                             FontSize="13"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding !ServerIsOnline}"
                             ItemsSource="{Binding PlayerPerms}"
-                            PlaceholderText="Default Perm"
+                            PlaceholderText="默认权限"
                             SelectedValue="{Binding ServerDefaultPlayerPerm}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -268,14 +268,14 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="AUTO SAVE INTERVAL (s)" />
+                            Text="自动保存间隔（秒）" />
                         <TextBox
                             FontSize="13"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding !ServerIsOnline}"
                             MaxLength="9"
                             Text="{Binding ServerAutoSaveInterval, Converter={converters:IntToStringConverter}}"
-                            Watermark="Autosave interval"
+                            Watermark="自动保存间隔"
                             design:NitroxAttached.IsNumericInput="True" />
                     </StackPanel>
                 </Grid>
@@ -286,12 +286,12 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="PLAYER LIMIT" />
+                            Text="玩家上限" />
                         <TextBox
                             IsEnabled="{Binding !ServerIsOnline}"
                             MaxLength="9"
                             Text="{Binding ServerMaxPlayers, Converter={converters:IntToStringConverter}}"
-                            Watermark="Enter a player limit"
+                            Watermark="输入玩家上限"
                             design:NitroxAttached.IsNumericInput="True" />
                     </StackPanel>
 
@@ -300,12 +300,12 @@
                             FontSize="10"
                             FontWeight="700"
                             Opacity=".5"
-                            Text="SERVER PORT" />
+                            Text="服务器端口" />
                         <TextBox
                             IsEnabled="{Binding !ServerIsOnline}"
                             MaxLength="5"
                             Text="{Binding ServerPort, Converter={converters:IntToStringConverter}}"
-                            Watermark="Enter a port number"
+                            Watermark="输入端口号"
                             design:NitroxAttached.IsNumericInput="True" />
                     </StackPanel>
                 </Grid>
@@ -316,7 +316,7 @@
                         FontWeight="700"
                         Margin="0,0,0,15"
                         Opacity=".5"
-                        Text="OPTIONS" />
+                        Text="选项" />
                     <StackPanel IsEnabled="{Binding !ServerIsOnline}" Spacing="20">
                         <StackPanel.Styles>
                             <Style Selector="Grid > TextBlock">
@@ -326,39 +326,96 @@
                             </Style>
                         </StackPanel.Styles>
                         <Grid>
-                            <TextBlock Text="Enable auto port forwarding" />
+                            <TextBlock Text="启用自动端口转发" />
                             <CheckBox
                                 Classes="switch"
                                 HorizontalAlignment="Right"
                                 IsChecked="{Binding ServerAutoPortForward}" />
                         </Grid>
                         <Grid>
-                            <TextBlock Text="Allow LAN Discovery" />
+                            <TextBlock Text="允许局域网发现" />
                             <CheckBox
                                 Classes="switch"
                                 HorizontalAlignment="Right"
                                 IsChecked="{Binding ServerAllowLanDiscovery}" />
                         </Grid>
                         <Grid>
-                            <TextBlock Text="Enable Commands" />
+                            <StackPanel>
+                                <TextBlock Text="{Binding UseNewServerEngine}" />
+                                <TextBlock 
+                                    Text="{Binding NewServerEngineDescription}"
+                                    FontSize="12"
+                                    Opacity="0.7"
+                                    Margin="0,2,0,0" />
+                            </StackPanel>
+                            <CheckBox
+                                Classes="switch"
+                                HorizontalAlignment="Right"
+                                IsChecked="{Binding ServerUseGenericHost}"
+                                ToolTip.ShowOnDisabled="True"
+                                ToolTip.Tip="{Binding NewServerEngineTooltip}" />
+                        </Grid>
+                        <Grid>
+                            <TextBlock Text="启用命令" />
                             <CheckBox
                                 Classes="switch"
                                 HorizontalAlignment="Right"
                                 IsChecked="{Binding ServerAllowCommands}" />
                         </Grid>
                         <Grid>
-                            <TextBlock Text="Enable PvP" />
+                            <TextBlock Text="启用PvP" />
                             <CheckBox
                                 Classes="switch"
                                 HorizontalAlignment="Right"
                                 IsChecked="{Binding ServerAllowPvP}" />
                         </Grid>
                         <Grid>
-                            <TextBlock Text="Enable Keep Inventory" />
+                            <TextBlock Text="启用保留物品" />
                             <CheckBox
                                 Classes="switch"
                                 HorizontalAlignment="Right"
                                 IsChecked="{Binding ServerAllowKeepInventory}" />
+                        </Grid>
+                        
+                        <!-- 命令拦截功能区域 -->
+                        <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BrandBorderBackground}" Margin="0,15,0,15" />
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="启用命令拦截" FontWeight="Bold" />
+                                <TextBlock Text="拦截并记录玩家执行的指令" FontSize="12" Opacity="0.7" Margin="0,2,0,0" />
+                            </StackPanel>
+                            <CheckBox
+                                Classes="switch"
+                                HorizontalAlignment="Right"
+                                IsChecked="{Binding ServerCommandInterceptionEnabled}" />
+                        </Grid>
+                        
+                        <!-- 拦截指令列表 -->
+                        <Grid IsVisible="{Binding ServerCommandInterceptionEnabled}">
+                            <StackPanel>
+                                <TextBlock Text="要拦截的指令" FontWeight="Bold" />
+                                <TextBlock Text="要拦截的指令（逗号分隔，留空拦截所有指令）" FontSize="12" Opacity="0.7" Margin="0,2,0,0" />
+                                <TextBox 
+                                    Text="{Binding ServerInterceptedCommands}" 
+                                    Watermark="例如: spawn,teleport,give 或留空拦截所有"
+                                    Margin="0,8,0,0"
+                                    Height="80"
+                                    AcceptsReturn="True"
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- 禁用游戏指令框区域 -->
+                        <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BrandBorderBackground}" Margin="0,15,0,15" />
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="禁用游戏指令框" FontWeight="Bold" />
+                                <TextBlock Text="禁用游戏内置的控制台指令框（· ` ~）" FontSize="12" Opacity="0.7" Margin="0,2,0,0" />
+                            </StackPanel>
+                            <CheckBox
+                                Classes="switch"
+                                HorizontalAlignment="Right"
+                                IsChecked="{Binding ServerDisableConsole}" />
                         </Grid>
                     </StackPanel>
                 </StackPanel>
@@ -369,7 +426,7 @@
                         FontWeight="700"
                         Margin="0,0,0,20"
                         Opacity=".5"
-                        Text="ADVANCED" />
+                        Text="高级" />
                     <StackPanel Spacing="20">
                         <StackPanel.Styles>
                             <Style Selector="Button">
@@ -381,19 +438,19 @@
                         <Button Classes="icon" Command="{Binding ShowAdvancedSettingsCommand}">
                             <StackPanel>
                                 <controls:RecolorImage Source="/Assets/Images/world-manager/cog.png" />
-                                <TextBlock Text="Advanced settings" />
+                                <TextBlock Text="高级设置" />
                             </StackPanel>
                         </Button>
                         <Button Classes="icon" Command="{Binding OpenWorldFolderCommand}">
                             <StackPanel>
                                 <controls:RecolorImage Source="/Assets/Images/world-manager/window.png" />
-                                <TextBlock Text="Open world folder" />
+                                <TextBlock Text="打开世界文件夹" />
                             </StackPanel>
                         </Button>
                         <Button Classes="icon" Command="{Binding RestoreBackupCommand}">
                             <StackPanel>
                                 <controls:RecolorImage Source="/Assets/Images/world-manager/export.png" />
-                                <TextBlock Text="Restore a backup" />
+                                <TextBlock Text="恢复备份" />
                             </StackPanel>
                         </Button>
                         <Button
@@ -403,7 +460,7 @@
                             HotKey="Delete">
                             <StackPanel>
                                 <Image Source="/Assets/Images/world-manager/delete.png" />
-                                <TextBlock Text="Delete server" />
+                                <TextBlock Text="删除服务器" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -427,17 +484,17 @@
                     <OnPlatform>
                         <OnPlatform.Default>
                             <StackPanel>
-                                <RadioButton Content="External"
+                                <RadioButton Content="{Binding External}"
                                              GroupName="Choose runtime option"
                                              IsChecked="{Binding !ServerEmbedded}"
                                              ToolTip.ShowOnDisabled="True"
-                                             ToolTip.Tip="Run server in external mode as a separate command line window" />
+                                             ToolTip.Tip="在外部模式下运行服务器，作为单独的命令行窗口" />
                             
-                                <RadioButton Content="Embedded"
+                                <RadioButton Content="{Binding Embedded}"
                                              GroupName="Choose runtime option"
                                              IsChecked="{Binding ServerEmbedded}"
                                              ToolTip.ShowOnDisabled="True"
-                                             ToolTip.Tip="Run server in embedded mode within the launcher UI" />
+                                             ToolTip.Tip="在启动器UI内以嵌入模式运行服务器" />
                             </StackPanel>
                         </OnPlatform.Default>
                         
@@ -446,7 +503,7 @@
                                          GroupName="Choose runtime option"
                                          IsChecked="True"
                                          ToolTip.ShowOnDisabled="True"
-                                         ToolTip.Tip="Run server in embedded mode within the launcher UI" />
+                                         ToolTip.Tip="在启动器UI内以嵌入模式运行服务器" />
                         </OnPlatform.macOS>
                     </OnPlatform>
                 </StackPanel>
@@ -455,7 +512,7 @@
                     <Button
                         Classes="abort big"
                         Command="{Binding StopServerCommand}"
-                        Content="STOP SERVER"
+                        Content="停止服务器"
                         HorizontalAlignment="Stretch"
                         IsVisible="{Binding ServerIsOnline}" />
                     <Button
@@ -464,8 +521,8 @@
                         HorizontalAlignment="Stretch"
                         IsVisible="{Binding !ServerIsOnline}">
                         <StackPanel>
-                            <TextBlock Text="START SERVER" />
-                            <TextBlock Text="MULTIPLAYER" />
+                            <TextBlock Text="启动服务器" />
+                            <TextBlock Text="多人游戏" />
                         </StackPanel>
                     </Button>
                 </Panel>

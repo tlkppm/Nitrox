@@ -4,9 +4,9 @@ using NitroxModel.DataStructures.GameLogic.Entities;
 using NitroxModel.DataStructures.Unity;
 using NitroxServer.GameLogic.Entities.Spawning;
 using NitroxServer.Helper;
-using static NitroxServer_Subnautica.GameLogic.Entities.Spawning.ReefbackSpawnData;
+using static Nitrox.Server.Subnautica.GameLogic.Entities.Spawning.ReefbackSpawnData;
 
-namespace NitroxServer_Subnautica.GameLogic.Entities.Spawning;
+namespace Nitrox.Server.Subnautica.GameLogic.Entities.Spawning;
 
 public class ReefbackBootstrapper : IEntityBootstrapper
 {
@@ -15,11 +15,11 @@ public class ReefbackBootstrapper : IEntityBootstrapper
 
     public ReefbackBootstrapper()
     {
-        foreach (ReefbackSlotCreature creature in SpawnableCreatures)
+        foreach (ReefbackSpawnData.ReefbackSlotCreature creature in SpawnableCreatures)
         {
             creatureProbabilitySum += creature.Probability;
         }
-        foreach (ReefbackSlotPlant plant in SpawnablePlants)
+        foreach (ReefbackSpawnData.ReefbackSlotPlant plant in SpawnablePlants)
         {
             plantsProbabilitySum += plant.Probability;
         }
@@ -63,7 +63,7 @@ public class ReefbackBootstrapper : IEntityBootstrapper
                 }
             }
 
-            ReefbackSlotPlant slotPlant = SpawnablePlants[chosenPlantIndex];
+            ReefbackSpawnData.ReefbackSlotPlant slotPlant = SpawnablePlants[chosenPlantIndex];
             string randomId = slotPlant.ClassIds[XORRandom.NextIntRange(0, slotPlant.ClassIds.Count)];
 
             NitroxId id = generator.NextId();
@@ -100,7 +100,7 @@ public class ReefbackBootstrapper : IEntityBootstrapper
                 }
             }
 
-            ReefbackSlotCreature slotCreature = SpawnableCreatures[chosenCreatureIndex];
+            ReefbackSpawnData.ReefbackSlotCreature slotCreature = SpawnableCreatures[chosenCreatureIndex];
             int spawnCount = XORRandom.NextIntRange(slotCreature.MinNumber, slotCreature.MaxNumber + 1);
             for (int j = 0; j < spawnCount; j++)
             {

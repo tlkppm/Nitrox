@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Nitrox.Launcher.Models.Exceptions;
+using Nitrox.Launcher.Models.Utils;
 using NitroxModel.DataStructures.GameLogic;
 using NitroxModel.Helper;
 using NitroxModel.Logger;
@@ -36,6 +37,9 @@ public partial class ServerEntry : ObservableObject
 
     [ObservableProperty]
     private bool allowCommands = !serverDefaults.DisableConsole;
+
+    [ObservableProperty]
+    private bool disableConsole = serverDefaults.DisableConsole;
 
     [ObservableProperty]
     private bool allowKeepInventory = serverDefaults.KeepInventoryOnDeath;
@@ -96,6 +100,15 @@ public partial class ServerEntry : ObservableObject
 
     [ObservableProperty]
     private Version version = NitroxEnvironment.Version;
+
+    [ObservableProperty]
+    private bool commandInterceptionEnabled = false;
+
+    [ObservableProperty]
+    private string interceptedCommands = string.Empty;
+
+    [ObservableProperty]
+    private bool useGenericHost = false;
 
     internal ServerProcess? Process { get; private set; }
 
@@ -183,6 +196,10 @@ public partial class ServerEntry : ObservableObject
         AllowCommands = !config.DisableConsole;
         AllowPvP = config.PvPEnabled;
         AllowKeepInventory = config.KeepInventoryOnDeath;
+        CommandInterceptionEnabled = config.CommandInterceptionEnabled;
+        InterceptedCommands = config.InterceptedCommands;
+        UseGenericHost = config.UseGenericHost;
+        DisableConsole = config.DisableConsole;
         IsNewServer = !File.Exists(Path.Combine(saveDir, $"PlayerData{fileEnding}"));
         Version = serverVersion;
         IsEmbedded = config.IsEmbedded || RuntimeInformation.IsOSPlatform(OSPlatform.OSX); // Force embedded on MacOS
@@ -269,7 +286,7 @@ public partial class ServerEntry : ObservableObject
 
     internal partial class ServerProcess : IDisposable
     {
-        private readonly Ipc.ClientIpc ipc;
+        private readonly IDisposable? ipc;
         private readonly CancellationTokenSource ipcCts;
         private OutputLineType lastOutputType;
         private Process? serverProcess;
@@ -283,6 +300,9 @@ public partial class ServerEntry : ObservableObject
 
         private ServerProcess(string saveDir, Action onExited, bool isEmbeddedMode = false, int processId = 0)
         {
+            // 确保ipcCts总是被初始化，避免空引用异常
+            ipcCts = new CancellationTokenSource();
+            
             if (processId == 0)
             {
                 string saveName = Path.GetFileName(saveDir);
@@ -321,70 +341,112 @@ public partial class ServerEntry : ObservableObject
                 Id = serverProcess?.Id ?? processId;
 
                 IsRunning = true;
-                ipcCts = new CancellationTokenSource();
-                ipc = new Ipc.ClientIpc(Id, ipcCts);
-                ipc.StartReadingServerOutput(
-                    output =>
+                // 尝试创建IPC客户端（仅在.NET 5+中可用）
+                try
+                {
+                    // 完全避免直接引用IPC类型，使用字符串和程序集反射
+                    var assembly = System.Reflection.Assembly.GetAssembly(typeof(NitroxModel.Logger.Log));
+                    var ipcType = assembly?.GetType("NitroxModel.Helper.Ipc");
+                    var clientIpcType = ipcType?.GetNestedType("ClientIpc");
+                    if (clientIpcType != null)
                     {
-                        if (string.IsNullOrWhiteSpace(output))
+                        ipc = Activator.CreateInstance(clientIpcType, Id, ipcCts) as IDisposable;
+                        var startReadingMethod = ipc?.GetType().GetMethod("StartReadingServerOutput");
+                        if (startReadingMethod != null)
                         {
-                            return;
-                        }
-
-                        if (output.StartsWith($"{Ipc.Messages.PlayerCountMessage}:", StringComparison.Ordinal))
-                        {
-                            if (int.TryParse(output[$"{Ipc.Messages.PlayerCountMessage}:".Length..].Trim('[', ']'), out int playerCount))
+                            Action<string> outputAction = output =>
                             {
-                                PlayerCountChanged?.Invoke(playerCount);
-                            }
-                            return;
-                        }
-
-                        // Ignore any messages that are part of the IPC message protocol
-                        if (Ipc.Messages.AllMessages.Any(msg => output.StartsWith($"{msg}:", StringComparison.Ordinal)))
-                        {
-                            return;
-                        }
-
-                        using StringReader reader = new(output);
-                        while (reader.ReadLine() is { } line)
-                        {
-                            Match match = OutputLineRegex.Match(line);
-                            if (match.Success)
-                            {
-                                OutputLine outputLine = new()
+                                if (string.IsNullOrWhiteSpace(output))
                                 {
-                                    Timestamp = $"[{match.Groups["timestamp"].ValueSpan}]",
-                                    LogText = match.Groups["logText"].ValueSpan.Trim().ToString(),
-                                    Type = match.Groups["level"].ValueSpan switch
+                                    return;
+                                }
+
+                                // 尝试使用反射调用IPC消息处理（保持兼容性）
+                                try
+                                {
+                                    var assembly = System.Reflection.Assembly.GetAssembly(typeof(NitroxModel.Logger.Log));
+                                    var ipcType = assembly?.GetType("NitroxModel.Helper.Ipc");
+                                    var messagesType = ipcType?.GetNestedType("Messages");
+                                    if (messagesType != null)
                                     {
-                                        "DBG" => OutputLineType.DEBUG_LOG,
-                                        "WRN" => OutputLineType.WARNING_LOG,
-                                        "ERR" => OutputLineType.ERROR_LOG,
-                                        _ => OutputLineType.INFO_LOG
+                                        var playerCountMessage = messagesType.GetProperty("PlayerCountMessage")?.GetValue(null) as string;
+                                        if (playerCountMessage != null && output.StartsWith($"{playerCountMessage}:", StringComparison.Ordinal))
+                                        {
+                                            if (int.TryParse(output[$"{playerCountMessage}:".Length..].Trim('[', ']'), out int playerCount))
+                                            {
+                                                PlayerCountChanged?.Invoke(playerCount);
+                                            }
+                                            return;
+                                        }
+
+                                        var allMessagesProperty = messagesType.GetProperty("AllMessages");
+                                        if (allMessagesProperty?.GetValue(null) is System.Collections.IEnumerable allMessages)
+                                        {
+                                            foreach (string msg in allMessages.Cast<string>())
+                                            {
+                                                if (output.StartsWith($"{msg}:", StringComparison.Ordinal))
+                                                {
+                                                    return;
+                                                }
+                                            }
+                                        }
                                     }
-                                };
-                                lastOutputType = outputLine.Type;
-                                Output.Add(outputLine);
-                            }
-                            else
-                            {
-                                Output.Add(new OutputLine
+                                }
+                                catch
                                 {
-                                    Timestamp = "",
-                                    LogText = line,
-                                    Type = lastOutputType
-                                });
-                            }
+                                    // IPC消息处理失败，忽略并继续
+                                }
+
+                                using StringReader reader = new(output);
+                                while (reader.ReadLine() is { } line)
+                                {
+                                    Match match = OutputLineRegex.Match(line);
+                                    if (match.Success)
+                                    {
+                                        OutputLine outputLine = new()
+                                        {
+                                            Timestamp = $"[{match.Groups["timestamp"].ValueSpan}]",
+                                            LogText = match.Groups["logText"].ValueSpan.Trim().ToString(),
+                                            Type = match.Groups["level"].ValueSpan switch
+                                            {
+                                                "DBG" => OutputLineType.DEBUG_LOG,
+                                                "WRN" => OutputLineType.WARNING_LOG,
+                                                "ERR" => OutputLineType.ERROR_LOG,
+                                                _ => OutputLineType.INFO_LOG
+                                            }
+                                        };
+                                        lastOutputType = outputLine.Type;
+                                        Output.Add(outputLine);
+                                    }
+                                    else
+                                    {
+                                        Output.Add(new OutputLine
+                                        {
+                                            Timestamp = "",
+                                            LogText = line,
+                                            Type = lastOutputType
+                                        });
+                                    }
+                                }
+                            };
+                            
+                            Action exitAction = () =>
+                            {
+                                IsRunning = false;
+                                onExited?.Invoke();
+                            };
+                            
+                            startReadingMethod.Invoke(ipc, new object[] { outputAction, exitAction, ipcCts.Token });
                         }
-                    },
-                    () =>
-                    {
-                        IsRunning = false;
-                        onExited?.Invoke();
-                    },
-                    ipcCts.Token
-                );
+                    }
+                }
+                catch (Exception ex)
+                {
+                    UserFriendlyErrorHandler.SafeExecute(() => {
+                        Log.Debug($"IPC客户端创建失败: {ex.Message}");
+                    }, "IPC客户端初始化");
+                    ipc = null;
+                }
             }
         }
 
@@ -429,7 +491,16 @@ public partial class ServerEntry : ObservableObject
 
             try
             {
-                return await ipc.SendCommand(command, cancellationToken);
+                if (ipc != null)
+                {
+                    var sendMethod = ipc.GetType().GetMethod("SendCommand");
+                    if (sendMethod != null)
+                    {
+                        var result = sendMethod.Invoke(ipc, new object[] { command, cancellationToken });
+                        return await (Task<bool>)result;
+                    }
+                }
+                return false;
             }
             catch (OperationCanceledException)
             {
@@ -455,10 +526,11 @@ public partial class ServerEntry : ObservableObject
         public void Dispose()
         {
             IsRunning = false;
-            ipcCts.Cancel();
-            ipc.Dispose();
+            ipcCts?.Cancel();
+            ipc?.Dispose();
             serverProcess?.Dispose();
             serverProcess = null;
         }
     }
 }
+

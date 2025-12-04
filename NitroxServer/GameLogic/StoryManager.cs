@@ -162,7 +162,7 @@ public class StoryManager : IDisposable
         double minutesBeforeExplosion = GetMinutesBeforeAuroraExplosion();
         if (minutesBeforeExplosion < 0)
         {
-            return "already exploded";
+            return "已爆炸";
         }
         // Based on AuroraWarnings.Update calculations
         // auroraWarningNumber is the amount of received Aurora warnings (there are 4 in total)
@@ -184,7 +184,7 @@ public class StoryManager : IDisposable
             auroraWarningNumber = 1;
         }
         
-        return $"explodes in {minutesBeforeExplosion} minutes [{auroraWarningNumber}/4]";
+        return $"{minutesBeforeExplosion}分钟后爆炸 [{auroraWarningNumber}/4]";
     }
 
     public AuroraEventData MakeAuroraData()

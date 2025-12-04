@@ -31,8 +31,9 @@ public class RemoveCreatureCorpseProcessor : ClientPacketProcessor<RemoveCreatur
             return;
         }
 
-        creatureDeath.transform.localPosition = packet.DeathPosition.ToUnity();
-        creatureDeath.transform.localRotation = packet.DeathRotation.ToUnity();
+        // 使用世界坐标而不是本地坐标，确保尸体位置在所有客户端上一致
+        creatureDeath.transform.position = packet.DeathPosition.ToUnity();
+        creatureDeath.transform.rotation = packet.DeathRotation.ToUnity();
 
         SafeOnKillAsync(creatureDeath, packet.CreatureId, simulationOwnership, liveMixinManager);
     }

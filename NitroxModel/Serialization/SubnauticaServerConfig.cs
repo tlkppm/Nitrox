@@ -4,14 +4,14 @@ using NitroxModel.Server;
 
 namespace NitroxModel.Serialization
 {
-    [PropertyDescription("Server settings can be changed here")]
+    [PropertyDescription("服务器设置")]
     public class SubnauticaServerConfig : NitroxConfig<SubnauticaServerConfig>
     {
         private int maxConnectionsSetting = 100;
 
         private int initialSyncTimeoutSetting = 300000;
 
-        [PropertyDescription("Set to true to Cache entities for the whole map on next run. \nWARNING! Will make server load take longer on the cache run but players will gain a performance boost when entering new areas.")]
+        [PropertyDescription("启用后将在下次运行时为整个地图缓存实体 \n警告：首次缓存会延长服务器加载时间，但玩家进入新区域时将获得性能提升")]
         public bool CreateFullEntityCache { get; set; } = false;
 
         private int saveIntervalSetting = 120000;
@@ -22,15 +22,15 @@ namespace NitroxModel.Serialization
 
         public override string FileName => "server.cfg";
 
-        [PropertyDescription("Leave blank for a random spawn position")]
+        [PropertyDescription("留空将随机生成出生位置")]
         public string Seed { get; set; }
 
         public int ServerPort { get; set; } = ServerList.DEFAULT_PORT;
 
-        [PropertyDescription("Prevents players from losing items on death")]
+        [PropertyDescription("防止玩家死亡时丢失物品")]
         public bool KeepInventoryOnDeath { get; set; } = false;
 
-        [PropertyDescription("Measured in milliseconds")]
+        [PropertyDescription("以毫秒为单位")]
         public int SaveInterval
         {
             get => saveIntervalSetting;
@@ -53,7 +53,7 @@ namespace NitroxModel.Serialization
             }
         }
 
-        [PropertyDescription("Command to run following a successful world save (e.g. .exe, .bat, or PowerShell script). ")]
+        [PropertyDescription("世界保存成功后运行的命令（例如 .exe、.bat 或 PowerShell 脚本）")]
         public string PostSaveCommandPath
         {
             get => postSaveCommandPath;
@@ -92,16 +92,16 @@ namespace NitroxModel.Serialization
 
         public string AdminPassword { get; set; } = StringHelper.GenerateRandomString(12);
 
-        [PropertyDescription("Possible values:", typeof(NitroxGameMode))]
+        [PropertyDescription("可选值：", typeof(NitroxGameMode))]
         public NitroxGameMode GameMode { get; set; } = NitroxGameMode.SURVIVAL;
 
-        [PropertyDescription("Possible values:", typeof(ServerSerializerMode))]
+        [PropertyDescription("可选值：", typeof(ServerSerializerMode))]
         public ServerSerializerMode SerializerMode { get; set; } = ServerSerializerMode.JSON;
 
-        [PropertyDescription("Possible values:", typeof(Perms))]
+        [PropertyDescription("可选值：", typeof(Perms))]
         public Perms DefaultPlayerPerm { get; set; } = Perms.PLAYER;
 
-        [PropertyDescription("\nDefault player stats below here")]
+        [PropertyDescription("\n以下是默认玩家属性")]
         public float DefaultOxygenValue { get; set; } = 45;
 
         public float DefaultMaxOxygenValue { get; set; } = 45;
@@ -109,22 +109,31 @@ namespace NitroxModel.Serialization
         public float DefaultHungerValue { get; set; } = 50.5f;
         public float DefaultThirstValue { get; set; } = 90.5f;
 
-        [PropertyDescription("Recommended to keep at 0.1f which is the default starting value. If set to 0 then new players are cured by default.")]
+        [PropertyDescription("建议保持默认值 0.1f。设置为 0 则新玩家默认已治愈")]
         public float DefaultInfectionValue { get; set; } = 0.1f;
 
         public PlayerStatsData DefaultPlayerStats => new(DefaultOxygenValue, DefaultMaxOxygenValue, DefaultHealthValue, DefaultHungerValue, DefaultThirstValue, DefaultInfectionValue);
-        [PropertyDescription("If set to true, the server will try to open port on your router via UPnP")]
+        [PropertyDescription("启用后服务器将通过 UPnP 自动打开路由器端口")]
         public bool AutoPortForward { get; set; } = true;
-        [PropertyDescription("Determines whether the server will listen for and reply to LAN discovery requests.")]
+        [PropertyDescription("决定服务器是否监听并响应局域网发现请求")]
         public bool LANDiscoveryEnabled { get; set; } = true;
 
-        [PropertyDescription("When true, will reject any build actions detected as desynced")]
+        [PropertyDescription("启用后将拒绝检测到不同步的建造操作")]
         public bool SafeBuilding { get; set; } = true;
 
-        [PropertyDescription("When true and started in launcher, will use launcher UI as opposed to external window")]
+        [PropertyDescription("启用后在启动器中运行时将使用启动器界面而非外部窗口")]
         public bool IsEmbedded { get; set; } = true;
 
-        [PropertyDescription("Activates/Deactivates Player versus Player damage/interactions")]
+        [PropertyDescription("启用/禁用玩家对战伤害和交互")]
         public bool PvPEnabled { get; set; } = true;
+        
+        [PropertyDescription("启用后拦截玩家命令并记录到后端")]
+        public bool CommandInterceptionEnabled { get; set; } = false;
+        
+        [PropertyDescription("要拦截的命令列表（逗号分隔）。留空则拦截所有命令")]
+        public string InterceptedCommands { get; set; } = string.Empty;
+
+        [PropertyDescription("启用后使用 .NET Generic Host 以改进服务器架构和性能")]
+        public bool UseGenericHost { get; set; } = true;
     }
 }

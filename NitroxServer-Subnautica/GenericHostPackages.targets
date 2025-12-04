@@ -1,0 +1,30 @@
+<Project>
+  <!-- 条件包引用：只有在需要时才引用Generic Host包 -->
+  <PropertyGroup>
+    <EnableGenericHost Condition="'$(EnableGenericHost)' == ''">false</EnableGenericHost>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(EnableGenericHost)' == 'true'">
+    <DefineConstants>$(DefineConstants);GENERIC_HOST_AVAILABLE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableGenericHost)' == 'true'">
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(EnableGenericHost)' == 'true'">
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

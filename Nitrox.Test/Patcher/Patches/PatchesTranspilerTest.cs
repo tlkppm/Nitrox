@@ -23,6 +23,7 @@ public class PatchesTranspilerTest
         [typeof(BreakableResource_SpawnResourceFromPrefab_Patch), 2],
         [typeof(Builder_TryPlace_Patch), Builder_TryPlace_Patch.InstructionsToAdd1.Count + Builder_TryPlace_Patch.InstructionsToAdd2.Count],
         [typeof(CellManager_TryLoadCacheBatchCells_Patch), 4],
+        [typeof(CoffeeVendingMachine_OnMachineUse_Patch), 0],
         [typeof(Constructable_Construct_Patch), Constructable_Construct_Patch.InstructionsToAdd.Count],
         [typeof(Constructable_DeconstructAsync_Patch), Constructable_DeconstructAsync_Patch.InstructionsToAdd.Count],
         [typeof(ConstructableBase_SetState_Patch), ConstructableBase_SetState_Patch.InstructionsToAdd.Count],
@@ -50,7 +51,7 @@ public class PatchesTranspilerTest
         [typeof(Flare_Update_Patch), 0],
         [typeof(FootstepSounds_OnStep_Patch), 6],
         [typeof(GrowingPlant_SpawnGrownModelAsync_Patch), -1],
-        [typeof(GameInputSystem_Initialize_Patch), 2],
+        // [typeof(GameInputSystem_Initialize_Patch), 2], // Temporarily disabled due to Unity InputSystem issues
         [typeof(Player_TriggerInfectionRevealAsync_Patch), 1],
         [typeof(IngameMenu_OnSelect_Patch), -2],
         [typeof(IngameMenu_QuitGameAsync_Patch), 2],

@@ -187,12 +187,12 @@
                     <TextBlock Classes="header">NITROX</TextBlock>
                     <Panel Grid.Row="1">
                         <StackPanel Classes="nav">
-                            <TextBlock Classes="subheader">PLAY</TextBlock>
+                            <TextBlock Classes="subheader">游戏</TextBlock>
                             <RadioButton
                                 Command="{Binding OpenLaunchGameViewCommand}"
-                                Content="Play game"
+                                Content="开始游戏"
                                 Tag="/Assets/Images/tabs-icons/play.png"
-                                ToolTip.Tip="Play game">
+                                ToolTip.Tip="开始深海迷航联机游戏">
                                 <RadioButton.IsChecked>
                                     <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
                                         <Binding.ConverterParameter>
@@ -205,9 +205,9 @@
                             </RadioButton>
                             <RadioButton
                                 Command="{Binding OpenServersViewCommand}"
-                                Content="Servers"
+                                Content="原版服务器"
                                 Tag="/Assets/Images/tabs-icons/server.png"
-                                ToolTip.Tip="Configure and start servers">
+                                ToolTip.Tip="深海迷航原版服务器管理">
                                 <RadioButton.IsChecked>
                                     <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
                                         <Binding.ConverterParameter>
@@ -220,12 +220,29 @@
                                     </Binding>
                                 </RadioButton.IsChecked>
                             </RadioButton>
-                            <TextBlock Classes="subheader">EXPLORE</TextBlock>
+                            
+                            <RadioButton
+                                Command="{Binding OpenBelowZeroServersViewCommand}"
+                                Content="Below Zero服务器"
+                                Tag="/Assets/Images/tabs-icons/server.png"
+                                ToolTip.Tip="深海迷航：零度之下服务器管理">
+                                <RadioButton.IsChecked>
+                                    <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
+                                        <Binding.ConverterParameter>
+                                            <generic:List x:TypeArguments="system:Type">
+                                                <x:Type TypeName="vm:BelowZeroServersViewModel" />
+                                                <x:Type TypeName="vm:ManageBelowZeroServerViewModel" />
+                                            </generic:List>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </RadioButton.IsChecked>
+                            </RadioButton>
+                            <TextBlock Classes="subheader">探索</TextBlock>
                             <RadioButton
                                 Command="{Binding OpenCommunityViewCommand}"
-                                Content="Community"
+                                Content="社区"
                                 Tag="/Assets/Images/tabs-icons/community.png"
-                                ToolTip.Tip="Join Nitrox community">
+                                ToolTip.Tip="游戏社区和交流">
                                 <RadioButton.IsChecked>
                                     <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
                                         <Binding.ConverterParameter>
@@ -238,9 +255,9 @@
                             </RadioButton>
                             <RadioButton
                                 Command="{Binding OpenBlogViewCommand}"
-                                Content="Blog"
+                                Content="博客"
                                 Tag="/Assets/Images/tabs-icons/blog.png"
-                                ToolTip.Tip="Read latest news from the Dev Blog">
+                                ToolTip.Tip="项目博客和新闻">
                                 <RadioButton.IsChecked>
                                     <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
                                         <Binding.ConverterParameter>
@@ -251,6 +268,37 @@
                                     </Binding>
                                 </RadioButton.IsChecked>
                             </RadioButton>
+                            <RadioButton
+                                Command="{Binding OpenContributorsViewCommand}"
+                                Content="社区贡献者"
+                                Tag="/Assets/Images/tabs-icons/community.png"
+                                ToolTip.Tip="感谢社区贡献者们">
+                                <RadioButton.IsChecked>
+                                    <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
+                                        <Binding.ConverterParameter>
+                                            <generic:List x:TypeArguments="system:Type">
+                                                <x:Type TypeName="vm:ContributorsViewModel" />
+                                            </generic:List>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </RadioButton.IsChecked>
+                            </RadioButton>
+                            <RadioButton
+                                Command="{Binding OpenSponsorViewCommand}"
+                                Content="赞助支持"
+                                Tag="/Assets/Images/tabs-icons/sponsor.png"
+                                ToolTip.Tip="赞助者感谢和支持信息">
+                                <RadioButton.IsChecked>
+                                    <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
+                                        <Binding.ConverterParameter>
+                                            <generic:List x:TypeArguments="system:Type">
+                                                <x:Type TypeName="vm:SponsorViewModel" />
+                                            </generic:List>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </RadioButton.IsChecked>
+                            </RadioButton>
+
                         </StackPanel>
                         <StackPanel
                             Classes="nav"
@@ -259,9 +307,9 @@
                             <RadioButton
                                 Classes="updates"
                                 Command="{Binding OpenUpdatesViewCommand}"
-                                Content="Updates"
+                                Content="更新"
                                 Tag="/Assets/Images/tabs-icons/update.png"
-                                ToolTip.Tip="Check latest updates from Nitrox">
+                                ToolTip.Tip="版本更新和系统状态">
                                 <RadioButton.IsChecked>
                                     <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
                                         <Binding.ConverterParameter>
@@ -273,10 +321,25 @@
                                 </RadioButton.IsChecked>
                             </RadioButton>
                             <RadioButton
+                                Command="{Binding OpenAchievementsViewCommand}"
+                                Content="成就"
+                                Tag="/Assets/Images/tabs-icons/sponsor.png"
+                                ToolTip.Tip="查看您的成就进度">
+                                <RadioButton.IsChecked>
+                                    <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
+                                        <Binding.ConverterParameter>
+                                            <generic:List x:TypeArguments="system:Type">
+                                                <x:Type TypeName="vm:AchievementsViewModel" />
+                                            </generic:List>
+                                        </Binding.ConverterParameter>
+                                    </Binding>
+                                </RadioButton.IsChecked>
+                            </RadioButton>
+                            <RadioButton
                                 Command="{Binding OpenOptionsViewCommand}"
-                                Content="Options"
+                                Content="选项"
                                 Tag="/Assets/Images/tabs-icons/options.png"
-                                ToolTip.Tip="Configure your Nitrox setup">
+                                ToolTip.Tip="启动器设置和选项">
                                 <RadioButton.IsChecked>
                                     <Binding Path="ActiveViewModel" Converter="{converters:IsTypeConverter}" Mode="OneWay">
                                         <Binding.ConverterParameter>
@@ -349,14 +412,29 @@
                         <DataTemplate x:DataType="vm:EmbeddedServerViewModel">
                             <views:EmbeddedServerView />
                         </DataTemplate>
+                        <DataTemplate x:DataType="vm:BelowZeroServersViewModel">
+                            <views:BelowZeroServersView />
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:ManageBelowZeroServerViewModel">
+                            <views:ManageBelowZeroServerView />
+                        </DataTemplate>
                         <DataTemplate x:DataType="vm:CommunityViewModel">
                             <views:CommunityView />
                         </DataTemplate>
                         <DataTemplate x:DataType="vm:BlogViewModel">
                             <views:BlogView />
                         </DataTemplate>
+                        <DataTemplate x:DataType="vm:ContributorsViewModel">
+                            <views:ContributorsView />
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:SponsorViewModel">
+                            <views:SponsorView />
+                        </DataTemplate>
                         <DataTemplate x:DataType="vm:UpdatesViewModel">
                             <views:UpdatesView />
+                        </DataTemplate>
+                        <DataTemplate x:DataType="vm:AchievementsViewModel">
+                            <views:AchievementsView />
                         </DataTemplate>
                         <DataTemplate x:DataType="vm:OptionsViewModel">
                             <views:OptionsView />

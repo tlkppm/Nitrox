@@ -1,7 +1,7 @@
 <Window
     CanResize="False"
     SizeToContent="WidthAndHeight"
-    Title="Create a server"
+    Title="创建服务器"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d"
@@ -15,7 +15,8 @@
     xmlns:server="clr-namespace:NitroxModel.Server;assembly=NitroxModel"
     xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="clr-namespace:Nitrox.Launcher.Models.Behaviors">
+    xmlns:behaviors="clr-namespace:Nitrox.Launcher.Models.Behaviors"
+    xmlns:services="clr-namespace:Nitrox.Launcher.Models.Services">
     <Design.DataContext>
         <vm:CreateServerViewModel Name="My Server Name" SelectedGameMode="CREATIVE" />
     </Design.DataContext>
@@ -23,21 +24,21 @@
         <controls:CustomTitlebar CanMinimize="False" />
         <StackPanel>
             <StackPanel Classes="form" Margin="24">
-                <TextBlock Classes="modalHeader" Text="Create a server" />
+                <TextBlock Classes="modalHeader" Text="{x:Static services:LocalizationService+Servers.CreateNewServer}" />
                 <StackPanel Classes="form">
-                    <TextBlock Text="SERVER NAME" />
+                    <TextBlock Text="{x:Static services:LocalizationService+Servers.ServerName}" />
                     <TextBox
                         MaxLength="120"
                         MaxWidth="400"
                         Text="{Binding Name, Converter={converters:TrimConverter}}"
-                        Watermark="My server">
+                        Watermark="我的服务器">
                         <Interaction.Behaviors>
                             <behaviors:FocusOnViewShowBehavior />
                         </Interaction.Behaviors>
                     </TextBox>
                 </StackPanel>
                 <StackPanel Classes="form">
-                    <TextBlock Text="GAMEMODE" />
+                    <TextBlock Text="{x:Static services:LocalizationService+Servers.GameMode}" />
                     <controls:RadioButtonGroup
                         Classes="radioGroup"
                         Enum="{x:Type server:NitroxGameMode}"
@@ -48,13 +49,13 @@
                 <Panel>
                     <Button
                         Command="{Binding CloseCommand}"
-                        Content="Back"
+                        Content="{x:Static services:LocalizationService+Launcher.Back}"
                         FontWeight="Bold"
                         HotKey="Escape" />
                     <Button
                         Classes="primary"
                         Command="{Binding CreateCommand}"
-                        Content="Create"
+                        Content="创建"
                         HorizontalAlignment="Right"
                         HotKey="Enter" />
                 </Panel>

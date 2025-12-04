@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>net472;net9.0</TargetFrameworks>
         <RootNamespace>NitroxModel_Subnautica</RootNamespace>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

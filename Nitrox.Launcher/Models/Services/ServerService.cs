@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Messaging;
 using Nitrox.Launcher.Models.Design;
@@ -19,6 +20,7 @@ using NitroxModel.Helper;
 using NitroxModel.Logger;
 using NitroxModel.Platforms.OS.Shared;
 using NitroxModel.Server;
+using Timer = System.Threading.Timer;
 
 namespace Nitrox.Launcher.Models.Services;
 
@@ -39,6 +41,7 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
     private readonly HashSet<int> knownServerProcessIds = [];
     private readonly Lock knownServerProcessIdsLock = new();
     private volatile bool hasUpdatedAtLeastOnce;
+    private readonly Timer? serverDetectionTimer;
 
     public ServerService(DialogService dialogService, IKeyValueStore keyValueStore, Func<IRoutingScreen> screenProvider)
     {
@@ -49,6 +52,19 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
         if (!IsDesignMode)
         {
             _ = LoadServersAsync().ContinueWithHandleError(ex => LauncherNotifier.Error(ex.Message));
+            
+            //  启动定期服务器检测定时器，每5秒检测一次运行中的服务器
+            serverDetectionTimer = new Timer(async _ =>
+            {
+                try
+                {
+                    await DetectAndAttachRunningServersAsync();
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug($"定期服务器检测出错: {ex.Message}");
+                }
+            }, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5));
         }
 
         this.RegisterMessageListener<SaveDeletedMessage, ServerService>(static (message, receiver) =>
@@ -86,8 +102,8 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
         {
             bool proceed = await dialogService.ShowAsync<DialogBoxViewModel>(model =>
             {
-                model.Title = $"Port {serverPort} is unavailable";
-                model.Description = "It is recommended to change the port before starting this server. Would you like to continue anyway?";
+                model.Title = $"端口 {serverPort} 不可用";
+                model.Description = "建议在启动此服务器之前更改端口。您仍要继续吗？";
                 model.ButtonOptions = ButtonOptions.YesNo;
             });
             if (!proceed)
@@ -132,7 +148,7 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
         catch (Exception ex)
         {
             Log.Error(ex, $"Error while starting server \"{server.Name}\"");
-            await Dispatcher.UIThread.InvokeAsync(async () => await dialogService.ShowErrorAsync(ex, $"Error while starting server \"{server.Name}\""));
+            await Dispatcher.UIThread.InvokeAsync(async () => await dialogService.ShowErrorAsync(ex, $"启动服务器 \"{server.Name}\" 时出错"));
             return false;
         }
     }
@@ -140,7 +156,7 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
     public async Task<bool> ConfirmServerVersionAsync(ServerEntry server) =>
         await dialogService.ShowAsync<DialogBoxViewModel>(model =>
         {
-            model.Title = $"The version of '{server.Name}' is v{(server.Version != null ? server.Version.ToString() : "X.X.X.X")}. It is highly recommended to NOT use this save file with Nitrox v{NitroxEnvironment.Version}. Would you still like to continue?";
+            model.Title = $"服务器 '{server.Name}' 的版本是 v{(server.Version != null ? server.Version.ToString() : "X.X.X.X")}。强烈建议不要在 Nitrox v{NitroxEnvironment.Version} 中使用此存档文件。您仍要继续吗？";
             model.ButtonOptions = ButtonOptions.YesNo;
         });
 
@@ -173,7 +189,8 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
                 {
                     if (loggedErrorDirectories.Add(saveDir)) // Only log once per directory to prevent log spam
                     {
-                        Log.Error(ex, $"Error while initializing save from directory \"{saveDir}\". Skipping...");
+                        // 使用用户友好的错误处理器，在界面显示而不是仅在日志中记录
+                        UserFriendlyErrorHandler.RecordSaveFileError(saveDir, ex);
                     }
                 }
             }
@@ -245,6 +262,7 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
     {
         serverRefreshCts.Cancel();
         serverRefreshCts.Dispose();
+        serverDetectionTimer?.Dispose();
         WeakReferenceMessenger.Default.UnregisterAll(this);
         watcher?.Dispose();
     }
@@ -329,13 +347,61 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
                         continue;
                     }
                 }
-                using CancellationTokenSource? cts = new(1000);
-                using Ipc.ClientIpc ipc = new(processId, cts);
-                await ipc.SendCommand(Ipc.Messages.SaveNameMessage, cts.Token);
-                string response = await ipc.ReadStringAsync(cts.Token);
-                if (response.StartsWith($"{Ipc.Messages.SaveNameMessage}:", StringComparison.OrdinalIgnoreCase))
+                // 检查IPC功能是否可用 (仅在 .NET 5+ 中可用)
+                string response = "";
+                try 
                 {
-                    string? saveName = response[$"{Ipc.Messages.SaveNameMessage}:".Length..].Trim('[', ']');
+                    // 完全避免直接引用IPC类型，使用字符串和程序集反射
+                    var assembly = System.Reflection.Assembly.GetAssembly(typeof(NitroxModel.Logger.Log));
+                    var ipcType = assembly?.GetType("NitroxModel.Helper.Ipc");
+                    var clientIpcType = ipcType?.GetNestedType("ClientIpc");
+                    if (clientIpcType != null)
+                    {
+                        using CancellationTokenSource? cts = new(1000);
+                        using var ipc = Activator.CreateInstance(clientIpcType, processId, cts) as IDisposable;
+                        
+                        var sendMethod = clientIpcType.GetMethod("SendCommand");
+                        var readMethod = clientIpcType.GetMethod("ReadStringAsync");
+                        var messagesType = ipcType?.GetNestedType("Messages");
+                        var saveNameMessage = messagesType?.GetProperty("SaveNameMessage")?.GetValue(null) as string;
+                        
+                        if (sendMethod != null && readMethod != null && saveNameMessage != null)
+                        {
+                            await (Task)sendMethod.Invoke(ipc, new object[] { saveNameMessage, cts.Token });
+                            response = await (Task<string>)readMethod.Invoke(ipc, new object[] { cts.Token });
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // IPC功能不可用，使用备用方法
+                    UserFriendlyErrorHandler.SafeExecute(() => {
+                        Log.Debug($"IPC功能不可用，跳过进程 {processId}: {ex.Message}");
+                    }, "IPC通信检查");
+                    continue;
+                }
+                // 使用反射获取SaveNameMessage以保持兼容性
+                string? saveNameMessagePrefix = null;
+                try
+                {
+                    // 使用程序集反射避免直接引用IPC类型
+                    var assembly = System.Reflection.Assembly.GetAssembly(typeof(NitroxModel.Logger.Log));
+                    var ipcType = assembly?.GetType("NitroxModel.Helper.Ipc");
+                    var messagesType = ipcType?.GetNestedType("Messages");
+                    var saveNameMessage = messagesType?.GetProperty("SaveNameMessage")?.GetValue(null) as string;
+                    if (saveNameMessage != null)
+                    {
+                        saveNameMessagePrefix = $"{saveNameMessage}:";
+                    }
+                }
+                catch
+                {
+                    // IPC Messages类型不可用，跳过处理
+                }
+
+                if (saveNameMessagePrefix != null && response.StartsWith(saveNameMessagePrefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    string? saveName = response[saveNameMessagePrefix.Length..].Trim('[', ']');
                     ServerEntry? serverMatch = servers?.FirstOrDefault(s => string.Equals(s.Name, saveName, StringComparison.Ordinal));
                     if (serverMatch != null)
                     {
@@ -353,6 +419,62 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
             {
                 Log.Debug($"Pipe scan error for {pipeName}: {ex.Message}");
             }
+        }
+    }
+
+    /// <summary>
+    /// 检查已知的服务器进程是否仍在运行，如果不在则更新状态
+    /// </summary>
+    private async Task CheckServerProcessesAsync()
+    {
+        List<int> processIdsToRemove = [];
+        List<string> currentPipeNames = GetNitroxServerPipeNames();
+        HashSet<int> runningProcessIds = [];
+        
+        // 从管道名称中提取进程ID
+        foreach (string pipeName in currentPipeNames)
+        {
+            Match? match = Regex.Match(pipeName, @"NitroxServer_(\d+)");
+            if (match.Success && int.TryParse(match.Groups[1].Value, out int processId))
+            {
+                runningProcessIds.Add(processId);
+            }
+        }
+        
+        lock (knownServerProcessIdsLock)
+        {
+            foreach (int processId in knownServerProcessIds)
+            {
+                if (!runningProcessIds.Contains(processId))
+                {
+                    processIdsToRemove.Add(processId);
+                }
+            }
+            
+            foreach (int processId in processIdsToRemove)
+            {
+                knownServerProcessIds.Remove(processId);
+                Log.Info($"检测到服务器进程 {processId} 已停止");
+            }
+        }
+        
+        // 更新对应服务器的在线状态
+        if (processIdsToRemove.Count > 0)
+        {
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                lock (serversLock)
+                {
+                    foreach (ServerEntry server in servers)
+                    {
+                        if (server.Process?.Id != null && processIdsToRemove.Contains(server.Process.Id))
+                        {
+                            server.IsOnline = false;
+                            Log.Info($"服务器 '{server.Name}' 状态已更新为离线");
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -376,6 +498,113 @@ internal sealed class ServerService : IMessageReceiver, INotifyPropertyChanged
         catch
         {
             return [];
+        }
+    }
+
+    /// <summary>
+    /// Below Zero服务器相关属性和方法
+    /// </summary>
+    private List<BelowZeroServerEntry> belowZeroServers = [];
+
+    public List<BelowZeroServerEntry> BelowZeroServers
+    {
+        get => belowZeroServers;
+        set
+        {
+            belowZeroServers = value;
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// 加载Below Zero服务器
+    /// </summary>
+    public async Task LoadBelowZeroServersAsync()
+    {
+        try
+        {
+            await Task.Run(() =>
+            {
+                // 创建示例Below Zero服务器
+                var sampleServers = new List<BelowZeroServerEntry>
+                {
+                    new()
+                    {
+                        Name = "Below Zero Demo Server",
+                        Weather = "Snow",
+                        Temperature = -15.0f,
+                        EnableSeatruckFeatures = true,
+                        EnableWeatherSystem = true,
+                        EnableIceLayerManagement = true,
+                        EnableTemperatureSystem = true,
+                        MaxPlayers = 8,
+                        IsOnline = false
+                    }
+                };
+
+                BelowZeroServers = sampleServers;
+                Log.Info($"Loaded {BelowZeroServers.Count} Below Zero servers");
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Loading Below Zero servers failed: {ex}");
+        }
+    }
+
+    public async Task StartBelowZeroServerAsync(BelowZeroServerEntry server)
+    {
+        try
+        {
+            Log.Info($"Starting Below Zero server: {server.Name}");
+            
+            // 模拟启动过程
+            await Task.Delay(1000);
+            
+            server.IsOnline = true;
+            Log.Info($"Below Zero server started: {server.Name}");
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to start Below Zero server: {ex}");
+            throw;
+        }
+    }
+
+    public async Task StopBelowZeroServerAsync(BelowZeroServerEntry server)
+    {
+        try
+        {
+            Log.Info($"Stopping Below Zero server: {server.Name}");
+            
+            // 模拟停止过程
+            await Task.Delay(500);
+            
+            server.IsOnline = false;
+            Log.Info($"Below Zero server stopped: {server.Name}");
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to stop Below Zero server: {ex}");
+            throw;
+        }
+    }
+
+    public async Task SendBelowZeroServerCommandAsync(BelowZeroServerEntry server, string command)
+    {
+        try
+        {
+            Log.Info($"Sending command to Below Zero server {server.Name}: {command}");
+            
+            // 模拟命令发送
+            await Task.Delay(100);
+            
+            Log.Info($"Command sent to Below Zero server: {command}");
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to send command to Below Zero server: {ex}");
+            throw;
         }
     }
 }

@@ -1,0 +1,158 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Background="{DynamicResource BrandWhite}" Padding="20">
+            <Border Classes="contributorCard" Background="#FFF7ED" BorderBrush="#FB923C" BorderThickness="1" Width="200" Height="120">
+                <StackPanel Spacing="8">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Border Grid.Column="0" CornerRadius="20" Width="40" Height="40" Background="#FB923C" Margin="0,0,12,0">
+                            <TextBlock Text="制" FontSize="16" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="夜樱神子" Foreground="#EA580C"/>
+                            <TextBlock FontSize="11" Opacity="0.8" Text="社区制作 · 项目架构"/>
+                        </StackPanel>
+                        <Button Grid.Column="2" Classes="ghost" Padding="6">
+                            <TextBlock Text="📋" FontSize="12"/>
+                        </Button>
+                    </Grid>
+                    <TextBlock FontSize="10" Opacity="0.7" Text="QQ: 287834213" Margin="52,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Design.PreviewWith>
+    
+    <!-- 贡献者卡片样式 -->
+    <Style Selector="Border.contributorCard">
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="BoxShadow" Value="0 2 8 #1A000000" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Duration="0:0:0.2" Property="Opacity" />
+                <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+            </Transitions>
+        </Setter>
+        
+        <!-- 悬停效果 -->
+        <Style Selector="^:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.02)" />
+            <Setter Property="BoxShadow" Value="0 4 16 #26000000" />
+        </Style>
+        
+        <!-- 按下效果 -->
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.98)" />
+        </Style>
+        
+        <!-- 禁用状态 -->
+        <Style Selector="^:disabled">
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
+    </Style>
+    
+    <!-- Ghost 按钮样式 -->
+    <Style Selector="Button.ghost">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="MinWidth" Value="24" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Duration="0:0:0.1" Property="Opacity" />
+                <BrushTransition Duration="0:0:0.1" Property="Background" />
+            </Transitions>
+        </Setter>
+        
+        <Style Selector="^:pointerover">
+            <Setter Property="Background" Value="#0D000000" />
+            <Setter Property="Opacity" Value="0.8" />
+        </Style>
+        
+        <Style Selector="^:pressed">
+            <Setter Property="Background" Value="#1A000000" />
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
+    </Style>
+    
+    <!-- 社区交流区域样式 -->
+    <Style Selector="Border.communitySection">
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="BoxShadow" Value="0 2 12 #1A3B82F6" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Duration="0:0:0.3" Property="Opacity" />
+            </Transitions>
+        </Setter>
+    </Style>
+    
+    <!-- 特别感谢样式 -->
+    <Style Selector="Border.thanksSection">
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="BoxShadow" Value="0 1 4 #1A64748B" />
+    </Style>
+    
+    <!-- 音乐按钮特殊样式 -->
+    <Style Selector="Button.musicToggle">
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="MinWidth" Value="100" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Duration="0:0:0.2" Property="RenderTransform" />
+                <DoubleTransition Duration="0:0:0.2" Property="Opacity" />
+            </Transitions>
+        </Setter>
+        
+        <!-- 播放状态的动画效果 -->
+        <Style Selector="^.playing">
+            <Setter Property="RenderTransform" Value="scale(1.05)" />
+            <Style.Animations>
+                <Animation Duration="0:0:2" IterationCount="INFINITE" PlaybackDirection="Alternate">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0.8" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1.0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </Style>
+    
+    <!-- QQ群按钮样式 -->
+    <Style Selector="Button.qqGroup">
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontFamily" Value="'Microsoft YaHei UI', 'Segoe UI', sans-serif" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Duration="0:0:0.1" Property="RenderTransform" />
+            </Transitions>
+        </Setter>
+        
+        <Style Selector="^:pointerover">
+            <Setter Property="RenderTransform" Value="translateY(-1px)" />
+        </Style>
+        
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="translateY(1px)" />
+        </Style>
+    </Style>
+    
+    <!-- 保密声明样式 -->
+    <Style Selector="Border.privacyNotice">
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BoxShadow" Value="0 1 4 #33F59E0B" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Duration="0:0:0.2" Property="Opacity" />
+            </Transitions>
+        </Setter>
+        
+        <Style Selector="^:pointerover">
+            <Setter Property="Opacity" Value="0.9" />
+        </Style>
+    </Style>
+</Styles>

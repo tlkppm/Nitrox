@@ -245,8 +245,10 @@ namespace NitroxClient.MonoBehaviours
 
         public void RegisterConnectedDelegates()
         {
+            Log.Info("[CHAT] 正在注册聊天代理...");
             PlayerChatManager.Instance.OnPlayerChat += OnPlayerChat;
             PlayerChatManager.Instance.OnPlayerCommand += OnPlayerCommand;
+            Log.Info("[CHAT] 聊天代理注册完成");
         }
 
         public void UnregisterConnectedDelegates()

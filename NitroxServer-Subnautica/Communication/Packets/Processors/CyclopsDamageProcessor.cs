@@ -2,7 +2,7 @@
 using NitroxServer.Communication.Packets.Processors.Abstract;
 using NitroxServer.GameLogic;
 
-namespace NitroxServer_Subnautica.Communication.Packets.Processors
+namespace Nitrox.Server.Subnautica.Communication.Packets.Processors
 {
     /// <summary>
     /// This is the absolute damage state. The current simulation owner is the only one who sends this packet to the server

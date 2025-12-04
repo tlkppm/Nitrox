@@ -232,6 +232,11 @@ namespace NitroxServer.GameLogic
 
             PlayerCountChanged?.Invoke(connectedPlayersById.Count);
 
+            // 输出玩家连接基础信息
+            string playerType = wasBrandNewPlayer ? "新玩家" : "老玩家";
+            string endpoint = connection?.Endpoint?.ToString() ?? "未知地址";
+            Log.Info($"[玩家连接] {playerType} '{playerContext.PlayerName}' 已连接 | IP: {endpoint} | 玩家ID: {playerContext.PlayerId} | 当前在线: {connectedPlayersById.Count}");
+
             return player;
         }
 
@@ -255,7 +260,11 @@ namespace NitroxServer.GameLogic
                 Player player = assetPackage.Player;
                 reservedPlayerNames.Remove(player.Name);
                 connectedPlayersById.Remove(player.Id);
-                Log.Info($"{player.Name} left the game");
+                
+                // 输出详细的玩家离开信息
+                string endpoint = connection?.Endpoint?.ToString() ?? "未知地址";
+                int remainingPlayers = connectedPlayersById.Count;
+                Log.Info($"[玩家离开] 玩家 '{player.Name}' 已离开游戏 | IP: {endpoint} | 玩家ID: {player.Id} | 剩余在线: {remainingPlayers}");
             }
 
             assetsByConnection.Remove(connection);
@@ -361,6 +370,10 @@ namespace NitroxServer.GameLogic
         {
             PlayerJoinedMultiplayerSession playerJoinedPacket = new(player.PlayerContext, player.SubRootId, player.Entity);
             SendPacketToOtherPlayers(playerJoinedPacket, player);
+            
+            // 输出玩家加入游戏的广播日志
+            int otherPlayersCount = connectedPlayersById.Count - 1;
+            Log.Info($"[广播消息] 玩家 '{player.Name}' 已加入游戏 | 向 {otherPlayersCount} 个其他玩家广播加入消息");
         }
     }
 }

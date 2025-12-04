@@ -2,7 +2,7 @@ using NitroxModel.DataStructures.GameLogic.Entities;
 using NitroxServer.GameLogic.Entities.Spawning;
 using NitroxServer.Helper;
 
-namespace NitroxServer_Subnautica.GameLogic.Entities.Spawning;
+namespace Nitrox.Server.Subnautica.GameLogic.Entities.Spawning;
 
 public class GeyserBootstrapper : IEntityBootstrapper
 {

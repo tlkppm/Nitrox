@@ -105,7 +105,8 @@ public sealed partial class CreatureDeath_OnKillAsync_Patch : NitroxPatch, IDyna
 
         if (!IsRemotelyCalled)
         {
-            Resolve<IPacketSender>().Send(new RemoveCreatureCorpse(creatureId, creatureDeath.transform.localPosition.ToDto(), creatureDeath.transform.localRotation.ToDto()));
+            // 使用世界坐标而不是本地坐标，确保尸体位置在所有客户端上一致
+            Resolve<IPacketSender>().Send(new RemoveCreatureCorpse(creatureId, creatureDeath.transform.position.ToDto(), creatureDeath.transform.rotation.ToDto()));
         }
     }
 

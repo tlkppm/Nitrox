@@ -137,7 +137,7 @@ namespace NitroxClient.GameLogic
             simulationOwnership.ClearNewerSimulations();
         }
 
-        public void EnqueueEntitiesToSpawn(List<Entity> entitiesToEnqueue, bool coldStart = false)
+        public void EnqueueEntitiesToSpawn(List<Entity> entitiesToEnqueue, AbsoluteEntityCell[] spawnedCells, bool coldStart = false)
         {
             EntitiesToSpawn.InsertRange(0, entitiesToEnqueue);
             if (!spawningEntities)

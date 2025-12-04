@@ -33,19 +33,45 @@ public class PlayerChatManager
 
     public PlayerChatManager()
     {
+        Log.Info("[CHAT] PlayerChatManager 构造函数被调用");
+        
         if (NitroxEnvironment.IsNormal) //Testing would fail because it's trying to access runtime MonoBehaviours.
         {
+            Log.Info("[CHAT] 正在启动聊天资源加载协程...");
             CoroutineHost.StartCoroutine(LoadChatLogAsset());
+        }
+        else
+        {
+            Log.Warn("[CHAT] 非正常环境，跳过聊天资源加载");
         }
 
         IEnumerator LoadChatLogAsset()
         {
+            Log.Info("[CHAT] 开始加载聊天UI资源包...");
             yield return LoadUIAsset(NitroxAssetBundle.CHAT_LOG, true);
 
+            if (NitroxAssetBundle.CHAT_LOG.LoadedAssets == null || NitroxAssetBundle.CHAT_LOG.LoadedAssets.Length == 0)
+            {
+                Log.Error("[CHAT] 聊天资源包加载失败！LoadedAssets为null或空");
+                yield break;
+            }
+
+            Log.Info($"[CHAT] 聊天资源包加载成功，资源数量: {NitroxAssetBundle.CHAT_LOG.LoadedAssets.Length}");
+            
             GameObject playerChatGameObject = (GameObject)NitroxAssetBundle.CHAT_LOG.LoadedAssets[0];
+            if (playerChatGameObject == null)
+            {
+                Log.Error("[CHAT] 聊天游戏对象为null！");
+                yield break;
+            }
+            
+            Log.Info($"[CHAT] 正在为聊天GameObject '{playerChatGameObject.name}' 添加PlayerChat组件...");
             playerChat = playerChatGameObject.AddComponent<PlayerChat>();
 
+            Log.Info("[CHAT] 正在设置聊天组件...");
             yield return playerChat.SetupChatComponents();
+            
+            Log.Info("[CHAT] 聊天系统初始化完成！");
         }
     }
 

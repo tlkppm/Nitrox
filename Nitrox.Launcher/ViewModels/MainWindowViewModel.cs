@@ -24,13 +24,20 @@ internal partial class MainWindowViewModel : ViewModelBase, IRoutingScreen
 {
     private readonly BlogViewModel blogViewModel;
     private readonly CommunityViewModel communityViewModel;
+    private readonly ContributorsViewModel contributorsViewModel;
+    private readonly SponsorViewModel sponsorViewModel;
     private readonly DialogService dialogService;
     private readonly LaunchGameViewModel launchGameViewModel;
     private readonly Func<Window> mainWindowProvider;
     private readonly OptionsViewModel optionsViewModel;
     private readonly ServerService serverService;
     private readonly ServersViewModel serversViewModel;
+    private readonly BelowZeroServersViewModel belowZeroServersViewModel;
+
     private readonly UpdatesViewModel updatesViewModel;
+    private readonly AchievementsViewModel achievementsViewModel;
+    
+    public AchievementsViewModel AchievementsViewModel => achievementsViewModel;
 
     [ObservableProperty]
     private object? activeViewModel;
@@ -44,10 +51,14 @@ internal partial class MainWindowViewModel : ViewModelBase, IRoutingScreen
         Func<Window> mainWindowProvider,
         DialogService dialogService,
         ServersViewModel serversViewModel,
+        BelowZeroServersViewModel belowZeroServersViewModel,
         LaunchGameViewModel launchGameViewModel,
         CommunityViewModel communityViewModel,
         BlogViewModel blogViewModel,
+        ContributorsViewModel contributorsViewModel,
+        SponsorViewModel sponsorViewModel,
         UpdatesViewModel updatesViewModel,
+        AchievementsViewModel achievementsViewModel,
         OptionsViewModel optionsViewModel,
         ServerService serverService,
         IKeyValueStore keyValueStore
@@ -57,9 +68,13 @@ internal partial class MainWindowViewModel : ViewModelBase, IRoutingScreen
         this.dialogService = dialogService;
         this.launchGameViewModel = launchGameViewModel;
         this.serversViewModel = serversViewModel;
+        this.belowZeroServersViewModel = belowZeroServersViewModel;
         this.communityViewModel = communityViewModel;
         this.blogViewModel = blogViewModel;
+        this.contributorsViewModel = contributorsViewModel;
+        this.sponsorViewModel = sponsorViewModel;
         this.updatesViewModel = updatesViewModel;
+        this.achievementsViewModel = achievementsViewModel;
         this.optionsViewModel = optionsViewModel;
         this.serverService = serverService;
 
@@ -95,13 +110,16 @@ internal partial class MainWindowViewModel : ViewModelBase, IRoutingScreen
 
             Task.Run(async () =>
             {
-                if (!await NetHelper.HasInternetConnectivityAsync())
+                if (!NetHelper.HasInternetConnectivity())
                 {
                     Log.Warn("Launcher may not be connected to internet");
                     LauncherNotifier.Warning("Launcher may not be connected to internet");
                 }
                 UpdateAvailableOrUnofficial = await updatesViewModel.IsNitroxUpdateAvailableAsync();
             });
+
+            // 触发首次启动成就
+            achievementsViewModel.TriggerAchievement("first_launch");
 
             _ = this.ShowAsync(launchGameViewModel).ContinueWithHandleError(ex => LauncherNotifier.Error(ex.Message));
         }
@@ -112,18 +130,50 @@ internal partial class MainWindowViewModel : ViewModelBase, IRoutingScreen
 
     [RelayCommand(AllowConcurrentExecutions = false)]
     public async Task OpenServersViewAsync() => await this.ShowAsync(serversViewModel);
+    
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    public async Task OpenBelowZeroServersViewAsync() => await this.ShowAsync(belowZeroServersViewModel);
 
     [RelayCommand(AllowConcurrentExecutions = false)]
-    public async Task OpenCommunityViewAsync() => await this.ShowAsync(communityViewModel);
+    public async Task OpenCommunityViewAsync()
+    {
+        achievementsViewModel.TriggerAchievement("explore_community");
+        await this.ShowAsync(communityViewModel);
+    }
 
     [RelayCommand(AllowConcurrentExecutions = false)]
-    public async Task OpenBlogViewAsync() => await this.ShowAsync(blogViewModel);
+    public async Task OpenBlogViewAsync()
+    {
+        achievementsViewModel.UpdateAchievementProgress("read_blog", 1);
+        await this.ShowAsync(blogViewModel);
+    }
 
     [RelayCommand(AllowConcurrentExecutions = false)]
-    public async Task OpenUpdatesViewAsync() => await this.ShowAsync(updatesViewModel);
+    public async Task OpenContributorsViewAsync() => await this.ShowAsync(contributorsViewModel);
 
     [RelayCommand(AllowConcurrentExecutions = false)]
-    public async Task OpenOptionsViewAsync() => await this.ShowAsync(optionsViewModel);
+    public async Task OpenSponsorViewAsync()
+    {
+        achievementsViewModel.TriggerAchievement("sponsor_support");
+        await this.ShowAsync(sponsorViewModel);
+    }
+
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    public async Task OpenUpdatesViewAsync()
+    {
+        achievementsViewModel.TriggerAchievement("check_updates");
+        await this.ShowAsync(updatesViewModel);
+    }
+
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    public async Task OpenAchievementsViewAsync() => await this.ShowAsync(achievementsViewModel);
+
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    public async Task OpenOptionsViewAsync()
+    {
+        achievementsViewModel.TriggerAchievement("customize_settings");
+        await this.ShowAsync(optionsViewModel);
+    }
 
     [RelayCommand]
     public async Task ClosingAsync(WindowClosingEventArgs args)
@@ -131,7 +181,7 @@ internal partial class MainWindowViewModel : ViewModelBase, IRoutingScreen
         ServerEntry[] embeddedServers = serverService.Servers.Where(s => s.IsOnline && s.IsEmbedded).ToArray();
         if (embeddedServers.Length > 0)
         {
-            DialogBoxViewModel? result = await ShowDialogAsync(dialogService, args, $"{embeddedServers.Length} embedded server(s) will stop, continue?");
+            DialogBoxViewModel? result = await ShowDialogAsync(dialogService, args, $"{embeddedServers.Length} 个嵌入式服务器将停止，是否继续？");
             if (!result)
             {
                 args.Cancel = true;

@@ -17,6 +17,7 @@ public class NitroxBootstrapper : MonoBehaviour
         gameObject.AddComponent<SceneCleanerPreserve>();
         gameObject.AddComponent<NitroxMainMenuModifications>();
         gameObject.AddComponent<DiscordClient>();
+        gameObject.AddComponent<PingManagerUpdater>();
 
 #if DEBUG
         EnableDeveloperFeatures();

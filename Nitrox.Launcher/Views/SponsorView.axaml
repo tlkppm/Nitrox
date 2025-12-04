@@ -1,0 +1,236 @@
+<UserControl
+    d:DesignWidth="1000"
+    mc:Ignorable="d"
+    x:Class="Nitrox.Launcher.Views.SponsorView"
+    x:DataType="vm:SponsorViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:Nitrox.Launcher.Models.Controls"
+    xmlns:converters="clr-namespace:Nitrox.Launcher.Models.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:designer="clr-namespace:Nitrox.Launcher.ViewModels.Designer">
+    <Design.DataContext>
+        <designer:DesignSponsorViewModel />
+    </Design.DataContext>
+    
+    <UserControl.Styles>
+        <!-- 统计卡片样式 -->
+        <Style Selector="controls|FittingWrapPanel.stats-container">
+            <Setter Property="Margin" Value="-8,0" />
+            <Style Selector="^ > Border">
+                <Setter Property="Background" Value="{DynamicResource BrandPanelBackground}" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="22" />
+                <Setter Property="Margin" Value="8" />
+            </Style>
+        </Style>
+        
+        <!-- 赞助者卡片样式 -->
+        <Style Selector="Border.sponsor-card">
+            <Setter Property="Background" Value="{DynamicResource BrandPanelBackground}" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="24" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="BorderBrush" Value="#50FFFFFF" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Style Selector="^:pointerover">
+                <Setter Property="BorderBrush" Value="#4B9FE1" />
+                <Setter Property="BoxShadow" Value="0 6 20 0 #00000020" />
+            </Style>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer Classes="main">
+        <StackPanel
+            Background="{DynamicResource BrandWhite}"
+            Classes="viewPadding"
+            Spacing="23">
+            
+            <!-- 页面标题 -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Classes="header" Text="赞助支持" />
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                    <Button Command="{Binding RefreshSponsorsCommand}"
+                            IsEnabled="{Binding !IsLoading}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="🔄" VerticalAlignment="Center"/>
+                            <TextBlock Text="刷新" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding BecomeSponsorCommand}" Classes="primary">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Text="❤️" VerticalAlignment="Center"/>
+                            <TextBlock Text="成为赞助者" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Banner -->
+            <Image MaxWidth="1580" Source="/Assets/Images/banners/community.png" />
+
+            <!-- 统计信息 -->
+            <controls:FittingWrapPanel Classes="stats-container" MaxWidth="2500" MinItemWidth="280">
+                <Border>
+                    <StackPanel Spacing="10" HorizontalAlignment="Center">
+                        <TextBlock Text="💰" FontSize="48" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding TotalSponsorAmount, StringFormat='¥{0:F0}'}" 
+                                   FontSize="32" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="总赞助金额" FontSize="16" Opacity="0.7" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                
+                <Border>
+                    <StackPanel Spacing="10" HorizontalAlignment="Center">
+                        <TextBlock Text="👥" FontSize="48" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding SponsorCount}" 
+                                   FontSize="32" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="赞助者数量" FontSize="16" Opacity="0.7" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </controls:FittingWrapPanel>
+
+            <!-- 加载状态 -->
+            <Border Background="{DynamicResource BrandPanelBackground}"
+                    CornerRadius="12" 
+                    Padding="20"
+                    IsVisible="{Binding IsLoading}"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock Text="⏳" FontSize="20"/>
+                    <TextBlock Text="正在加载赞助者数据..." FontSize="16"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 赞助者列表 -->
+            <StackPanel IsVisible="{Binding !IsLoading}" Spacing="20">
+                <TextBlock Text="赞助者名单" FontSize="28" FontWeight="Bold"/>
+                
+                <ItemsControl ItemsSource="{Binding Sponsors}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <controls:FittingWrapPanel MaxWidth="2500" MinItemWidth="380" Margin="-8,0" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="sponsor-card">
+                                <StackPanel Spacing="16">
+                                    <!-- 头像和姓名区域 -->
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <Border Grid.Column="0" 
+                                               CornerRadius="32"
+                                               Width="64"
+                                               Height="64"
+                                               ClipToBounds="True">
+                                            <Grid>
+                                                <Image Source="{Binding AvatarBitmap}"
+                                                       IsVisible="{Binding HasAvatarImage}"
+                                                       Stretch="UniformToFill"/>
+                                                <Border Background="#4B9FE1"
+                                                       IsVisible="{Binding !HasAvatarImage}">
+                                                    <TextBlock Text="{Binding AvatarText}" 
+                                                              FontSize="24"
+                                                              FontWeight="Bold"
+                                                              Foreground="White"
+                                                              HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        
+                                        <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center" Spacing="6">
+                                            <TextBlock Text="{Binding Name}" 
+                                                      FontSize="18" 
+                                                      FontWeight="Bold"
+                                                      TextWrapping="Wrap"
+                                                      MaxWidth="270"/>
+                                            <TextBlock Text="{Binding FormattedAmount}" 
+                                                       FontSize="16" 
+                                                       Foreground="#4B9FE1"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    
+                                    <!-- 分隔线 -->
+                                    <Border Height="1" 
+                                           Background="#20FFFFFF" 
+                                           Margin="0,16,0,0"/>
+                                    
+                                    <!-- 标签和套餐 -->
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <Border Background="#4B9FE1" 
+                                               CornerRadius="6" 
+                                               Padding="8,4"
+                                               IsVisible="{Binding IsFromApi}">
+                                            <TextBlock Text="{Binding SourceBadge}" 
+                                                      FontSize="11" 
+                                                      FontWeight="Bold"
+                                                      Foreground="White"/>
+                                        </Border>
+                                        <Border Background="#FFD700" 
+                                               CornerRadius="6" 
+                                               Padding="8,4"
+                                               IsVisible="{Binding PlanName, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                            <TextBlock Text="{Binding PlanName}" 
+                                                      FontSize="11" 
+                                                      FontWeight="Bold"
+                                                      Foreground="#000000"/>
+                                        </Border>
+                                    </StackPanel>
+                                    
+                                    <!-- 日期 -->
+                                    <TextBlock Text="{Binding FormattedDate}" 
+                                               FontSize="12" 
+                                               Opacity="0.5"
+                                               Margin="0,0,0,0"/>
+                                    
+                                    <!-- 留言内容 -->
+                                    <TextBlock Text="{Binding Message}" 
+                                               FontSize="14" 
+                                               TextWrapping="Wrap"
+                                               Opacity="0.8"
+                                               LineHeight="20"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- 感谢信息 -->
+            <Border Background="{DynamicResource BrandPanelBackground}"
+                    CornerRadius="12" 
+                    Padding="40"
+                    MaxWidth="1580">
+                <StackPanel Spacing="16" HorizontalAlignment="Center">
+                    <TextBlock Text="🙏" FontSize="48" HorizontalAlignment="Center"/>
+                    <TextBlock Text="感谢您的支持" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="每一份赞助都是对 Nitrox 项目的认可和支持，让我们有动力持续改进和维护这个开源项目。" 
+                               FontSize="16" 
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Opacity="0.8"
+                               MaxWidth="600"/>
+                    <TextBlock Text="您的赞助将用于：服务器维护、开发工具购买、社区活动举办等" 
+                               FontSize="14" 
+                               TextAlignment="Center"
+                               Opacity="0.6"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

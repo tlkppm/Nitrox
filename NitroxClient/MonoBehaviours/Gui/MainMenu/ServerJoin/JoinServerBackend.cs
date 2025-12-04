@@ -119,6 +119,17 @@ public static class JoinServerBackend
         }
         catch (ClientConnectionFailedException ex)
         {
+            // 增强连接失败的调试信息
+            Log.Error($"[连接调试] 连接失败详细信息:");
+            Log.Error($"├─ 目标服务器: {serverIp}:{serverPort}");
+            Log.Error($"├─ 异常类型: {ex.GetType().Name}");
+            Log.Error($"├─ 异常消息: {ex.Message}");
+            if (ex.InnerException != null)
+            {
+                Log.Error($"├─ 内部异常: {ex.InnerException.GetType().Name} - {ex.InnerException.Message}");
+            }
+            Log.Error($"└─ 堆栈跟踪: {ex.StackTrace}");
+            
             Log.ErrorSensitive("Unable to contact the remote server at: {ip}:{port}", serverIp, serverPort);
             string msg = $"{Language.main.Get("Nitrox_UnableToConnect")} {serverIp}:{serverPort}";
 

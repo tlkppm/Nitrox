@@ -1,0 +1,519 @@
+[DEBUG] 运行修改版服务端 - 支持双模式启动
+[DEBUG] 检测到的命令行参数: [--save, 123123]
+[DEBUG] 参数数量: 2
+[DEBUG] 环境变量 NITROX_ENVIRONMENT: 未设置
+[DEBUG] 检查appsettings.json路径: H:\Nitrox\Nitrox.Launcher\bin\Release\net9.0\appsettings.json
+[DEBUG] appsettings.json是否存在: True
+[DEBUG] appsettings.json内容: {
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ServerMode": {
+    "UseGenericHost": true,
+    "EnableAdvancedFeatures": true,
+    "EnableAutoFallback": true
+  },
+  "Performance": {
+    "EnablePerformanceLogging": false,
+    "GCSettings": "Server"
+  }
+}
+[DEBUG] appsettings.json包含UseGenericHost=true，启用新服务端模式
+[DEBUG] 尝试使用新服务端模式 (.NET Generic Host)
+[DEBUG] Generic Host模式启动开始
+[DEBUG] 创建IPC服务器实例
+[DEBUG] IPC服务器创建完成
+[DEBUG] 开始设置游戏目录
+[DEBUG] 设置游戏目录完成: E:\SteamLibrary\steamapps\common\Subnautica
+[[DEBUG] 开始初始化DI容器
+22:07:28.969] Using game files from: 'E:\SteamLibrary\steamapps\common\Subnautica'
+[22:07:29.025] [DI注册] 发现 0 个认证包处理器在程序集 NitroxServer-Subnautica:
+[22:07:29.032] [DI注册] 发现 0 个认证包处理器在程序集 NitroxServer:
+[22:07:29.035] ResourceAssetsParser - 开始解析游戏资源
+[22:07:29.035] ResourceAssetsParser - 获得资源文件访问权限
+[22:07:29.150] ResourceAssetsParser - 解析世界实体信息
+[22:07:29.530] ResourceAssetsParser - 找到 3336 个世界实体
+[22:07:29.530] ResourceAssetsParser - 解析战利品分布
+[22:07:29.552] ResourceAssetsParser - 解析预制体占位符组
+[22:08:35.964] ResourceAssetsParser - 释放资源文件访问权限
+[DEBUG] Generic Host初始化过程中出错: One or more errors occurred. (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.)
+[DEBUG] 异常详细信息: System.AggregateException: One or more errors occurred. (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.)
+ ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.TaskReplicator.Run[TState](ReplicatableUserAction`1 action, ParallelOptions options, Boolean stopOnFirstFailure)
+   at System.Threading.Tasks.Parallel.PartitionerForEachWorker[TSource,TLocal](Partitioner`1 source, ParallelOptions parallelOptions, Action`1 simpleBody, Action`2 bodyWithState, Action`3 bodyWithStateAndIndex, Func`4 bodyWithStateAndLocal, Func`5 bodyWithEverything, Func`1 localInit, Action`1 localFinally)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.PartitionerForEachWorker[TSource,TLocal](Partitioner`1 source, ParallelOptions parallelOptions, Action`1 simpleBody, Action`2 bodyWithState, Action`3 bodyWithStateAndIndex, Func`4 bodyWithStateAndLocal, Func`5 bodyWithEverything, Func`1 localInit, Action`1 localFinally)
+   at System.Threading.Tasks.Parallel.ForEachWorker[TSource,TLocal](IEnumerable`1 source, ParallelOptions parallelOptions, Action`1 body, Action`2 bodyWithState, Action`3 bodyWithStateAndIndex, Func`4 bodyWithStateAndLocal, Func`5 bodyWithEverything, Func`1 localInit, Action`1 localFinally)
+   at System.Threading.Tasks.Parallel.ForEach[TSource](IEnumerable`1 source, Action`1 body)
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetPrefabPlaceholderGroupAssetsByGroupClassId(ConcurrentDictionary`2 prefabPlaceholdersGroupPaths) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 281
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.MakeAndSerializeCache(String filePath) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 104
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.ParseFile() in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 89
+   at NitroxServer_Subnautica.Resources.ResourceAssetsParser.Parse() in NitroxServer-Subnautica\Resources\ResourceAssetsParser.cs:line 44
+   at NitroxServer_Subnautica.SubnauticaServerAutoFacRegistrar.RegisterDependencies(ContainerBuilder containerBuilder) in NitroxServer-Subnautica\SubnauticaServerAutoFacRegistrar.cs:line 44
+   at NitroxModel.Core.NitroxServiceLocator.InitializeDependencyContainer(IAutoFacRegistrar[] registrars) in NitroxModel\Core\NitroxServiceLocator.cs:line 20
+   at NitroxServer_Subnautica.Program.StartServerWithGenericHostAsync(String[] args) in NitroxServer-Subnautica\Program.cs:line 212
+ ---> (Inner Exception #1) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #2) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #3) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #4) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #5) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #6) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #7) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #8) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #9) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #10) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #11) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #12) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #13) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #14) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #15) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #16) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #17) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #18) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #19) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #20) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #21) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #22) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #23) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #24) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #25) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #26) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #27) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #28) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #29) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #30) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #31) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #32) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #33) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #34) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #35) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #36) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #37) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #38) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #39) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+ ---> (Inner Exception #40) System.NullReferenceException: Object reference not set to an instance of an object.
+   at AssetsTools.NET.AssetTypeValueField.get_AsLong()
+   at NitroxServer_Subnautica.Resources.Parsers.Helper.AssetsBundleManager.GetTransformFromGameObjectIncludingParent(AssetsFileInstance assetFileInst, AssetTypeValueField rootGameObject, AssetTypeValueField rootParentGameObject) in NitroxServer-Subnautica\Resources\Parsers\Helper\AssetsBundleManager.cs:line 125
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupGroup(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, AssetFileInfo rootGameObjectInfo, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 354
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.GetAndCachePrefabPlaceholdersGroupOfBundle(AssetsBundleManager amInst, AssetsFileInstance assetFileInst, String classId) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 311
+   at NitroxServer_Subnautica.Resources.Parsers.PrefabPlaceholderGroupsParser.<>c__DisplayClass18_0.<GetPrefabPlaceholderGroupAssetsByGroupClassId>b__0(KeyValuePair`2 keyValuePair) in NitroxServer-Subnautica\Resources\Parsers\PrefabPlaceholderGroupsParser.cs:line 286
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+--- End of stack trace from previous location ---
+   at System.Threading.Tasks.Parallel.<>c__DisplayClass43_0`2.<PartitionerForEachWorker>b__1(IEnumerator& partitionState, Int64 timeout, Boolean& replicationDelegateYieldedBeforeCompletion)
+   at System.Threading.Tasks.TaskReplicator.Replica.Execute()<---
+
+[DEBUG] 新服务端启动失败，自动切换到传统模式: One or more errors occurred. (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.) (Object reference not set to an instance of an object.)
+[DEBUG] 等待资源释放...
+[DEBUG] 等待资源释放...
+[22:08:38.155] Creating IPC for process 14204.
+Unhandled exception. System.IO.IOException: 所有的管道范例都在使用中。
+   at System.IO.Pipes.NamedPipeServerStream.Create(String pipeName, PipeDirection direction, Int32 maxNumberOfServerInstances, PipeTransmissionMode transmissionMode, PipeOptions options, Int32 inBufferSize, Int32 outBufferSize, PipeSecurity pipeSecurity, HandleInheritability inheritability, PipeAccessRights additionalAccessRights)
+   at System.IO.Pipes.NamedPipeServerStream..ctor(String pipeName, PipeDirection direction, Int32 maxNumberOfServerInstances, PipeTransmissionMode transmissionMode, PipeOptions options)
+   at NitroxModel.Helper.Ipc.ServerIpc..ctor(Int32 processId, CancellationTokenSource cancellationTokenSource) in NitroxModel\Helper\Ipc.cs:line 41
+   at NitroxServer_Subnautica.Program.StartServer(String[] args) in NitroxServer-Subnautica\Program.cs:line 416
+   at NitroxServer_Subnautica.Program.Main(String[] args) in NitroxServer-Subnautica\Program.cs:line 70
+   at NitroxServer_Subnautica.Program.<Main>(String[] args)

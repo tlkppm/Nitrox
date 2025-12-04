@@ -18,14 +18,14 @@
     <UserControl.Resources>
         <StackPanel Orientation="Vertical" x:Key="InfoIconTooltipText">
             <TextBlock>
-                Virtual Reality mode (VR) is disabled by default, but you can edit this line if you want to use it.<LineBreak />
+                虚拟现实模式（VR）默认禁用，但如果您想使用它，可以编辑此行。<LineBreak />
                 <LineBreak />
-                Possible values : oculus, openvr, none</TextBlock>
+                可能的值：oculus, openvr, none</TextBlock>
             <Border
                 BorderBrush="Silver"
                 BorderThickness="0,1,0,0"
                 Margin="0,8" />
-            <TextBlock FontStyle="Italic">Contact our support for more information.</TextBlock>
+            <TextBlock FontStyle="Italic">联系我们的支持团队了解更多信息。</TextBlock>
         </StackPanel>
     </UserControl.Resources>
 
@@ -35,7 +35,7 @@
             Classes="viewPadding"
             Orientation="Vertical"
             Spacing="22">
-            <TextBlock Classes="header" Text="Options" />
+            <TextBlock Classes="header" Text="选项" />
 
             <!--  Subnautica Runtime Selection  -->
             <StackPanel Spacing="12">
@@ -43,8 +43,8 @@
                     <TextBlock
                         FontSize="20"
                         FontWeight="Bold"
-                        Text="Subnautica Installation" />
-                    <TextBlock FontSize="12" Text="Choose which Subnautica instance to use for multiplayer" />
+                        Text="深海迷航安装位置" />
+                    <TextBlock FontSize="12" Text="选择用于多人游戏的深海迷航游戏实例" />
                 </StackPanel>
                 <Border
                     Background="{DynamicResource BrandPanelBackground}"
@@ -57,7 +57,7 @@
                             Margin="0,0,22,0"
                             Source="{Binding SelectedGame.Platform, Converter={converters:PlatformToIconConverter}}"
                             Stretch="Uniform"
-                            ToolTip.Tip="Welcome aboard, Captain!" />
+                            ToolTip.Tip="欢迎登舰，船长！" />
                         <StackPanel
                             Grid.Column="1"
                             HorizontalAlignment="Left"
@@ -71,16 +71,16 @@
                                 FontSize="14"
                                 Foreground="{DynamicResource BrandBlack}"
                                 Opacity="0.75"
-                                Text="{Binding SelectedGame.PathToGame, FallbackValue='Unknown path'}" />
+                                Text="{Binding SelectedGame.PathToGame, FallbackValue='未知路径'}" />
                         </StackPanel>
                         <Button
                             Classes="primary"
                             Command="{Binding SetGamePathCommand}"
-                            Content="Change"
+                            Content="更改"
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Margin="22,0,0,0"
-                            ToolTip.Tip="Direct the launcher to your game's install location"
+                            ToolTip.Tip="指定启动器到游戏的安装位置"
                             Width="120" />
                     </Grid>
                 </Border>
@@ -92,8 +92,8 @@
                     <TextBlock
                         FontSize="20"
                         FontWeight="Bold"
-                        Text="Subnautica Launch Arguments" />
-                    <TextBlock FontSize="12" Text="Allows you to override Nitrox default launch arguments" />
+                        Text="深海迷航启动参数" />
+                    <TextBlock FontSize="12" Text="允许您覆盖 Nitrox 默认启动参数" />
                 </StackPanel>
                 <Border
                     Background="{DynamicResource BrandPanelBackground}"
@@ -111,14 +111,14 @@
                                 Classes="abort"
                                 Command="{Binding ResetArgumentsCommand}"
                                 CommandParameter="{Binding #LaunchArgsInput}"
-                                Content="Reset"
+                                Content="重置"
                                 FontSize="12"
                                 Height="28"
                                 HorizontalAlignment="Right"
                                 IsVisible="{Binding ShowResetArgsBtn}"
                                 Margin="0,0,12,0"
                                 Padding="0"
-                                ToolTip.Tip="Reset arguments"
+                                ToolTip.Tip="重置参数"
                                 Width="72" />
                         </Panel>
 
@@ -144,10 +144,10 @@
                         <Button
                             Classes="primary"
                             Command="{Binding SetArgumentsCommand}"
-                            Content="Apply"
+                            Content="应用"
                             Grid.Column="2"
                             HorizontalAlignment="Stretch"
-                            ToolTip.Tip="Save launch arguments" />
+                            ToolTip.Tip="保存启动参数" />
                     </Grid>
                 </Border>
             </StackPanel>
@@ -157,11 +157,11 @@
                 <TextBlock
                     FontSize="20"
                     FontWeight="Bold"
-                    Text="Launcher Settings" />
+                    Text="启动器设置" />
                 <TextBlock
                     FontSize="12"
                     HorizontalAlignment="Left"
-                    Text="Configure the launcher with these settings" />
+                    Text="使用这些设置配置启动器" />
                 
                 <WrapPanel Margin="-5">
                     <WrapPanel.Styles>
@@ -183,16 +183,16 @@
                     
                     <Border>
                         <StackPanel>
-                            <TextBlock Text="Enable light mode" />
+                            <TextBlock Text="启用浅色模式" />
                             <CheckBox Classes="switch" IsChecked="{Binding LightModeEnabled}"
-                                      ToolTip.Tip="Enable this option to use the Nitrox launcher in light mode" />
+                                      ToolTip.Tip="启用此选项以使用 Nitrox 启动器的浅色模式" />
                         </StackPanel>
                     </Border>
                     <Border>
                         <StackPanel>
-                            <TextBlock Text="Allow multiple game instances" />
+                            <TextBlock Text="允许多个游戏实例" />
                             <CheckBox Classes="switch" IsChecked="{Binding AllowMultipleGameInstances}"
-                                      ToolTip.Tip="Enable this option to allow multiple instances of the game to run at the same time" />
+                                      ToolTip.Tip="启用此选项允许同时运行多个游戏实例" />
                         </StackPanel>
                     </Border>
                     <!--<Border>
@@ -206,16 +206,86 @@
                 
             </StackPanel>
 
+            <!--  Screenshots Folder Location  -->
+            <StackPanel Spacing="12">
+                <TextBlock
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="游戏截图位置" />
+                <TextBlock
+                    FontSize="12"
+                    HorizontalAlignment="Left"
+                    Text="这是 Subnautica 游戏截图存储的位置" />
+
+                <Border
+                    Background="{DynamicResource BrandPanelBackground}"
+                    CornerRadius="12"
+                    Padding="22,15">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <SelectableTextBlock
+                            FontSize="15"
+                            Foreground="{DynamicResource BrandBlack}"
+                            Opacity="0.75"
+                            Text="{Binding ScreenshotsFolderDir}"
+                            VerticalAlignment="Center" />
+                        <Button
+                            Classes="primary"
+                            Command="{Binding OpenScreenshotsFolderCommand}"
+                            Content="打开"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Margin="22,0,0,0"
+                            ToolTip.Tip="打开截图文件夹"
+                            Width="120" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
             <!--  Saves Folder Location  -->
             <StackPanel Spacing="12">
                 <TextBlock
                     FontSize="20"
                     FontWeight="Bold"
-                    Text="Nitrox Logs Location" />
+                    Text="游戏存档位置" />
                 <TextBlock
                     FontSize="12"
                     HorizontalAlignment="Left"
-                    Text="This is the location where your Nitrox logs are stored" />
+                    Text="这是 Subnautica 游戏存档存储的位置" />
+
+                <Border
+                    Background="{DynamicResource BrandPanelBackground}"
+                    CornerRadius="12"
+                    Padding="22,15">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <SelectableTextBlock
+                            FontSize="15"
+                            Foreground="{DynamicResource BrandBlack}"
+                            Opacity="0.75"
+                            Text="{Binding SavesFolderDir}"
+                            VerticalAlignment="Center" />
+                        <Button
+                            Classes="primary"
+                            Command="{Binding OpenSavesFolderCommand}"
+                            Content="打开"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Margin="22,0,0,0"
+                            ToolTip.Tip="打开存档文件夹"
+                            Width="120" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!--  Logs Folder Location  -->
+            <StackPanel Spacing="12">
+                <TextBlock
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="Nitrox 日志位置" />
+                <TextBlock
+                    FontSize="12"
+                    HorizontalAlignment="Left"
+                    Text="这是您的 Nitrox 日志存储的位置" />
 
                 <Border
                     Background="{DynamicResource BrandPanelBackground}"
@@ -231,11 +301,11 @@
                         <Button
                             Classes="primary"
                             Command="{Binding OpenLogsFolderCommand}"
-                            Content="Open"
+                            Content="打开"
                             Grid.Column="1"
                             HorizontalAlignment="Right"
                             Margin="22,0,0,0"
-                            ToolTip.Tip="Open saves folder"
+                            ToolTip.Tip="打开日志文件夹"
                             Width="120" />
                     </Grid>
                 </Border>

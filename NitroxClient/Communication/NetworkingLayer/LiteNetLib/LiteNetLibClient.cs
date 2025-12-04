@@ -116,11 +116,28 @@ public class LiteNetLibClient : IClient
         // IsConnected must happen before Set() so that its state is noticed WHEN we unblock the thread (cf. connectedEvent.WaitOne(...))
         IsConnected = true;
         connectedEvent.Set();
+        
+        // 增强连接成功的调试信息
+        Log.Info($"[网络连接] ✅ 成功连接到服务器!");
+        Log.Info($"├─ 服务器地址: {peer}");
+        Log.Info($"├─ 连接ID: {peer.Id}");
+        Log.Info($"├─ 连接状态: {peer.ConnectionState}");
+        Log.Info($"├─ 延迟: {peer.Ping}ms");
+        Log.Info($"└─ 等待服务器握手...");
+        
         Log.Info("Connected to server");
     }
 
     private void Disconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
+        // 增强断开连接的调试信息
+        Log.Info($"[网络连接] ❌ 与服务器断开连接:");
+        Log.Info($"├─ 服务器地址: {peer}");
+        Log.Info($"├─ 断开原因: {disconnectInfo.Reason}");
+        Log.Info($"├─ 额外信息: {disconnectInfo.AdditionalData}");
+        Log.Info($"├─ 错误代码: {disconnectInfo.SocketErrorCode}");
+        Log.Info($"└─ 是否在游戏中: {Multiplayer.Active}");
+        
         // Check must happen before IsConnected is set to false, so that it doesn't send an exception when we aren't even ingame
         if (Multiplayer.Active)
         {

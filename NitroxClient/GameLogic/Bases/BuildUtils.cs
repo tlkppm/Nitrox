@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NitroxClient.GameLogic.Settings;
 using NitroxClient.GameLogic.Spawning.Bases;
 using NitroxClient.GameLogic.Spawning.Metadata;
 using NitroxClient.MonoBehaviours;
@@ -312,5 +313,19 @@ public static class BuildUtils
     public static Component AliveOrNull(this IBaseModule baseModule)
     {
         return (baseModule as Component).AliveOrNull();
+    }
+
+    public static void DeconstructionAllowed(NitroxId baseId, ref bool result, ref string reason)
+    {
+        if (BuildingHandler.Main.BasesCooldown.ContainsKey(baseId))
+        {
+            result = false;
+            reason = Language.main.Get("Nitrox_ErrorRecentBuildUpdate");
+        }
+        else if (BuildingHandler.Main.EnsureTracker(baseId).IsDesynced() && NitroxPrefs.SafeBuilding.Value)
+        {
+            result = false;
+            reason = Language.main.Get("Nitrox_ErrorDesyncDetected");
+        }
     }
 }

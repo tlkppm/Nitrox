@@ -14,6 +14,7 @@ namespace NitroxServer.Serialization.World
         public TimeKeeper TimeKeeper { get; set; }
         public SimulationOwnershipData SimulationOwnershipData { get; set; }
         public EscapePodManager EscapePodManager { get; set; }
+        public CreatureSpawnManager CreatureSpawnManager { get; set; }
         public BatchEntitySpawner BatchEntitySpawner { get; set; }
         public EntitySimulation EntitySimulation { get; set; }
         public EntityRegistry EntityRegistry { get; set; }

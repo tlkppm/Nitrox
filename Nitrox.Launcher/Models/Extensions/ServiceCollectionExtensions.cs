@@ -29,9 +29,13 @@ public static partial class ServiceCollectionExtensions
                 .AddSingleton<ServerService>()
                 .AddSingleton<DialogService>()
                 .AddSingleton<StorageService>()
+                .AddSingleton<AnnouncementService>()
+                .AddSingleton<AchievementService>()
+                .AddSingleton<LocalizationService>(_ => LocalizationService.Instance)
                 // UI
                 .AddSingleton<Window, MainWindow>()
                 .AddSingleton<MainWindowViewModel>()
+
                 .AddSingleton<Func<IRoutingScreen>>(provider => provider.GetRequiredService<MainWindowViewModel>)
                 .AddSingleton<Func<Window>>(provider => () =>
                 {

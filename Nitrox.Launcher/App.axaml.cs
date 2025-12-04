@@ -158,7 +158,7 @@ public class App : Application
             {
                 string crashReportFile = Path.Combine(executableRoot, CRASH_REPORT_FILE_NAME);
                 File.WriteAllText(crashReportFile, ex.ToString());
-                ProcessEx.StartSelf("--crash-report");
+                ProcessEx.StartSelf(new string[] { "--crash-report" });
             }
             else
             {

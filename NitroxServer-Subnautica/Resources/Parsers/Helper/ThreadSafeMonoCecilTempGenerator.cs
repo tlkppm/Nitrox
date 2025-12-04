@@ -5,7 +5,7 @@ using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 using Mono.Cecil;
 
-namespace NitroxServer_Subnautica.Resources.Parsers.Helper;
+namespace Nitrox.Server.Subnautica.Resources.Parsers.Helper;
 
 public class ThreadSafeMonoCecilTempGenerator : IMonoBehaviourTemplateGenerator, IDisposable
 {

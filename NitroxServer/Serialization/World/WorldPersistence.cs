@@ -119,17 +119,27 @@ public class WorldPersistence
 
     public World Load(string saveName)
     {
-        Optional<World> fileLoadedWorld = LoadFromFile(Path.Combine(KeyValueStore.Instance.GetSavesFolderDir(), saveName));
+        Console.WriteLine("[DEBUG] WorldPersistence.Load 开始执行");
+        Console.WriteLine($"[DEBUG] 保存名称: {saveName}");
+        
+        string saveDir = Path.Combine(KeyValueStore.Instance.GetSavesFolderDir(), saveName);
+        Console.WriteLine($"[DEBUG] 保存目录: {saveDir}");
+        
+        Optional<World> fileLoadedWorld = LoadFromFile(saveDir);
         if (fileLoadedWorld.HasValue)
         {
+            Console.WriteLine("[DEBUG] 从文件加载世界成功");
             return fileLoadedWorld.Value;
         }
 
+        Console.WriteLine("[DEBUG] 文件不存在，创建新世界");
         return CreateFreshWorld();
     }
 
     public World CreateWorld(PersistedWorldData pWorldData, NitroxGameMode gameMode)
     {
+        Console.WriteLine("[DEBUG] CreateWorld 开始执行");
+        
         string seed = pWorldData.WorldData.Seed;
         if (string.IsNullOrWhiteSpace(seed))
         {
@@ -139,15 +149,26 @@ public class WorldPersistence
             seed = StringHelper.GenerateRandomString(10);
 #endif
         }
+        Console.WriteLine($"[DEBUG] 世界种子: {seed}");
+        
         // Initialized only once, just like UnityEngine.Random
         XORRandom.InitSeed(seed.GetHashCode());
 
         Log.Info($"Loading world with seed {seed}");
 
+        Console.WriteLine("[DEBUG] 开始获取 EntityRegistry 服务");
         EntityRegistry entityRegistry = NitroxServiceLocator.LocateService<EntityRegistry>();
+        Console.WriteLine("[DEBUG] EntityRegistry 服务获取完成");
+        
+        Console.WriteLine($"[DEBUG] 开始添加实体到注册表 ({pWorldData.EntityData.Entities.Count} 个实体)");
         entityRegistry.AddEntities(pWorldData.EntityData.Entities);
+        Console.WriteLine("[DEBUG] 实体添加完成");
+        
+        Console.WriteLine("[DEBUG] 开始添加全局根实体");
         entityRegistry.AddEntitiesIgnoringDuplicate(pWorldData.GlobalRootData.Entities.OfType<Entity>().ToList());
+        Console.WriteLine("[DEBUG] 全局根实体添加完成");
 
+        Console.WriteLine("[DEBUG] 开始创建 World 对象");
         World world = new()
         {
             SimulationOwnershipData = new SimulationOwnershipData(),
@@ -159,12 +180,27 @@ public class WorldPersistence
             Seed = seed,
             SessionSettings = new()
         };
+        Console.WriteLine("[DEBUG] World 基础对象创建完成");
 
+        Console.WriteLine("[DEBUG] 开始创建 TimeKeeper");
         world.TimeKeeper = new(world.PlayerManager, ntpSyncer, pWorldData.WorldData.GameData.StoryTiming.ElapsedSeconds, pWorldData.WorldData.GameData.StoryTiming.RealTimeElapsed);
+        Console.WriteLine("[DEBUG] TimeKeeper 创建完成");
+        
+        Console.WriteLine("[DEBUG] 开始创建 StoryManager");
         world.StoryManager = new StoryManager(world.PlayerManager, pWorldData.WorldData.GameData.PDAState, pWorldData.WorldData.GameData.StoryGoals, world.TimeKeeper, seed, pWorldData.WorldData.GameData.StoryTiming.AuroraCountdownTime,
                                               pWorldData.WorldData.GameData.StoryTiming.AuroraWarningTime, pWorldData.WorldData.GameData.StoryTiming.AuroraRealExplosionTime);
+        Console.WriteLine("[DEBUG] StoryManager 创建完成");
+        
+        Console.WriteLine("[DEBUG] 开始创建 ScheduleKeeper");
         world.ScheduleKeeper = new ScheduleKeeper(pWorldData.WorldData.GameData.PDAState, pWorldData.WorldData.GameData.StoryGoals, world.TimeKeeper, world.PlayerManager);
+        Console.WriteLine("[DEBUG] ScheduleKeeper 创建完成");
 
+        Console.WriteLine("[DEBUG] 开始创建 CreatureSpawnManager");
+        // 创建生物生成管理器 - 用于控制鱼群过度生成
+        world.CreatureSpawnManager = new CreatureSpawnManager();
+        Console.WriteLine("[DEBUG] CreatureSpawnManager 创建完成");
+
+        Console.WriteLine("[DEBUG] 开始创建 BatchEntitySpawner - 需要获取多个服务");
         world.BatchEntitySpawner = new BatchEntitySpawner(
             NitroxServiceLocator.LocateService<EntitySpawnPointFactory>(),
             NitroxServiceLocator.LocateService<IUweWorldEntityFactory>(),
@@ -175,16 +211,25 @@ public class WorldPersistence
             NitroxServiceLocator.LocateService<Dictionary<string, PrefabPlaceholdersGroupAsset>>(),
             pWorldData.WorldData.GameData.PDAState,
             randomSpawnSpoofer,
+            world.CreatureSpawnManager,
             world.Seed
         );
+        Console.WriteLine("[DEBUG] BatchEntitySpawner 创建完成");
 
+        Console.WriteLine("[DEBUG] 开始创建 WorldEntityManager");
         world.WorldEntityManager = new WorldEntityManager(world.EntityRegistry, world.BatchEntitySpawner, world.PlayerManager);
+        Console.WriteLine("[DEBUG] WorldEntityManager 创建完成");
 
+        Console.WriteLine("[DEBUG] 开始创建 BuildingManager");
         world.BuildingManager = new BuildingManager(world.EntityRegistry, world.WorldEntityManager, config);
+        Console.WriteLine("[DEBUG] BuildingManager 创建完成");
 
+        Console.WriteLine("[DEBUG] 开始创建 EntitySimulation");
         ISimulationWhitelist simulationWhitelist = NitroxServiceLocator.LocateService<ISimulationWhitelist>();
         world.EntitySimulation = new EntitySimulation(world.EntityRegistry, world.WorldEntityManager, world.SimulationOwnershipData, world.PlayerManager, simulationWhitelist);
+        Console.WriteLine("[DEBUG] EntitySimulation 创建完成");
 
+        Console.WriteLine("[DEBUG] CreateWorld 执行完成");
         return world;
     }
 
@@ -228,22 +273,34 @@ public class WorldPersistence
 
     internal Optional<World> LoadFromFile(string saveDir)
     {
+        Console.WriteLine("[DEBUG] LoadFromFile 开始执行");
+        Console.WriteLine($"[DEBUG] 检查保存目录: {saveDir}");
+        
         if (!Directory.Exists(saveDir) || !File.Exists(Path.Combine(saveDir, $"Version{FileEnding}")))
         {
+            Console.WriteLine("[DEBUG] 保存目录不存在或版本文件不存在");
             Log.Warn("No previous save file found, creating a new one");
             return Optional.Empty;
         }
 
+        Console.WriteLine("[DEBUG] 开始升级保存文件");
         UpgradeSave(saveDir);
+        Console.WriteLine("[DEBUG] 保存文件升级完成");
 
+        Console.WriteLine("[DEBUG] 开始从路径加载数据");
         PersistedWorldData persistedData = LoadDataFromPath(saveDir);
+        Console.WriteLine("[DEBUG] 数据加载完成");
 
         if (persistedData == null)
         {
+            Console.WriteLine("[DEBUG] 加载的数据为空");
+            Log.Warn("No previous save file found, creating a new one");
             return Optional.Empty;
         }
 
+        Console.WriteLine("[DEBUG] 开始创建世界对象");
         World world = CreateWorld(persistedData, config.GameMode);
+        Console.WriteLine("[DEBUG] 世界对象创建完成");
 
         return Optional.Of(world);
     }
@@ -252,18 +309,38 @@ public class WorldPersistence
     {
         try
         {
+            Console.WriteLine("[DEBUG] LoadDataFromPath 开始反序列化文件");
+            
+            Console.WriteLine("[DEBUG] 开始反序列化 PlayerData");
+            var playerData = Serializer.Deserialize<PlayerData>(Path.Combine(saveDir, $"PlayerData{FileEnding}"));
+            Console.WriteLine("[DEBUG] PlayerData 反序列化完成");
+            
+            Console.WriteLine("[DEBUG] 开始反序列化 WorldData (这可能需要较长时间)");
+            var worldData = Serializer.Deserialize<WorldData>(Path.Combine(saveDir, $"WorldData{FileEnding}"));
+            Console.WriteLine("[DEBUG] WorldData 反序列化完成");
+            
+            Console.WriteLine("[DEBUG] 开始反序列化 GlobalRootData");
+            var globalRootData = Serializer.Deserialize<GlobalRootData>(Path.Combine(saveDir, $"GlobalRootData{FileEnding}"));
+            Console.WriteLine("[DEBUG] GlobalRootData 反序列化完成");
+            
+            Console.WriteLine("[DEBUG] 开始反序列化 EntityData (这可能需要较长时间)");
+            var entityData = Serializer.Deserialize<EntityData>(Path.Combine(saveDir, $"EntityData{FileEnding}"));
+            Console.WriteLine("[DEBUG] EntityData 反序列化完成");
+            
             PersistedWorldData persistedData = new()
             {
-                PlayerData = Serializer.Deserialize<PlayerData>(Path.Combine(saveDir, $"PlayerData{FileEnding}")),
-                WorldData = Serializer.Deserialize<WorldData>(Path.Combine(saveDir, $"WorldData{FileEnding}")),
-                GlobalRootData = Serializer.Deserialize<GlobalRootData>(Path.Combine(saveDir, $"GlobalRootData{FileEnding}")),
-                EntityData = Serializer.Deserialize<EntityData>(Path.Combine(saveDir, $"EntityData{FileEnding}"))
+                PlayerData = playerData,
+                WorldData = worldData,
+                GlobalRootData = globalRootData,
+                EntityData = entityData
             };
 
+            Console.WriteLine("[DEBUG] 开始验证数据有效性");
             if (!persistedData.IsValid())
             {
                 throw new InvalidDataException("Save files are not valid");
             }
+            Console.WriteLine("[DEBUG] 数据验证通过");
 
             return persistedData;
         }
@@ -284,6 +361,10 @@ public class WorldPersistence
 
     private World CreateFreshWorld()
     {
+        Console.WriteLine("[DEBUG] CreateFreshWorld 开始执行");
+        Log.Info(" 正在创建全新世界...");
+        
+        Console.WriteLine("[DEBUG] 创建空的世界数据结构");
         PersistedWorldData pWorldData = new()
         {
             EntityData = EntityData.From(new List<Entity>()),
@@ -301,10 +382,18 @@ public class WorldPersistence
             },
             GlobalRootData = new GlobalRootData()
         };
+        Console.WriteLine("[DEBUG] 世界数据结构创建完成");
 
+        Console.WriteLine("[DEBUG] 开始使用空数据创建世界");
         World newWorld = CreateWorld(pWorldData, config.GameMode);
+        Console.WriteLine("[DEBUG] 空世界创建完成");
+        
+        Console.WriteLine("[DEBUG] 开始应用世界修改器");
         worldModifier.ModifyWorld(newWorld);
+        Console.WriteLine("[DEBUG] 世界修改器应用完成");
 
+        Console.WriteLine("[DEBUG] CreateFreshWorld 执行完成");
+        Log.Info("新世界创建完成！");
         return newWorld;
     }
 

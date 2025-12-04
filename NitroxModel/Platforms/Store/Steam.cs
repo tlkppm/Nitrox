@@ -26,8 +26,12 @@ public sealed class Steam : IGamePlatform
         gameRootPath switch
         {
             not null when RuntimeInformation.IsOSPlatform(OSPlatform.OSX) => Directory.Exists(Path.Combine(gameRootPath, "Plugins", "steam_api.bundle")),
+            // 检查原版深海迷航
             not null when File.Exists(Path.Combine(gameRootPath, GameInfo.Subnautica.DataFolder, "Plugins", "x86_64", "steam_api64.dll")) => true,
             not null when File.Exists(Path.Combine(gameRootPath, GameInfo.Subnautica.DataFolder, "Plugins", "steam_api64.dll")) => true,
+            // 检查深海迷航：零度之下
+            not null when File.Exists(Path.Combine(gameRootPath, GameInfo.SubnauticaBelowZero.DataFolder, "Plugins", "x86_64", "steam_api64.dll")) => true,
+            not null when File.Exists(Path.Combine(gameRootPath, GameInfo.SubnauticaBelowZero.DataFolder, "Plugins", "steam_api64.dll")) => true,
             _ => false
         };
 

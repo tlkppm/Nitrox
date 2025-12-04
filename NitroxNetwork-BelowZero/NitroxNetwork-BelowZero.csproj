@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>NitroxNetwork.BelowZero</RootNamespace>
+    <AssemblyName>NitroxNetwork-BelowZero</AssemblyName>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NitroxModel\NitroxModel.csproj" />
+    <ProjectReference Include="..\NitroxModel-BelowZero\NitroxModel-BelowZero.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteNetLib" Version="1.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="protobuf-net" Version="3.2.30" />
+  </ItemGroup>
+
+</Project>

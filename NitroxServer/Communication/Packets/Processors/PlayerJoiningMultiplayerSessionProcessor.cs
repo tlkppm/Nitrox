@@ -42,6 +42,10 @@ namespace NitroxServer.Communication.Packets.Processors
 
         public override void Process(PlayerJoiningMultiplayerSession packet, INitroxConnection connection)
         {
+            // 输出玩家加入会话的详细信息
+            string clientIP = connection?.Endpoint?.ToString() ?? "未知地址";
+            Log.Info($"[玩家会话] 正在处理玩家加入请求 | 客户端IP: {clientIP} | 预约密钥: {packet.ReservationKey}");
+            
             Player player = playerManager.PlayerConnected(connection, packet.ReservationKey, out bool wasBrandNewPlayer);
             NitroxId assignedEscapePodId = world.EscapePodManager.AssignPlayerToEscapePod(player.Id, out Optional<EscapePodEntity> newlyCreatedEscapePod);
 
@@ -97,6 +101,21 @@ namespace NitroxServer.Communication.Packets.Processors
             );
 
             player.SendPacket(initialPlayerSync);
+            
+            // 输出完整的玩家加入成功信息
+            string serverVersion = NitroxModel.Helper.NitroxEnvironment.Version.ToString();
+            string gameMode = player.GameMode.ToString();
+            string permissions = player.Permissions.ToString();
+            string playerType = wasBrandNewPlayer ? "首次进入" : "重新连接";
+            
+            Log.Info($"[玩家成功] 玩家 '{player.Name}' 已成功加入游戏!");
+            Log.Info($"├─ 连接类型: {playerType}");
+            Log.Info($"├─ 客户端IP: {clientIP}");
+            Log.Info($"├─ 玩家ID: {player.Id}");
+            Log.Info($"├─ 游戏模式: {gameMode}");
+            Log.Info($"├─ 权限等级: {permissions}");
+            Log.Info($"├─ 服务端版本: Nitrox v{serverVersion}");
+            Log.Info($"└─ 逃生舱ID: {assignedEscapePodId}");
         }
 
         private IEnumerable<PlayerContext> GetOtherPlayers(Player player)

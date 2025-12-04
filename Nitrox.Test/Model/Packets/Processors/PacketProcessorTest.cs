@@ -11,7 +11,7 @@ using NitroxServer;
 using NitroxServer.Communication.Packets;
 using NitroxServer.Communication.Packets.Processors;
 using NitroxServer.Communication.Packets.Processors.Abstract;
-using NitroxServer_Subnautica;
+
 
 namespace NitroxModel.Packets.Processors
 {
@@ -96,7 +96,7 @@ namespace NitroxModel.Packets.Processors
                                             .Assembly.GetTypes()
                                             .Where(p => p.IsClass && p.IsAbstract && (p.IsAssignableToGenericType(typeof(AuthenticatedPacketProcessor<>)) || p.IsAssignableToGenericType(typeof(UnauthenticatedPacketProcessor<>)))));
 
-            NitroxServiceLocator.InitializeDependencyContainer(new ClientAutoFacRegistrar(), new SubnauticaServerAutoFacRegistrar(), new TestAutoFacRegistrar());
+            NitroxServiceLocator.InitializeDependencyContainer(new ClientAutoFacRegistrar(), new Nitrox.Server.Subnautica.SubnauticaServerAutoFacRegistrar(), new TestAutoFacRegistrar());
             NitroxServiceLocator.BeginNewLifetimeScope();
 
             foreach (Type packet in typeof(Packet).Assembly.GetTypes().Where(p => typeof(Packet).IsAssignableFrom(p) && p.IsClass && !p.IsAbstract).ToList())

@@ -138,11 +138,49 @@ public class ProcessEx : IDisposable
             executableFilePath = temp;
         }
 
-        using Process proc = StartProcessDetached(new ProcessStartInfo(executableFilePath!, arguments));
+        ProcessStartInfo startInfo = new ProcessStartInfo(executableFilePath!);
+        foreach (string arg in arguments)
+        {
+            startInfo.ArgumentList.Add(arg);
+        }
+        using Process proc = StartProcessDetached(startInfo);
     }
 
     /// <summary>
     ///     Starts the current app as a new instance, passing the same command line arguments.
+    /// </summary>
+    public static void StartSelfCopyArgs() => StartSelf(Environment.GetCommandLineArgs().Skip(1).ToArray());
+#else
+    /// <summary>
+    ///     Starts the current app as a new instance (for .NET Framework compatibility).
+    /// </summary>
+    public static void StartSelf(params string[] arguments)
+    {
+        string executableFilePath = NitroxUser.ExecutableFilePath ?? System.Reflection.Assembly.GetEntryAssembly()?.Location;
+        if (string.IsNullOrEmpty(executableFilePath))
+        {
+            using Process currentProcess = Process.GetCurrentProcess();
+            executableFilePath = currentProcess.MainModule?.FileName;
+        }
+        
+        // On Linux, entry assembly is .dll file but real executable is without extension.
+        string temp = Path.ChangeExtension(executableFilePath, null);
+        if (File.Exists(temp))
+        {
+            executableFilePath = temp;
+        }
+        temp = Path.ChangeExtension(executableFilePath, ".exe");
+        if (File.Exists(temp))
+        {
+            executableFilePath = temp;
+        }
+
+        ProcessStartInfo startInfo = new ProcessStartInfo(executableFilePath!, string.Join(" ", arguments));
+        Process.Start(startInfo);
+    }
+
+    /// <summary>
+    ///     Starts the current app as a new instance, passing the same command line arguments (for .NET Framework compatibility).
     /// </summary>
     public static void StartSelfCopyArgs() => StartSelf(Environment.GetCommandLineArgs().Skip(1).ToArray());
 #endif

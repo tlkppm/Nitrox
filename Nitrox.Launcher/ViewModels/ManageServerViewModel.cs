@@ -31,13 +31,14 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
     private readonly string[] advancedSettingsDeniedFields =
     [
         "password", "filename", nameof(Config.ServerPort), nameof(Config.MaxConnections), nameof(Config.AutoPortForward), nameof(Config.SaveInterval), nameof(Config.Seed), nameof(Config.GameMode), nameof(Config.DisableConsole),
-        nameof(Config.LANDiscoveryEnabled), nameof(Config.DefaultPlayerPerm), nameof(Config.IsEmbedded), nameof(Config.KeepInventoryOnDeath), nameof(Config.PvPEnabled), nameof(Config.SerializerMode)
+        nameof(Config.LANDiscoveryEnabled), nameof(Config.DefaultPlayerPerm), nameof(Config.IsEmbedded), nameof(Config.KeepInventoryOnDeath), nameof(Config.PvPEnabled), nameof(Config.SerializerMode), nameof(Config.CommandInterceptionEnabled), nameof(Config.InterceptedCommands)
     ];
 
     private readonly DialogService dialogService;
     private readonly IKeyValueStore keyValueStore;
     private readonly ServerService serverService;
     private readonly StorageService storageService;
+    private readonly LocalizationService localizationService;
 
     [ObservableProperty]
     private ServerEntry? server;
@@ -45,6 +46,14 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
     private bool serverAllowCommands;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private bool serverCommandInterceptionEnabled;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private string serverInterceptedCommands = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
@@ -124,18 +133,36 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
     [NitroxWorldSeed]
     private string? serverSeed;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private bool serverUseGenericHost;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private bool serverDisableConsole;
+
     public static Array PlayerPerms => Enum.GetValues(typeof(Perms));
     public string? OriginalServerName => Server?.Name;
+
+    // 本地化字符串属性
+    public string UseNewServerEngine => localizationService.GetString("LauncherStrings.ServerManagement.UseNewServerEngine");
+    public string NewServerEngineDescription => localizationService.GetString("LauncherStrings.ServerManagement.NewServerEngineDescription");
+    public string NewServerEngineTooltip => localizationService.GetString("LauncherStrings.ServerManagement.NewServerEngineTooltip");
+    public string StartServerMultiplayer => localizationService.GetString("LauncherStrings.ServerManagement.StartServerMultiplayer");
+    public string StopServer => localizationService.GetString("LauncherStrings.ServerManagement.StopServer");
+    public string External => localizationService.GetString("LauncherStrings.ServerManagement.External");  
+    public string Embedded => localizationService.GetString("LauncherStrings.ServerManagement.Embedded");
 
     private string SaveFolderDirectory => Path.Combine(SavesFolderDir, Server?.Name ?? throw new Exception($"{nameof(Server)} is not set"));
     private string SavesFolderDir => keyValueStore.GetSavesFolderDir();
 
-    public ManageServerViewModel(DialogService dialogService, StorageService storageService, IKeyValueStore keyValueStore, ServerService serverService)
+    public ManageServerViewModel(DialogService dialogService, StorageService storageService, IKeyValueStore keyValueStore, ServerService serverService, LocalizationService localizationService)
     {
         this.dialogService = dialogService;
         this.storageService = storageService;
         this.keyValueStore = keyValueStore;
         this.serverService = serverService;
+        this.localizationService = localizationService;
 
         this.RegisterMessageListener<ServerStatusMessage, ManageServerViewModel>((status, vm) =>
         {
@@ -174,6 +201,10 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         ServerAllowCommands = Server.AllowCommands;
         ServerAllowPvP = Server.AllowPvP;
         ServerAllowKeepInventory = Server.AllowKeepInventory;
+        ServerCommandInterceptionEnabled = Server.CommandInterceptionEnabled;
+        ServerInterceptedCommands = Server.InterceptedCommands;
+        ServerUseGenericHost = Server.UseGenericHost;
+        ServerDisableConsole = Server.DisableConsole;
         ServerEmbedded = Server.IsEmbedded || RuntimeInformation.IsOSPlatform(OSPlatform.OSX); // Force embedded on macOS
     }
 
@@ -192,7 +223,11 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
                                   ServerAllowLanDiscovery != Server.AllowLanDiscovery ||
                                   ServerAllowCommands != Server.AllowCommands ||
                                   ServerAllowPvP != Server.AllowPvP ||
-                                  ServerAllowKeepInventory != Server.AllowKeepInventory);
+                                 ServerAllowKeepInventory != Server.AllowKeepInventory ||
+                                 ServerCommandInterceptionEnabled != Server.CommandInterceptionEnabled ||
+                                 ServerInterceptedCommands != Server.InterceptedCommands ||
+                                 ServerUseGenericHost != Server.UseGenericHost ||
+                                 ServerDisableConsole != Server.DisableConsole);
 
     [RelayCommand(CanExecute = nameof(CanGoBackAndStartServer))]
     private void Back() => ChangeViewToPrevious<ServersViewModel>();
@@ -234,6 +269,10 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         Server.AllowCommands = ServerAllowCommands;
         Server.AllowPvP = ServerAllowPvP;
         Server.AllowKeepInventory = ServerAllowKeepInventory;
+        Server.CommandInterceptionEnabled = ServerCommandInterceptionEnabled;
+        Server.InterceptedCommands = ServerInterceptedCommands;
+        Server.UseGenericHost = ServerUseGenericHost;
+        Server.DisableConsole = ServerDisableConsole;
 
         Config config = Config.Load(SaveFolderDirectory);
         using (config.Update(SaveFolderDirectory))
@@ -247,9 +286,12 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
             config.ServerPort = Server.Port;
             config.AutoPortForward = Server.AutoPortForward;
             config.LANDiscoveryEnabled = Server.AllowLanDiscovery;
-            config.DisableConsole = !Server.AllowCommands;
+            config.DisableConsole = Server.DisableConsole;
             config.PvPEnabled = Server.AllowPvP;
             config.KeepInventoryOnDeath = Server.AllowKeepInventory;
+            config.CommandInterceptionEnabled = Server.CommandInterceptionEnabled;
+            config.InterceptedCommands = Server.InterceptedCommands;
+            config.UseGenericHost = Server.UseGenericHost;
         }
 
         Undo(); // Used to update the UI with corrected values (Trims and ToUppers)
@@ -281,6 +323,10 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         ServerAllowCommands = Server.AllowCommands;
         ServerAllowPvP = Server.AllowPvP;
         ServerAllowKeepInventory = Server.AllowKeepInventory;
+        ServerCommandInterceptionEnabled = Server.CommandInterceptionEnabled;
+        ServerInterceptedCommands = Server.InterceptedCommands;
+        ServerUseGenericHost = Server.UseGenericHost;
+        ServerDisableConsole = Server.DisableConsole;
     }
 
     private bool CanUndo() => !ServerIsOnline && HasChanges();
@@ -292,11 +338,11 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         {
             IReadOnlyList<IStorageFile> files = await storageService.OpenFilePickerAsync(new FilePickerOpenOptions
             {
-                Title = "Select an image",
+                Title = "选择图片",
                 AllowMultiple = false,
                 FileTypeFilter =
                 [
-                    new FilePickerFileType("All Images + Icons")
+                    new FilePickerFileType("所有图片 + 图标")
                     {
                         Patterns = ["*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.ico"],
                         AppleUniformTypeIdentifiers = ["public.image"],
@@ -324,7 +370,7 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
     {
         ObjectPropertyEditorViewModel result = await dialogService.ShowAsync<ObjectPropertyEditorViewModel>(model =>
         {
-            model.Title = $"Server '{ServerName}' config editor";
+            model.Title = $"服务器 '{ServerName}' 配置编辑器";
             model.FieldAcceptFilter = p => !advancedSettingsDeniedFields.Any(v => p.Name.Contains(v, StringComparison.OrdinalIgnoreCase));
             model.OwnerObject = Config.Load(SaveFolderDirectory);
             model.DisableButtons = Server.IsOnline;
@@ -337,20 +383,30 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
     }
 
     [RelayCommand]
-    private void OpenWorldFolder() =>
-        Process.Start(new ProcessStartInfo
+    private void OpenWorldFolder()
+    {
+        try
         {
-            FileName = SaveFolderDirectory,
-            Verb = "open",
-            UseShellExecute = true
-        })?.Dispose();
+            using Process? process = Process.Start(new ProcessStartInfo
+            {
+                FileName = SaveFolderDirectory,
+                Verb = "open",
+                UseShellExecute = true
+            });
+            // Process will be automatically disposed when leaving using block
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to open world folder: {ex.Message}");
+        }
+    }
 
     [RelayCommand(CanExecute = nameof(CanRestoreBackup))]
     private async Task RestoreBackup()
     {
         BackupRestoreViewModel result = await dialogService.ShowAsync<BackupRestoreViewModel>(model =>
         {
-            model.Title = $"Restore a Backup for '{ServerName}'";
+            model.Title = $"为 '{ServerName}' 恢复备份";
             model.SaveFolderDirectory = SaveFolderDirectory;
         });
 
@@ -373,11 +429,11 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
                 Server!.RefreshFromDirectory(SaveFolderDirectory);
                 LoadFrom(Server);
                 ServerEmbedded = isEmbedded; // Preserve the original IsEmbedded value
-                LauncherNotifier.Success("Backup restored successfully.");
+                LauncherNotifier.Success("备份恢复成功。");
             }
             catch (Exception ex)
             {
-                await dialogService.ShowErrorAsync(ex, "Error while restoring backup");
+                await dialogService.ShowErrorAsync(ex, "恢复备份时出错");
             }
         }
     }
@@ -402,7 +458,7 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         {
             DialogBoxViewModel modal = await dialogService.ShowAsync<DialogBoxViewModel>(model =>
             {
-                model.Title = $"Are you sure you want to delete the server '{ServerName}'?";
+                model.Title = $"您确定要删除服务器 '{ServerName}' 吗？";
                 model.ButtonOptions = ButtonOptions.YesNo;
             });
             if (!modal)
@@ -419,7 +475,7 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         }
         catch (Exception ex)
         {
-            await dialogService.ShowErrorAsync(ex, $"Error while deleting world \"{ServerName}\"");
+            await dialogService.ShowErrorAsync(ex, $"删除世界 \"{ServerName}\" 时出错");
         }
     }
 

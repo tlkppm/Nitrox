@@ -1,0 +1,98 @@
+<Window
+    CanResize="False"
+    MaxHeight="800"
+    MaxWidth="700"
+    MinWidth="600"
+    SizeToContent="Height"
+    Title="公告详情"
+    d:DesignHeight="600"
+    d:DesignWidth="700"
+    mc:Ignorable="d"
+    x:Class="Nitrox.Launcher.Views.AnnouncementDetailModal"
+    x:DataType="vm:AnnouncementDetailViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:Nitrox.Launcher.Models.Controls"
+    xmlns:converters="clr-namespace:Nitrox.Launcher.Models.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <controls:CustomTitlebar CanMinimize="False" />
+        <StackPanel Margin="24,50,24,24">
+            <!-- 公告标题和元数据 -->
+            <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,20">
+                <!-- 优先级指示条 -->
+                <Border Grid.Column="0"
+                        Width="4"
+                        CornerRadius="2"
+                        Margin="0,0,12,0"
+                        VerticalAlignment="Stretch">
+                    <Border.Background>
+                        <SolidColorBrush Color="{Binding Announcement.Priority, Converter={x:Static converters:AnnouncementPriorityColorConverter.Instance}}" />
+                    </Border.Background>
+                </Border>
+                
+                <!-- 标题和信息 -->
+                <StackPanel Grid.Column="1" Spacing="8">
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding Announcement.Type, Converter={x:Static converters:AnnouncementTypeIconConverter.Instance}}" 
+                                   FontSize="20"
+                                   Margin="0,0,8,0"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Announcement.Title}" 
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   TextWrapping="Wrap"/>
+                    </Grid>
+                    
+                    <!-- 元数据 -->
+                    <StackPanel Orientation="Horizontal" Spacing="16" Opacity="0.7">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="类型:" FontSize="12"/>
+                            <TextBlock Text="{Binding TypeText}" FontSize="12" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="优先级:" FontSize="12"/>
+                            <TextBlock Text="{Binding PriorityText}" FontSize="12" FontWeight="SemiBold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="日期:" FontSize="12"/>
+                            <TextBlock Text="{Binding Announcement.FormattedDate}" FontSize="12"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            
+            <!-- 分隔线 -->
+            <Border Height="1" 
+                    Background="{DynamicResource BrandBorderBackground}" 
+                    Margin="0,0,0,20"/>
+            
+            <!-- 公告内容 -->
+            <ScrollViewer MaxHeight="450" VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="{Binding Announcement.Content}"
+                           TextWrapping="Wrap"
+                           FontSize="14"
+                           LineHeight="24"
+                           Padding="0,0,10,0"/>
+            </ScrollViewer>
+            
+            <!-- 底部按钮 -->
+            <Border Background="{DynamicResource BrandPanelBackground}"
+                    CornerRadius="0,0,12,12"
+                    Margin="-24,20,-24,-24"
+                    Padding="24,15">
+                <Button Classes="primary"
+                        Command="{Binding CloseCommand}"
+                        Content="关闭"
+                        HorizontalAlignment="Right"
+                        HotKey="Escape"
+                        Width="120"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>
+

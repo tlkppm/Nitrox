@@ -1,0 +1,84 @@
+<Window
+    Height="600"
+    Width="550"
+    WindowStartupLocation="CenterOwner"
+    x:Class="Nitrox.Launcher.Views.PlayerListModal"
+    x:DataType="vm:PlayerListViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d">
+    
+    <Grid Classes="viewPadding" RowDefinitions="Auto,*,Auto">
+        <!-- 标题栏 -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,20">
+            <StackPanel Grid.Column="0">
+                <TextBlock Classes="header" Text="{Binding ServerName}" />
+                <TextBlock Classes="description" Margin="0,8,0,0">
+                    <Run Text="在线玩家：" />
+                    <Run Text="{Binding PlayerCount}" />
+                    <Run Text=" / " />
+                    <Run Text="{Binding MaxPlayers}" />
+                </TextBlock>
+            </StackPanel>
+            <Button Grid.Column="1" 
+                    Command="{Binding RefreshCommand}" 
+                    Content="刷新"
+                    VerticalAlignment="Top" />
+        </Grid>
+
+        <!-- 玩家列表 -->
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Players}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource BrandPanelBackground}"
+                                BorderBrush="{DynamicResource BrandDisabled}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="16"
+                                Margin="0,0,0,8">
+                            <Grid ColumnDefinitions="Auto,*">
+                                <!-- 玩家图标 -->
+                                <Border Grid.Column="0"
+                                        Background="{DynamicResource BrandPrimary}"
+                                        CornerRadius="20"
+                                        Width="40"
+                                        Height="40"
+                                        Margin="0,0,12,0">
+                                    <TextBlock Text="👤"
+                                              FontSize="20"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                                </Border>
+                                
+                                <!-- 玩家信息 -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" 
+                                              FontSize="16" 
+                                              FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding ConnectionTime}" 
+                                              Classes="description"
+                                              FontSize="12"
+                                              Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- 底部按钮 -->
+        <Button Grid.Row="2" 
+                Classes="primary"
+                Command="{Binding CloseCommand}" 
+                Content="关闭"
+                HorizontalAlignment="Right"
+                Margin="0,20,0,0"
+                MinWidth="120" />
+    </Grid>
+</Window>
+

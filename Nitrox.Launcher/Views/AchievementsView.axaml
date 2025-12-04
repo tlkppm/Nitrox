@@ -1,0 +1,571 @@
+<UserControl
+    d:DesignHeight="700"
+    d:DesignWidth="1000"
+    mc:Ignorable="d"
+    x:Class="Nitrox.Launcher.Views.AchievementsView"
+    x:DataType="vm:AchievementsViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:Nitrox.Launcher.Models.Controls"
+    xmlns:converters="clr-namespace:Nitrox.Launcher.Models.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:design="clr-namespace:Nitrox.Launcher.Models.Design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:designer="clr-namespace:Nitrox.Launcher.ViewModels.Designer">
+    <Design.DataContext>
+        <designer:DesignAchievementsViewModel />
+    </Design.DataContext>
+    <ScrollViewer Classes="main">
+        <StackPanel
+            Background="{DynamicResource BrandWhite}"
+            Classes="viewPadding"
+            Spacing="23">
+
+            <!-- 标题区域 -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <controls:RecolorImage 
+                    Grid.Column="0"
+                    Height="32" 
+                    Width="32" 
+                    Margin="0,0,12,0"
+                    VerticalAlignment="Center"
+                    Source="/Assets/Images/tabs-icons/sponsor.png" />
+                
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Classes="header" Text="成就系统" />
+                    <TextBlock 
+                        FontSize="14" 
+                        Opacity="0.7" 
+                        Text="记录您的 Nitrox 探险历程" />
+                </StackPanel>
+            </Grid>
+
+            <!-- 统计概览区域 -->
+            <Border
+                Background="{DynamicResource BrandPanelBackground}"
+                CornerRadius="12"
+                Padding="25,20">
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                    <!-- 标题 -->
+                    <Grid Grid.Row="0" Margin="0,0,0,15">
+                        <TextBlock 
+                            FontSize="16" 
+                            FontWeight="Bold"
+                            Text="成就统计" />
+                    </Grid>
+                    
+                    <!-- 分割线 -->
+                    <Border Grid.Row="1" Height="1" Background="{DynamicResource BrandBorderBackground}" Margin="0,0,0,15" />
+                    
+                    <!-- 统计卡片 -->
+                    <Grid Grid.Row="2" ColumnDefinitions="*,*,*">
+                        <!-- 已解锁成就 -->
+                        <Border Grid.Column="0" Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="20" Margin="0,0,10,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock 
+                                    FontSize="32" 
+                                    FontWeight="Bold"
+                                    HorizontalAlignment="Center"
+                                    Foreground="{DynamicResource BrandOnColor}"
+                                    Text="{Binding UnlockedCount}" />
+                                <TextBlock 
+                                    FontSize="14" 
+                                    Opacity="0.7"
+                                    HorizontalAlignment="Center"
+                                    Text="已解锁成就" />
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- 总成就数 -->
+                        <Border Grid.Column="1" Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="20" Margin="0,0,10,0">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock 
+                                    FontSize="32" 
+                                    FontWeight="Bold"
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding TotalCount}" />
+                                <TextBlock 
+                                    FontSize="14" 
+                                    Opacity="0.7"
+                                    HorizontalAlignment="Center"
+                                    Text="总成就数" />
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- 获得点数 -->
+                        <Border Grid.Column="2" Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="20">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock 
+                                    FontSize="32" 
+                                    FontWeight="Bold"
+                                    HorizontalAlignment="Center"
+                                    Foreground="#F59E0B"
+                                    Text="{Binding TotalPoints}" />
+                                <TextBlock 
+                                    FontSize="14" 
+                                    Opacity="0.7"
+                                    HorizontalAlignment="Center"
+                                    Text="获得点数" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- 新手成就 -->
+            <Border
+                Background="{DynamicResource BrandPanelBackground}"
+                CornerRadius="12"
+                Padding="25,20">
+                <StackPanel Spacing="15">
+                    <Grid>
+                        <TextBlock 
+                            FontSize="16" 
+                            FontWeight="Bold"
+                            Text="新手成就" />
+                    </Grid>
+                    <Border Height="1" Background="{DynamicResource BrandBorderBackground}" />
+                    <ItemsControl ItemsSource="{Binding BeginnerAchievements}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="design:Achievement">
+                                <Border Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="15">
+                                    <Grid ColumnDefinitions="48,*,Auto">
+                                        <Image
+                                            Grid.Column="0"
+                                            Height="48"
+                                            Width="48"
+                                            Margin="0,0,15,0"
+                                            Source="{Binding IconPath}"
+                                            VerticalAlignment="Center" />
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="{Binding Title}" />
+                                            <TextBlock
+                                                FontSize="13"
+                                                Opacity="0.7"
+                                                Text="{Binding Description}" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Opacity="0.6"
+                                                    Margin="0,0,10,0"
+                                                    Text="{Binding RarityText}" />
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Foreground="#F59E0B"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Points, StringFormat='{}{0} 点'}" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                FontSize="10"
+                                                Opacity="0.5"
+                                                Margin="0,3,0,0"
+                                                IsVisible="{Binding IsUnlocked}"
+                                                Text="{Binding UnlockedDate, StringFormat='解锁于: {0:yyyy-MM-dd HH:mm}'}" />
+                                        </StackPanel>
+                                        
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <Border 
+                                                Background="#10B981" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    FontWeight="Bold"
+                                                    Foreground="White"
+                                                    Text="已解锁" />
+                                            </Border>
+                                            <Border 
+                                                Background="{DynamicResource BrandBorderBackground}" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding !IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    Opacity="0.6"
+                                                    Text="未解锁" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- 服务器成就 -->
+            <Border
+                Background="{DynamicResource BrandPanelBackground}"
+                CornerRadius="12"
+                Padding="25,20">
+                <StackPanel Spacing="15">
+                    <TextBlock 
+                        FontSize="16" 
+                        FontWeight="Bold"
+                        Text="服务器成就" />
+                    <Border Height="1" Background="{DynamicResource BrandBorderBackground}" />
+                    <ItemsControl ItemsSource="{Binding ServerAchievements}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="design:Achievement">
+                                <Border Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="15">
+                                    <Grid ColumnDefinitions="48,*,Auto">
+                                        <Image
+                                            Grid.Column="0"
+                                            Height="48"
+                                            Width="48"
+                                            Margin="0,0,15,0"
+                                            Source="{Binding IconPath}"
+                                            VerticalAlignment="Center" />
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="{Binding Title}" />
+                                            <TextBlock
+                                                FontSize="13"
+                                                Opacity="0.7"
+                                                Text="{Binding Description}" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Opacity="0.6"
+                                                    Margin="0,0,10,0"
+                                                    Text="{Binding RarityText}" />
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Foreground="#F59E0B"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Points, StringFormat='{}{0} 点'}" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                FontSize="10"
+                                                Opacity="0.5"
+                                                Margin="0,3,0,0"
+                                                IsVisible="{Binding IsUnlocked}"
+                                                Text="{Binding UnlockedDate, StringFormat='解锁于: {0:yyyy-MM-dd HH:mm}'}" />
+                                        </StackPanel>
+                                        
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <Border 
+                                                Background="#10B981" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    FontWeight="Bold"
+                                                    Foreground="White"
+                                                    Text="已解锁" />
+                                            </Border>
+                                            <Border 
+                                                Background="{DynamicResource BrandBorderBackground}" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding !IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    Opacity="0.6"
+                                                    Text="未解锁" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- 多人游戏成就 -->
+            <Border
+                Background="{DynamicResource BrandPanelBackground}"
+                CornerRadius="12"
+                Padding="25,20">
+                <StackPanel Spacing="15">
+                    <TextBlock 
+                        FontSize="16" 
+                        FontWeight="Bold"
+                        Text="多人游戏成就" />
+                    <Border Height="1" Background="{DynamicResource BrandBorderBackground}" />
+                    <ItemsControl ItemsSource="{Binding MultiplayerAchievements}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="design:Achievement">
+                                <Border Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="15">
+                                    <Grid ColumnDefinitions="48,*,Auto">
+                                        <Image
+                                            Grid.Column="0"
+                                            Height="48"
+                                            Width="48"
+                                            Margin="0,0,15,0"
+                                            Source="{Binding IconPath}"
+                                            VerticalAlignment="Center" />
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="{Binding Title}" />
+                                            <TextBlock
+                                                FontSize="13"
+                                                Opacity="0.7"
+                                                Text="{Binding Description}" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Opacity="0.6"
+                                                    Margin="0,0,10,0"
+                                                    Text="{Binding RarityText}" />
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Foreground="#F59E0B"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Points, StringFormat='{}{0} 点'}" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                FontSize="10"
+                                                Opacity="0.5"
+                                                Margin="0,3,0,0"
+                                                IsVisible="{Binding IsUnlocked}"
+                                                Text="{Binding UnlockedDate, StringFormat='解锁于: {0:yyyy-MM-dd HH:mm}'}" />
+                                        </StackPanel>
+                                        
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <Border 
+                                                Background="#10B981" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    FontWeight="Bold"
+                                                    Foreground="White"
+                                                    Text="已解锁" />
+                                            </Border>
+                                            <Border 
+                                                Background="{DynamicResource BrandBorderBackground}" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding !IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    Opacity="0.6"
+                                                    Text="未解锁" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- 探索成就 -->
+            <Border
+                Background="{DynamicResource BrandPanelBackground}"
+                CornerRadius="12"
+                Padding="25,20">
+                <StackPanel Spacing="15">
+                    <TextBlock 
+                        FontSize="16" 
+                        FontWeight="Bold"
+                        Text="探索成就" />
+                    <Border Height="1" Background="{DynamicResource BrandBorderBackground}" />
+                    <ItemsControl ItemsSource="{Binding ExplorationAchievements}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="design:Achievement">
+                                <Border Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="15">
+                                    <Grid ColumnDefinitions="48,*,Auto">
+                                        <Image
+                                            Grid.Column="0"
+                                            Height="48"
+                                            Width="48"
+                                            Margin="0,0,15,0"
+                                            Source="{Binding IconPath}"
+                                            VerticalAlignment="Center" />
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="{Binding Title}" />
+                                            <TextBlock
+                                                FontSize="13"
+                                                Opacity="0.7"
+                                                Text="{Binding Description}" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Opacity="0.6"
+                                                    Margin="0,0,10,0"
+                                                    Text="{Binding RarityText}" />
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Foreground="#F59E0B"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Points, StringFormat='{}{0} 点'}" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                FontSize="10"
+                                                Opacity="0.5"
+                                                Margin="0,3,0,0"
+                                                IsVisible="{Binding IsUnlocked}"
+                                                Text="{Binding UnlockedDate, StringFormat='解锁于: {0:yyyy-MM-dd HH:mm}'}" />
+                                        </StackPanel>
+                                        
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <Border 
+                                                Background="#10B981" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    FontWeight="Bold"
+                                                    Foreground="White"
+                                                    Text="已解锁" />
+                                            </Border>
+                                            <Border 
+                                                Background="{DynamicResource BrandBorderBackground}" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding !IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    Opacity="0.6"
+                                                    Text="未解锁" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- 技术成就 -->
+            <Border
+                Background="{DynamicResource BrandPanelBackground}"
+                CornerRadius="12"
+                Padding="25,20">
+                <StackPanel Spacing="15">
+                    <TextBlock 
+                        FontSize="16" 
+                        FontWeight="Bold"
+                        Text="技术成就" />
+                    <Border Height="1" Background="{DynamicResource BrandBorderBackground}" />
+                    <ItemsControl ItemsSource="{Binding TechnicalAchievements}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Spacing="10" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="design:Achievement">
+                                <Border Background="{DynamicResource BrandWhite}" CornerRadius="8" Padding="15">
+                                    <Grid ColumnDefinitions="48,*,Auto">
+                                        <Image
+                                            Grid.Column="0"
+                                            Height="48"
+                                            Width="48"
+                                            Margin="0,0,15,0"
+                                            Source="{Binding IconPath}"
+                                            VerticalAlignment="Center" />
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="{Binding Title}" />
+                                            <TextBlock
+                                                FontSize="13"
+                                                Opacity="0.7"
+                                                Text="{Binding Description}" />
+                                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Opacity="0.6"
+                                                    Margin="0,0,10,0"
+                                                    Text="{Binding RarityText}" />
+                                                <TextBlock
+                                                    FontSize="11"
+                                                    Foreground="#F59E0B"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Points, StringFormat='{}{0} 点'}" />
+                                            </StackPanel>
+                                            <TextBlock
+                                                FontSize="10"
+                                                Opacity="0.5"
+                                                Margin="0,3,0,0"
+                                                IsVisible="{Binding IsUnlocked}"
+                                                Text="{Binding UnlockedDate, StringFormat='解锁于: {0:yyyy-MM-dd HH:mm}'}" />
+                                        </StackPanel>
+                                        
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                            <Border 
+                                                Background="#10B981" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    FontWeight="Bold"
+                                                    Foreground="White"
+                                                    Text="已解锁" />
+                                            </Border>
+                                            <Border 
+                                                Background="{DynamicResource BrandBorderBackground}" 
+                                                CornerRadius="4" 
+                                                Padding="8,4"
+                                                IsVisible="{Binding !IsUnlocked}">
+                                                <TextBlock 
+                                                    FontSize="12" 
+                                                    Opacity="0.6"
+                                                    Text="未解锁" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
+

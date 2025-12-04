@@ -1,0 +1,263 @@
+<UserControl
+    d:DesignWidth="1000"
+    mc:Ignorable="d"
+    x:Class="Nitrox.Launcher.Views.ContributorsView"
+    x:DataType="vm:ContributorsViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:Nitrox.Launcher.Models.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:designer="clr-namespace:Nitrox.Launcher.ViewModels.Designer"
+    xmlns:converters="clr-namespace:Nitrox.Launcher.Models.Converters">
+    <Design.DataContext>
+        <designer:DesignContributorsViewModel />
+    </Design.DataContext>
+    
+    <UserControl.Styles>
+        <!-- 贡献者卡片样式 -->
+        <Style Selector="Border.contributor-card">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                        <GradientStop Color="#1a1a1a" Offset="0"/>
+                        <GradientStop Color="#2a2a2a" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="16,12" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="BorderBrush" Value="#3a3a3a" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BoxShadow" Value="0 2 10 0 #00000020" />
+        </Style>
+        
+        <!-- 悬停效果 -->
+        <Style Selector="Border.contributor-card:pointerover">
+            <Setter Property="BoxShadow" Value="0 8 30 0 #00000050" />
+            <Setter Property="BorderBrush" Value="#4a4a4a" />
+        </Style>
+        
+        <!-- 贡献者姓名 -->
+        <Style Selector="TextBlock.contributor-name">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#ffffff" />
+        </Style>
+        
+        <!-- 角色 -->
+        <Style Selector="TextBlock.contributor-role">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#b0b0b0" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+        </Style>
+        
+        <!-- 联系方式 -->
+        <Style Selector="TextBlock.contributor-contact">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#888888" />
+            <Setter Property="Margin" Value="0,6,0,0" />
+        </Style>
+        
+        <!-- 区块标题 -->
+        <Style Selector="TextBlock.section-header">
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#ffffff" />
+            <Setter Property="Margin" Value="0,30,0,20" />
+        </Style>
+        
+        <!-- 图标 -->
+        <Style Selector="TextBlock.icon">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,12,0" />
+        </Style>
+        
+        <!-- 页面标题 -->
+        <Style Selector="TextBlock.page-title">
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="FontWeight" Value="Black" />
+            <Setter Property="Foreground" Value="#ffffff" />
+        </Style>
+        
+        <!-- 页面副标题 -->
+        <Style Selector="TextBlock.page-subtitle">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="#cccccc" />
+            <Setter Property="Margin" Value="0,8,0,0" />
+        </Style>
+        
+
+    </UserControl.Styles>
+
+    <ScrollViewer Classes="main">
+        <Grid Background="#0d1117">
+            <!-- 背景渐变效果 -->
+            <Rectangle>
+                <Rectangle.Fill>
+                    <RadialGradientBrush Center="50%,30%" RadiusX="80%" RadiusY="80%">
+                        <GradientStop Color="#161b22" Offset="0"/>
+                        <GradientStop Color="#0d1117" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            
+            <StackPanel Classes="viewPadding" Spacing="30" Margin="40,30">
+
+                <!-- 页面标题区域 -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Classes="page-title" Text="社区贡献者"/>
+                        <TextBlock Classes="page-subtitle" Text="感谢每一位为 Nitrox 项目做出贡献的朋友们"/>
+                    </StackPanel>
+                    
+
+                </Grid>
+
+                <!-- 核心开发团队 -->
+                <StackPanel>
+                    <TextBlock Classes="section-header" Text="核心开发团队"/>
+                    <UniformGrid Columns="2" HorizontalAlignment="Stretch">
+                        <ItemsControl ItemsSource="{Binding CoreTeam}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Classes="contributor-card" HorizontalAlignment="Stretch">
+                                        <StackPanel VerticalAlignment="Center" Spacing="4">
+                                            <TextBlock Text="{Binding Name}" Classes="contributor-name"/>
+                                            <TextBlock Text="{Binding Role}" Classes="contributor-role"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </UniformGrid>
+                </StackPanel>
+
+                <!-- 中文社区制作团队 -->
+                <StackPanel>
+                    <TextBlock Classes="section-header" Text="中文社区制作团队"/>
+                    <ItemsControl ItemsSource="{Binding ChineseCommunity}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="3" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="contributor-card" HorizontalAlignment="Stretch">
+                                    <Grid RowDefinitions="Auto,*">
+                                        <!-- 名字和社交媒体图标 -->
+                                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                                            <TextBlock Grid.Column="0" 
+                                                      Text="{Binding Name}" 
+                                                      Classes="contributor-name" 
+                                                      FontSize="16"
+                                                      VerticalAlignment="Center"/>
+                                            
+                                            <!-- 社交媒体图标 -->
+                                            <Button Grid.Column="1"
+                                                   Background="Transparent"
+                                                   BorderThickness="0"
+                                                   Padding="4"
+                                                   Cursor="Hand"
+                                                   ToolTip.Tip="访问B站主页"
+                                                   IsVisible="{Binding SocialLink, Converter={converters:StringNotNullOrEmptyConverter}}"
+                                                   Command="{Binding $parent[UserControl].((vm:ContributorsViewModel)DataContext).OpenUriCommand}"
+                                                   CommandParameter="{Binding SocialLink}">
+                                                <Image Source="{Binding SocialIcon, Converter={converters:BitmapAssetValueConverter}}"
+                                                      Width="24"
+                                                      Height="24"/>
+                                            </Button>
+                                        </Grid>
+                                        
+                                        <!-- 其他信息 -->
+                                        <StackPanel Grid.Row="1" Spacing="4" Margin="0,4,0,0">
+                                            <TextBlock Text="{Binding Role}" Classes="contributor-role" FontSize="13"/>
+                                            <TextBlock Text="{Binding Contact}" 
+                                                      Classes="contributor-contact"
+                                                      FontSize="12"
+                                                      IsVisible="{Binding Contact, Converter={converters:StringNotNullOrEmptyConverter}}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- 国际社区贡献者 -->
+                <StackPanel>
+                    <TextBlock Classes="section-header" Text="国际社区贡献者"/>
+                    <ItemsControl ItemsSource="{Binding InternationalCommunity}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="contributor-card" HorizontalAlignment="Stretch">
+                                    <StackPanel VerticalAlignment="Center" Spacing="4">
+                                        <TextBlock Text="{Binding Name}" Classes="contributor-name" FontSize="16"/>
+                                        <TextBlock Text="{Binding Role}" Classes="contributor-role" FontSize="13"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- 联系方式和反馈 -->
+                <StackPanel>
+                    <TextBlock Classes="section-header" Text="联系我们"/>
+                    <Grid ColumnDefinitions="*,20,*">
+                        <!-- GitHub按钮 -->
+                        <Button Grid.Column="0"
+                               Command="{Binding OpenGitHubCommand}" 
+                               HorizontalAlignment="Stretch"
+                               Background="#24292e"
+                               CornerRadius="12"
+                               Padding="20"
+                               BorderThickness="0"
+                               Height="80">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="GitHub" FontSize="16" FontWeight="Bold" Foreground="#ffffff"/>
+                                <TextBlock Text="查看完整贡献者列表" FontSize="12" Foreground="#cccccc" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- QQ群按钮 -->
+                        <Button Grid.Column="2"
+                               Command="{Binding OpenCommunityGroupCommand}" 
+                               HorizontalAlignment="Stretch"
+                               Background="#4c4c4c"
+                               CornerRadius="12"
+                               Padding="20"
+                               BorderThickness="0"
+                               Height="80">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="反馈群聊" FontSize="16" FontWeight="Bold" Foreground="#ffffff"/>
+                                <TextBlock Text="QQ群: 1019364297" FontSize="12" Foreground="#cccccc" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

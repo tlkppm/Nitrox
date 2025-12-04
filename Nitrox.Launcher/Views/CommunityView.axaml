@@ -8,7 +8,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:services="clr-namespace:Nitrox.Launcher.Models.Services">
     <Design.DataContext>
         <vm:CommunityViewModel />
     </Design.DataContext>
@@ -50,7 +51,7 @@
             Background="{DynamicResource BrandWhite}"
             Classes="viewPadding"
             Spacing="23">
-            <TextBlock Classes="header" Text="Community" />
+            <TextBlock Classes="header" Text="社区" />
             <Image MaxWidth="1580" Source="/Assets/Images/banners/community.png" />
             <controls:FittingWrapPanel
                 Margin="-8,0"
@@ -62,18 +63,18 @@
                             <Button
                                 Classes="anycontent"
                                 Command="{Binding DiscordLinkCommand}"
-                                ToolTip.Tip="Join Discord Server">
+                                ToolTip.Tip="加入 Discord 服务器">
                                 <Border Background="#5865F2">
                                     <Svg Path="/Assets/Icons/brand/discord.svg" />
                                 </Border>
                             </Button>
                             <Button
                                 Command="{Binding DiscordLinkCommand}"
-                                Content="Join Discord"
-                                ToolTip.Tip="Join Discord Server" />
+                                Content="加入 Discord"
+                                ToolTip.Tip="加入 Discord 服务器" />
                         </Panel>
                         <TextBlock Text="Discord" />
-                        <TextBlock Text="Join our active Discord server to find servers to play on, get help from the support team and much more." />
+                        <TextBlock Text="加入我们活跃的 Discord 服务器，寻找要玩的服务器，从支持团队获得帮助等等。" />
                     </StackPanel>
                 </Border>
                 <Border>
@@ -82,7 +83,7 @@
                             <Button
                                 Classes="anycontent"
                                 Command="{Binding XLinkCommand}"
-                                ToolTip.Tip="Follow on X">
+                                ToolTip.Tip="在 X 上关注">
                                 <Border Background="#000000">
                                     <Svg Path="/Assets/Icons/brand/x.svg" />
                                 </Border>
@@ -90,11 +91,11 @@
 
                             <Button
                                 Command="{Binding XLinkCommand}"
-                                Content="Follow"
-                                ToolTip.Tip="Follow on X" />
+                                Content="关注"
+                                ToolTip.Tip="在 X 上关注" />
                         </Grid>
                         <TextBlock Text="X" />
-                        <TextBlock Text="Follow the Nitrox X account to always be up to date on latest developments, events, and releases." />
+                        <TextBlock Text="关注 Nitrox X 账户，随时了解最新开发、活动和发布。" />
                     </StackPanel>
                 </Border>
                 <Border>
@@ -103,7 +104,7 @@
                             <Button
                                 Classes="anycontent"
                                 Command="{Binding BlueskyLinkCommand}"
-                                ToolTip.Tip="Follow on Bluesky">
+                                ToolTip.Tip="在 Bluesky 上关注">
                                 <Border Background="#1185fe">
                                     <Svg Path="/Assets/Icons/brand/bluesky.svg" />
                                 </Border>
@@ -111,11 +112,11 @@
 
                             <Button
                                 Command="{Binding BlueskyLinkCommand}"
-                                Content="Follow"
-                                ToolTip.Tip="Follow on Bluesky" />
+                                Content="关注"
+                                ToolTip.Tip="在 Bluesky 上关注" />
                         </Grid>
                         <TextBlock Text="Bluesky" />
-                        <TextBlock Text="Follow the Nitrox Bluesky account to always be up to date on latest developments, events, and releases." />
+                        <TextBlock Text="关注 Nitrox Bluesky 账户，随时了解最新开发、活动和发布。" />
                     </StackPanel>
                 </Border>
                 <Border>
@@ -124,7 +125,7 @@
                             <Button
                                 Classes="anycontent"
                                 Command="{Binding RedditLinkCommand}"
-                                ToolTip.Tip="Join Nitrox Subreddit">
+                                ToolTip.Tip="加入 Nitrox 子版块">
                                 <Border Background="#FF4500">
                                     <Svg Path="/Assets/Icons/brand/reddit.svg" />
                                 </Border>
@@ -132,11 +133,11 @@
 
                             <Button
                                 Command="{Binding RedditLinkCommand}"
-                                Content="Join Subreddit"
-                                ToolTip.Tip="Join Nitrox Subreddit" />
+                                Content="加入子版块"
+                                ToolTip.Tip="加入 Nitrox 子版块" />
                         </Grid>
                         <TextBlock Text="Reddit" />
-                        <TextBlock Text="Join the Nitrox Subreddit to stay informed about latest releases and post your own Nitrox content." />
+                        <TextBlock Text="加入 Nitrox 子版块，了解最新版本并发布您自己的 Nitrox 内容。" />
                     </StackPanel>
                 </Border>
                 <Border>
@@ -145,18 +146,18 @@
                             <Button
                                 Classes="anycontent"
                                 Command="{Binding GithubLinkCommand}"
-                                ToolTip.Tip="Contribute on GitHub">
+                                ToolTip.Tip="在 GitHub 上贡献">
                                 <Border Background="#000000">
                                     <Svg Path="/Assets/Icons/brand/github.svg" />
                                 </Border>
                             </Button>
                             <Button
                                 Command="{Binding GithubLinkCommand}"
-                                Content="Contribute"
-                                ToolTip.Tip="Contribute on GitHub" />
+                                Content="贡献"
+                                ToolTip.Tip="在 GitHub 上贡献" />
                         </Grid>
                         <TextBlock Text="GitHub" />
-                        <TextBlock Text="Want to be part of the team? Contribute from code to translations to the Nitrox project on GitHub." />
+                        <TextBlock Text="想成为团队的一员吗？从代码到翻译，在 GitHub 上为 Nitrox 项目做出贡献。" />
                     </StackPanel>
                 </Border>
             </controls:FittingWrapPanel>

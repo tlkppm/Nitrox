@@ -233,4 +233,5 @@
     <StyleInclude Source="/Models/Styles/Theme/RadioButtonStyle.axaml" />
     <StyleInclude Source="/Models/Styles/Theme/ScrollViewerStyle.axaml" />
     <StyleInclude Source="/Models/Styles/Theme/ExpanderStyle.axaml" />
+    <StyleInclude Source="/Models/Styles/Theme/ContributorCardStyle.axaml" />
 </Styles>

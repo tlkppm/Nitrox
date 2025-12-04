@@ -120,6 +120,7 @@ namespace NitroxClient
             containerBuilder.RegisterType<TimeManager>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<BulletManager>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<NtpSyncer>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<NetworkPingManager>().InstancePerLifetimeScope();
         }
 
         private void RegisterMetadataDependencies(ContainerBuilder containerBuilder)

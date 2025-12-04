@@ -6,7 +6,7 @@ using NitroxModel_Subnautica.DataStructures;
 using NitroxServer.GameLogic.Entities.Spawning;
 using NitroxServer.UnityStubs;
 
-namespace NitroxServer_Subnautica.GameLogic.Entities.Spawning
+namespace Nitrox.Server.Subnautica.GameLogic.Entities.Spawning
 {
     public class SubnauticaEntitySpawnPointFactory : EntitySpawnPointFactory
     {

@@ -21,17 +21,26 @@ public static class LANBroadcastServer
         server.BroadcastReceiveEnabled = true;
         server.UnconnectedMessagesEnabled = true;
 
+        bool started = false;
         foreach (int port in LANDiscoveryConstants.BROADCAST_PORTS)
         {
             if (server.Start(port))
             {
+                Log.Info($"[LAN广播] 成功启动在端口 {port}");
+                started = true;
                 break;
             }
         }
 
+        if (!started)
+        {
+            Log.Error("[LAN广播] 无法启动 - 所有端口都被占用");
+            return;
+        }
+
         pollTimer = new Timer(_ => server.PollEvents());
         pollTimer.Change(0, 100);
-        Log.Debug($"{nameof(LANBroadcastServer)} started");
+        Log.Info($"[LAN广播] LAN服务器发现功能已启动");
     }
 
     public static void Stop()
@@ -47,6 +56,8 @@ public static class LANBroadcastServer
         if (messageType == UnconnectedMessageType.Broadcast)
         {
             string requestString = reader.GetString();
+            Log.Info($"[LAN广播] 收到来自 {remoteEndPoint} 的广播请求: {requestString}");
+            
             if (requestString == LANDiscoveryConstants.BROADCAST_REQUEST_STRING)
             {
                 NetDataWriter writer = new();
@@ -54,6 +65,11 @@ public static class LANBroadcastServer
                 writer.Put(Server.Instance.Port);
 
                 server.SendBroadcast(writer, remoteEndPoint.Port);
+                Log.Info($"[LAN广播] 向 {remoteEndPoint} 发送响应 | 服务器端口: {Server.Instance.Port}");
+            }
+            else
+            {
+                Log.Warn($"[LAN广播] 收到无效的广播请求: {requestString} 来自 {remoteEndPoint}");
             }
         }
     }

@@ -46,9 +46,17 @@ public class DefaultServerPacketProcessor : AuthenticatedPacketProcessor<Packet>
 
     public override void Process(Packet packet, Player player)
     {
+        string packetType = packet.GetType().Name;
+        
         if (!loggingPacketBlackList.Contains(packet.GetType()))
         {
             Log.Debug($"Using default packet processor for: {packet} and player {player.Id}");
+        }
+        
+        // 特别记录我们关心的世界事件包类型是否被默认处理器处理
+        if (packetType == "EntitySpawnedByClient" || packetType == "CellVisibilityChanged" || packetType == "PickupItem")
+        {
+            Log.Warn($"[默认处理器] 世界事件包 {packetType} 被默认处理器处理！这意味着没有找到专用处理器 | 玩家: {player.Name}");
         }
 
         if (defaultPacketProcessorBlacklist.Contains(packet.GetType()))

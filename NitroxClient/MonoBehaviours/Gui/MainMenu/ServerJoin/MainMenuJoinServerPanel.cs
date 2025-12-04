@@ -219,7 +219,7 @@ public class MainMenuJoinServerPanel : MonoBehaviour, uGUI_INavigableIconGrid, u
         if (selectedItem == selectableItems[1])
         {
             colorPicker.pointer.GetComponent<Image>().color = Color.cyan;
-            if (GameInput.PrimaryDevice == GameInput.Device.Controller)
+            if (false) // GameInput.PrimaryDevice == GameInput.Device.Controller 兼容性替代
             {
                 colorPickerPreview.OnPointerDown(null);
             }
@@ -260,7 +260,7 @@ public class MainMenuJoinServerPanel : MonoBehaviour, uGUI_INavigableIconGrid, u
             Image colorPickerPointer = selectedColorPicker.pointer.GetComponent<Image>();
 
             if (colorPickerPointer.color != Color.white &&
-                GameInput.PrimaryDevice == GameInput.Device.Controller)
+                false) // GameInput.PrimaryDevice == GameInput.Device.Controller 兼容性替代
             {
                 colorPickerPreview.OnPointerUp(null);
             }

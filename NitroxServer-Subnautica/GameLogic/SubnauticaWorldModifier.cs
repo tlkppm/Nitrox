@@ -2,7 +2,7 @@ using NitroxModel.DataStructures.GameLogic.Entities;
 using NitroxServer.GameLogic;
 using NitroxServer.Serialization.World;
 
-namespace NitroxServer_Subnautica.GameLogic;
+namespace Nitrox.Server.Subnautica.GameLogic;
 
 public class SubnauticaWorldModifier : IWorldModifier
 {

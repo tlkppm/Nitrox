@@ -11,7 +11,8 @@
     xmlns:converters="clr-namespace:Nitrox.Launcher.Models.Converters"
     xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:designer="clr-namespace:Nitrox.Launcher.ViewModels.Designer">
+    xmlns:designer="clr-namespace:Nitrox.Launcher.ViewModels.Designer"
+    xmlns:services="clr-namespace:Nitrox.Launcher.Models.Services">
     <Design.DataContext>
         <designer:DesignServersViewModel />
     </Design.DataContext>
@@ -25,15 +26,13 @@
                 <TextBlock
                     FontSize="32"
                     FontWeight="600"
-                    TextAlignment="Center">
-                    No servers here yet
-                </TextBlock>
+                    TextAlignment="Center"
+                    Text="{x:Static services:LocalizationService+Servers.NoServersYet}" />
                 <TextBlock
                     FontSize="16"
                     Margin="0,10,0,0"
-                    TextAlignment="Center">
-                    Create a new server to start hosting your Subnautica Multiplayer world
-                </TextBlock>
+                    TextAlignment="Center"
+                    Text="{x:Static services:LocalizationService+Servers.CreateServerToStart}" />
 
                 <Button
                     Classes="primary big"
@@ -43,8 +42,8 @@
                     Margin="0,40,0,0"
                     Width="350">
                     <StackPanel>
-                        <TextBlock Text="CREATE NEW SERVER" />
-                        <TextBlock Text="MULTIPLAYER" />
+                        <TextBlock Text="{x:Static services:LocalizationService+Servers.CreateNewServer}" />
+                        <TextBlock Text="多人游戏" />
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -54,8 +53,8 @@
             <TextBlock
                 Classes="header"
                 Grid.Row="0"
-                Text="Servers" />
-            <controls:RichTextBlock Grid.Row="1">Welcome to your Subnautica multiplayer server. For additional information and to learn more about hosting a server refer to the [Nitrox Wiki](nitrox.rux.gg/wiki/article/run-and-host-nitrox-subnautica-server)</controls:RichTextBlock>
+                Text="{x:Static services:LocalizationService+Servers.Title}" />
+            <controls:RichTextBlock Grid.Row="1">欢迎来到深海迷航联机服务器。有关其他信息以及托管服务器的更多内容，请参阅 [Nitrox Wiki](nitrox.rux.gg/wiki/article/run-and-host-nitrox-subnautica-server)</controls:RichTextBlock>
             <ScrollViewer Grid.Row="2" Margin="0,40,0,13" HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding Servers}">
                     <ItemsControl.ItemsPanel>
@@ -110,11 +109,11 @@
                                                 <Panel>
                                                     <StackPanel IsVisible="{Binding IsOnline}" Orientation="Horizontal">
                                                         <Ellipse Fill="{DynamicResource BrandOnColor}" Margin="0,0,6,0" />
-                                                        <TextBlock IsVisible="{Binding IsOnline}" Text="Online" />
+                                                        <TextBlock IsVisible="{Binding IsOnline}" Text="在线" />
                                                     </StackPanel>
                                                     <StackPanel IsVisible="{Binding !IsOnline}" Orientation="Horizontal">
                                                         <Ellipse Fill="{DynamicResource BrandOffColor}" Margin="0,0,6,0" />
-                                                        <TextBlock IsVisible="{Binding !IsOnline}" Text="Offline" />
+                                                        <TextBlock IsVisible="{Binding !IsOnline}" Text="离线" />
                                                     </StackPanel>
                                                 </Panel>
                                                 <TextBlock Text="{Binding GameMode, Converter={converters:ToStringConverter}}" />
@@ -122,7 +121,7 @@
                                                     <Run Text="{Binding Players}" />
                                                     <Run Text="/" />
                                                     <Run Text="{Binding MaxPlayers}" />
-                                                    <Run Text="playing" />
+                                                    <Run Text="玩家" />
                                                 </TextBlock>
                                             </WrapPanel>
                                         </StackPanel>
@@ -130,15 +129,22 @@
                                             Grid.Column="1"
                                             HorizontalAlignment="Right"
                                             Orientation="Horizontal">
-                                            <Button Command="{Binding OpenSaveFolderCommand}" Content="Open world folder" />
+                                            <Button Command="{Binding OpenSaveFolderCommand}" Content="打开世界文件夹" />
                                             <Button
-                                                Content="Manage"
+                                                Content="管理"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).ManageServerCommand}"
                                                 CommandParameter="{Binding}"
                                                 IsVisible="{Binding !IsOnline}" />
                                             <Button
+                                                Classes="secondary"
+                                                Content="玩家列表"
+                                                Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).ShowPlayerListCommand}"
+                                                CommandParameter="{Binding}"
+                                                IsEnabled="{Binding !IsServerClosing}"
+                                                IsVisible="{Binding IsOnline}" />
+                                            <Button
                                                 Classes="primary"
-                                                Content="Console"
+                                                Content="控制台"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).ManageServerCommand}"
                                                 CommandParameter="{Binding}"
                                                 IsEnabled="{Binding !IsServerClosing}">
@@ -152,13 +158,13 @@
                                             <Button
                                                 Classes="abort"
                                                 Command="{Binding StopCommand}"
-                                                Content="Stop"
+                                                Content="停止"
                                                 IsVisible="{Binding IsOnline}" />
                                             <Button
                                                 Classes="primary"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).StartServerCommand}"
                                                 CommandParameter="{Binding}"
-                                                Content="Start"
+                                                Content="启动"
                                                 IsVisible="{Binding !IsOnline}" />
                                         </StackPanel>
                                     </Grid>
@@ -178,7 +184,7 @@
                 <Button
                     Classes="primary big"
                     Command="{Binding CreateServerCommand}"
-                    Content="CREATE NEW SERVER"
+                    Content="{x:Static services:LocalizationService+Servers.CreateNewServer}"
                     HorizontalAlignment="Center"
                     HotKey="Enter"
                     VerticalAlignment="Center"

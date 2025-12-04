@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NitroxModel.Core;
@@ -8,6 +9,7 @@ using NitroxModel.DataStructures.GameLogic.Entities.Metadata;
 using NitroxModel.DataStructures.Unity;
 using NitroxModel.DataStructures.Util;
 using NitroxModel.Helper;
+using NitroxModel.Logger;
 using NitroxModel.Packets;
 using NitroxServer.GameLogic.Entities.Spawning;
 
@@ -43,9 +45,32 @@ public class WorldEntityManager
 
         globalRootEntitiesById = entityRegistry.GetEntities<GlobalRootEntity>().ToDictionary(entity => entity.Id);
 
-        worldEntitiesByCell = worldEntities.Where(entity => entity is not GlobalRootEntity)
-                                               .GroupBy(entity => entity.AbsoluteEntityCell)
-                                               .ToDictionary(group => group.Key, group => group.ToDictionary(entity => entity.Id, entity => entity));
+        // Filter out entities with invalid levels and log warnings
+        List<WorldEntity> validWorldEntities = new();
+        int invalidEntityCount = 0;
+        
+        foreach (WorldEntity entity in worldEntities.Where(entity => entity is not GlobalRootEntity))
+        {
+            try
+            {
+                // Try to access AbsoluteEntityCell to validate the entity
+                _ = entity.AbsoluteEntityCell;
+                validWorldEntities.Add(entity);
+            }
+            catch (Exception ex)
+            {
+                invalidEntityCount++;
+                Log.Warn($"[WorldEntityManager] Skipping invalid entity (ID: {entity.Id}, ClassId: {entity.ClassId}, Level: {entity.Level}): {ex.Message}");
+            }
+        }
+        
+        if (invalidEntityCount > 0)
+        {
+            Log.Warn($"[WorldEntityManager] Skipped {invalidEntityCount} invalid entities with corrupted level data. These entities may need to be removed from the save file.");
+        }
+
+        worldEntitiesByCell = validWorldEntities.GroupBy(entity => entity.AbsoluteEntityCell)
+                                                .ToDictionary(group => group.Key, group => group.ToDictionary(entity => entity.Id, entity => entity));
         this.entityRegistry = entityRegistry;
         this.batchEntitySpawner = batchEntitySpawner;
         this.playerManager = playerManager;

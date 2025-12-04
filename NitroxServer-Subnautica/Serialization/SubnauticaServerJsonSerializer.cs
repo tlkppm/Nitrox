@@ -1,6 +1,6 @@
 ﻿using NitroxServer.Serialization;
 
-namespace NitroxServer_Subnautica.Serialization
+namespace Nitrox.Server.Subnautica.Serialization
 {
     class SubnauticaServerJsonSerializer : ServerJsonSerializer
     {

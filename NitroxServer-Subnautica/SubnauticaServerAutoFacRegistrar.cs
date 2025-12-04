@@ -1,4 +1,9 @@
 using Autofac;
+using Nitrox.Server.Subnautica.GameLogic;
+using Nitrox.Server.Subnautica.GameLogic.Entities;
+using Nitrox.Server.Subnautica.GameLogic.Entities.Spawning;
+using Nitrox.Server.Subnautica.Resources;
+using Nitrox.Server.Subnautica.Serialization;
 using NitroxModel;
 using NitroxModel.DataStructures.GameLogic.Entities;
 using NitroxModel.GameLogic.FMOD;
@@ -11,13 +16,8 @@ using NitroxServer.GameLogic.Entities;
 using NitroxServer.GameLogic.Entities.Spawning;
 using NitroxServer.Resources;
 using NitroxServer.Serialization;
-using NitroxServer_Subnautica.GameLogic;
-using NitroxServer_Subnautica.GameLogic.Entities;
-using NitroxServer_Subnautica.GameLogic.Entities.Spawning;
-using NitroxServer_Subnautica.Resources;
-using NitroxServer_Subnautica.Serialization;
 
-namespace NitroxServer_Subnautica
+namespace Nitrox.Server.Subnautica
 {
     public class SubnauticaServerAutoFacRegistrar : ServerAutoFacRegistrar
     {

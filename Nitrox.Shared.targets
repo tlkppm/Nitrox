@@ -77,6 +77,8 @@
             <ExcludeFiles Include="$(TargetDir)%(ExecutablesBaseName.Identity).runtimeconfig.json" />
             <ExcludeFiles Include="$(TargetDir)%(ExecutablesBaseName.Identity).deps.json" />
             <ExcludeFiles Include="$(TargetDir)*.dylib;$(TargetDir)*.so" />
+            <!-- 🔧 排除appsettings配置文件，确保它们保留在根目录以启用新服务端模式 -->
+            <ExcludeFiles Include="$(TargetDir)appsettings*.json" />
 
             <FilesToMove Include="@(AllFiles)" Exclude="@(ExcludeFiles)" />
         </ItemGroup>

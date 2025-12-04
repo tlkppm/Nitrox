@@ -35,7 +35,7 @@ public sealed class PlayerInitialSyncProcessor : InitialSyncProcessor
         AddStep(sync => AddStartingItemsToPlayer(sync.FirstTimeConnecting));
         AddStep(sync => SetPlayerStats(sync.PlayerStatsData));
         AddStep(sync => SetPlayerGameMode(sync.GameMode));
-        AddStep(sync => ApplySettings(sync.KeepInventoryOnDeath, sync.SessionSettings.FastHatch, sync.SessionSettings.FastGrow));
+        AddStep(sync => ApplySettings(sync.KeepInventoryOnDeath, sync.SessionSettings.FastHatch, sync.SessionSettings.FastGrow, sync.SessionSettings.DisableConsole));
     }
 
     private void SetPlayerPermissions(Perms permissions)
@@ -138,24 +138,28 @@ public sealed class PlayerInitialSyncProcessor : InitialSyncProcessor
         GameModeUtils.SetGameMode((GameModeOption)(int)gameMode, GameModeOption.None);
     }
 
-    private void ApplySettings(bool keepInventoryOnDeath, bool fastHatch, bool fastGrow)
+    private void ApplySettings(bool keepInventoryOnDeath, bool fastHatch, bool fastGrow, bool disableConsole)
     {
         localPlayer.KeepInventoryOnDeath = keepInventoryOnDeath;
         NoCostConsoleCommand.main.fastHatchCheat = fastHatch;
         NoCostConsoleCommand.main.fastGrowCheat = fastGrow;
+        
+        // 应用控制台禁用设置
+        NitroxConsole.SetConsoleState(disableConsole);
+        
         if (!fastHatch && !fastGrow)
         {
             return;
         }
 
-        StringBuilder cheatsEnabled = new("Cheats enabled:");
+        StringBuilder cheatsEnabled = new("游戏设置已启用:");
         if (fastHatch)
         {
-            cheatsEnabled.Append(" fastHatch");
+            cheatsEnabled.Append(" 快速孵化");
         }
         if (fastGrow)
         {
-            cheatsEnabled.Append(" fastGrow");
+            cheatsEnabled.Append(" 快速生长");
         }
         Log.InGame(cheatsEnabled.ToString());
     }

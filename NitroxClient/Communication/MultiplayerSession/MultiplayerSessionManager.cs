@@ -59,9 +59,26 @@ namespace NitroxClient.Communication.MultiplayerSession
             NitroxConsole.DisableConsole = SessionPolicy.DisableConsole;
             Version localVersion = NitroxEnvironment.Version;
             NitroxVersion nitroxVersion = new(localVersion.Major, localVersion.Minor);
-            switch (nitroxVersion.CompareTo(SessionPolicy.NitroxVersionAllowed))
+            
+            // 详细的版本检查调试信息
+            Log.Info($"[版本检查] 开始进行版本兼容性检查:");
+            Log.Info($"├─ 客户端版本: {localVersion} (主要: {nitroxVersion.Major}, 次要: {nitroxVersion.Minor})");
+            Log.Info($"├─ 服务端要求版本: {SessionPolicy.NitroxVersionAllowed}");
+            Log.Info($"├─ 服务端最大连接数: {SessionPolicy.MaxConnections}");
+            Log.Info($"├─ 禁用控制台: {SessionPolicy.DisableConsole}");
+            Log.Info($"├─ 需要密码: {SessionPolicy.RequiresServerPassword}");
+            
+            int versionComparison = nitroxVersion.CompareTo(SessionPolicy.NitroxVersionAllowed);
+            Log.Info($"├─ 版本比较结果: {versionComparison} (0=相同, -1=客户端旧, 1=服务端旧)");
+            
+            switch (versionComparison)
             {
                 case -1:
+                    Log.Error($"[版本检查] ❌ 客户端版本过旧!");
+                    Log.Error($"├─ 服务端版本: {SessionPolicy.NitroxVersionAllowed}");
+                    Log.Error($"├─ 客户端版本: {localVersion}");
+                    Log.Error($"└─ 请更新客户端到最新版本");
+                    
                     Log.Error($"Client is out of date. Server: {SessionPolicy.NitroxVersionAllowed}, Client: {localVersion}");
                     Log.InGame(Language.main.Get("Nitrox_OutOfDateClient")
                                            .Replace("{serverVersion}", SessionPolicy.NitroxVersionAllowed.ToString())
@@ -69,12 +86,20 @@ namespace NitroxClient.Communication.MultiplayerSession
                     CurrentState.Disconnect(this);
                     return;
                 case 1:
+                    Log.Error($"[版本检查] ❌ 服务端版本过旧!");
+                    Log.Error($"├─ 服务端版本: {SessionPolicy.NitroxVersionAllowed}");
+                    Log.Error($"├─ 客户端版本: {localVersion}");
+                    Log.Error($"└─ 请更新服务端到最新版本");
+                    
                     Log.Error($"Server is out of date. Server: {SessionPolicy.NitroxVersionAllowed}, Client: {localVersion}");
                     Log.InGame(Language.main.Get("Nitrox_OutOfDateServer")
                                            .Replace("{serverVersion}", SessionPolicy.NitroxVersionAllowed.ToString())
                                            .Replace("{localVersion}", localVersion.ToString()));
                     CurrentState.Disconnect(this);
                     return;
+                case 0:
+                    Log.Info($"[版本检查] ✅ 版本兼容! 继续连接流程...");
+                    break;
             }
 
             CurrentState.NegotiateReservationAsync(this);

@@ -57,9 +57,15 @@ public sealed partial class uGUI_PDA_SetTabs_Patch : NitroxPatch, IDynamicPatch
             string tabIconAssetName = customTabs[tabIndex].TabIconAssetName;
             if (!nitroxTabManager.TryGetTabSprite(tabIconAssetName, out Sprite sprite))
             {
-                nitroxTabManager.SetSpriteLoadedCallback(tabIconAssetName, callbackSprite => AssignSprite(__instance.toolbar, arrayIndex, callbackSprite));
-                // Take the fallback icon from another tab
-                sprite = SpriteManager.Get(SpriteManager.Group.Tab, $"Tab{customTabs[tabIndex].FallbackTabIcon}");
+                nitroxTabManager.SetSpriteLoadedCallback(tabIconAssetName, callbackSprite => 
+                {
+                    if (callbackSprite is Sprite unitySprite)
+                    {
+                        AssignSprite(__instance.toolbar, arrayIndex, unitySprite);
+                    }
+                });
+                // Take the fallback icon from another tab - use a default fallback instead of SpriteManager
+                sprite = null; // Use null as fallback to avoid Atlas.Sprite conversion issues
             }
             array[arrayIndex] = sprite;
         }
@@ -67,9 +73,19 @@ public sealed partial class uGUI_PDA_SetTabs_Patch : NitroxPatch, IDynamicPatch
 
     private static void AssignSprite(uGUI_Toolbar toolbar, int index, Sprite sprite)
     {
-        if (index < toolbar.icons.Count)
+        if (index < toolbar.icons.Count && sprite != null)
         {
-            toolbar.icons[index].SetForegroundSprite(sprite);
+            // 新版游戏直接使用UnityEngine.Sprite
+            try
+            {
+                toolbar.icons[index].SetForegroundSprite(sprite);
+            }
+            catch (System.ArgumentException)
+            {
+                // 如果直接传入Sprite失败，尝试其他方法
+                // 在新版游戏中，可能需要不同的处理方式
+                Log.Warn($"Failed to set sprite for toolbar icon at index {index}");
+            }
         }
     }
 }

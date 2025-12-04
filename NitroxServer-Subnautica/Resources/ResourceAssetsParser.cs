@@ -1,9 +1,9 @@
 using System.IO;
+using Nitrox.Server.Subnautica.Resources.Parsers;
 using NitroxModel;
 using NitroxModel.Helper;
-using NitroxServer_Subnautica.Resources.Parsers;
 
-namespace NitroxServer_Subnautica.Resources;
+namespace Nitrox.Server.Subnautica.Resources;
 
 public static class ResourceAssetsParser
 {

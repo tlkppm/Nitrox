@@ -2,7 +2,7 @@ using AssetsTools.NET;
 using NitroxModel.DataStructures.Unity;
 using UnityEngine;
 
-namespace NitroxServer_Subnautica.Resources.Parsers.Helper;
+namespace Nitrox.Server.Subnautica.Resources.Parsers.Helper;
 
 public static class AssetTypeValueFieldExtension
 {

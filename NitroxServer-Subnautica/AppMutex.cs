@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace NitroxServer_Subnautica;
+namespace Nitrox.Server.Subnautica;
 
 public static class AppMutex
 {

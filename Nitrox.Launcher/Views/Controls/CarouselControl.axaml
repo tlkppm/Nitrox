@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Nitrox.Launcher.Models.Controls"
+             x:Class="Nitrox.Launcher.Views.Controls.CarouselControl">
+
+    <UserControl.Styles>
+        <!-- 轮播图容器样式 -->
+        <Style Selector="Border.carousel-container">
+            <Setter Property="ClipToBounds" Value="True"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="#1a1a1a"/>
+        </Style>
+        
+        <!-- 轮播图片样式 -->
+        <Style Selector="Image.carousel-image">
+            <Setter Property="Stretch" Value="UniformToFill"/>
+            <Setter Property="Opacity" Value="0"/>
+        </Style>
+        
+        <!-- 显示的图片样式 -->
+        <Style Selector="Image.carousel-image.active">
+            <Setter Property="Opacity" Value="1"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.5"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <!-- 导航圆点样式 -->
+        <Style Selector="Border.carousel-dot">
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Background" Value="#66ffffff"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        
+        <!-- 激活的圆点样式 -->
+        <Style Selector="Border.carousel-dot.active">
+            <Setter Property="Background" Value="#ffffff"/>
+        </Style>
+        
+        <!-- 导航箭头样式 -->
+        <Style Selector="Button.carousel-arrow">
+            <Setter Property="Background" Value="#33000000"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="Button.carousel-arrow:pointerover">
+            <Setter Property="Background" Value="#66000000"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="carousel-container" Height="535">
+        <Grid>
+            <!-- 轮播图片容器 -->
+            <Grid x:Name="ImagesContainer">
+                <!-- 图片将动态添加到这里 -->
+            </Grid>
+            
+            <!-- 导航控件覆盖层 -->
+            <Grid>
+                <!-- 左右箭头 -->
+                <Button Classes="carousel-arrow"
+                       Content="‹"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Margin="20"
+                       x:Name="PrevButton"/>
+                       
+                <Button Classes="carousel-arrow"
+                       Content="›"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Margin="20"
+                       x:Name="NextButton"/>
+                
+                <!-- 底部指示器 -->
+                <StackPanel Orientation="Horizontal"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="20"
+                           x:Name="DotsContainer">
+                    <!-- 圆点将动态添加到这里 -->
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

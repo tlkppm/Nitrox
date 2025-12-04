@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using AssetsTools.NET;
 using AssetsTools.NET.Extra;
 
-namespace NitroxServer_Subnautica.Resources.Parsers.Abstract;
+namespace Nitrox.Server.Subnautica.Resources.Parsers.Abstract;
 
 public abstract class BundleFileParser<T> : AssetParser
 {

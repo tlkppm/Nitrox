@@ -12,6 +12,15 @@ namespace NitroxClient.GameLogic
     public class NitroxConsole
     {
         public static bool DisableConsole { get; set; } = true;
+        
+        /// <summary>
+        /// 设置控制台禁用状态（从服务器配置读取）
+        /// </summary>
+        public static void SetConsoleState(bool shouldDisable)
+        {
+            DisableConsole = shouldDisable;
+            Log.Info($"游戏控制台状态已更新: {(shouldDisable ? "已禁用" : "已启用")}");
+        }
 
         private readonly IPacketSender packetSender;
         private readonly Items items;

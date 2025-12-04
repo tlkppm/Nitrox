@@ -1,0 +1,46 @@
+# Nitrox Server Configuration Template
+# Copy this file to server.cfg and modify as needed
+
+# Server Basic Settings
+ServerPort=11000
+MaxConnections=10
+ServerPassword=
+
+# Server Mode Selection
+# UseGenericHost=false  (Use legacy server mode - default, stable)
+# UseGenericHost=true   (Use new Generic Host mode - improved performance)
+UseGenericHost=false
+
+# Game Settings
+GameMode=SURVIVAL
+Seed=
+KeepInventoryOnDeath=false
+PvPEnabled=true
+
+# Network Settings
+AutoPortForward=true
+LANDiscoveryEnabled=true
+
+# Console and Commands
+DisableConsole=false
+CommandInterceptionEnabled=false
+InterceptedCommands=
+
+# Advanced Settings
+SaveInterval=120000
+MaxBackups=10
+CreateFullEntityCache=false
+IsEmbedded=true
+
+# Player Stats (Default Values)
+DefaultOxygenValue=45
+DefaultMaxOxygenValue=45
+DefaultHealthValue=80
+DefaultHungerValue=50.5
+DefaultThirstValue=90.5
+DefaultInfectionValue=0.1
+DefaultPlayerPerm=Player
+SafeBuilding=true
+
+# Paths
+PostSaveCommandPath=

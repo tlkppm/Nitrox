@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using AssetsTools.NET.Extra;
+using Nitrox.Server.Subnautica.Resources.Parsers.Helper;
 using NitroxModel.Helper;
-using NitroxServer_Subnautica.Resources.Parsers.Helper;
 
-namespace NitroxServer_Subnautica.Resources.Parsers;
+namespace Nitrox.Server.Subnautica.Resources.Parsers;
 
 public abstract class AssetParser
 {

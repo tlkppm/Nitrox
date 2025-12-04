@@ -87,7 +87,7 @@
                     <Button
                         Command="{Binding CloseCommand}"
                         CommandParameter="{x:Static vm:ButtonOptions.Yes}"
-                        Content="Yes"
+                        Content="是"
                         FontWeight="Bold"
                         HorizontalAlignment="Left"
                         HorizontalContentAlignment="Center"
@@ -96,7 +96,7 @@
                         Classes="primary"
                         Command="{Binding CloseCommand}"
                         CommandParameter="{x:Static vm:ButtonOptions.No}"
-                        Content="No"
+                        Content="否"
                         HorizontalAlignment="Right"
                         HorizontalContentAlignment="Center"
                         HotKey="{Binding NoHotkey}"

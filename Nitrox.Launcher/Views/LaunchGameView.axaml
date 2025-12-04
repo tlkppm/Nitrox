@@ -9,6 +9,8 @@
     xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
     xmlns:behaviors="clr-namespace:Nitrox.Launcher.Models.Behaviors"
     xmlns:designer="clr-namespace:Nitrox.Launcher.ViewModels.Designer"
+    xmlns:model="clr-namespace:NitroxModel;assembly=NitroxModel"
+    xmlns:views="clr-namespace:Nitrox.Launcher.Views.Controls"
     d:DesignWidth="1000"
     x:DataType="vm:LaunchGameViewModel"
     mc:Ignorable="d">
@@ -21,24 +23,180 @@
             Background="{DynamicResource BrandWhite}"
             Spacing="20">
 
+            <!-- 轮播图封面 -->
             <Panel Height="535" Margin="-20,0">
-                <Image Source="{Binding Converter={converters:BitmapAssetValueConverter}, ConverterParameter=/Assets/Images/banners/home.png}" Stretch="UniformToFill" />
-                <Image
-                    Height="48"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Source="{Binding Converter={converters:BitmapAssetValueConverter}, ConverterParameter=/Assets/Images/subnautica-name.png}"
-                    Stretch="Uniform" />
+                <views:CarouselControl />
             </Panel>
 
-            <Grid ColumnDefinitions="*,*">
-                <TextBlock
-                    Grid.Column="0"
-                    Margin="0,0,20,0"
-                    FontSize="14"
-                    Text="Start your Subnautica adventure in multiplayer mode together with your friends, powered by the Nitrox mod: An open-source modification for the game Subnautica. The project is maintained by the community with regular support and updates from its contributors." />
-                <!--  Play buttons - Negative offset to add some overlap with the background image  -->
-                <StackPanel Grid.Column="1" Margin="0,-110,0,0">
+            <!-- 主内容区域：左侧内容+右侧游戏按钮 -->
+            <Grid ColumnDefinitions="1.2*,*" Margin="0,0,0,0">
+                <!-- 左侧列 -->
+                <StackPanel Grid.Column="0" Margin="0,0,20,0" Spacing="18">
+                    <!-- 游戏版本选择器 -->
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" 
+                            BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8" 
+                            Padding="16">
+                        <StackPanel>
+                            <TextBlock FontSize="14" 
+                                       FontWeight="SemiBold" 
+                                       Text="游戏版本选择" 
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                                       Margin="0,0,0,12"/>
+                            
+                            <!-- 游戏类型选择 -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                                <RadioButton Name="RadioSubnautica" Content="深海迷航" 
+                                               IsChecked="{Binding SelectedGameType, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static model:GameType.Subnautica}}"
+                                               Command="{Binding SwitchGameTypeCommand}"
+                                               CommandParameter="{x:Static model:GameType.Subnautica}"
+                                               Margin="0,0,24,0"/>
+                                <RadioButton Name="RadioBelowZero" Content="深海迷航：零度之下"
+                                               IsChecked="{Binding SelectedGameType, Converter={x:Static converters:EnumToBooleanConverter.Instance}, ConverterParameter={x:Static model:GameType.SubnauticaBelowZero}}"
+                                               Command="{Binding SwitchGameTypeCommand}"
+                                               CommandParameter="{x:Static model:GameType.SubnauticaBelowZero}"/>
+                            </StackPanel>
+
+                            <!-- 检测到的游戏安装 -->
+                            <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,8,0,0">
+                                <TextBlock Grid.Column="0" 
+                                           Text="游戏安装:" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <ComboBox Grid.Column="1" 
+                                          ItemsSource="{Binding DetectedGames}" 
+                                          SelectedItem="{Binding SelectedGameInstall}"
+                                          MinWidth="180"
+                                          Margin="0,0,8,0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayName}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Grid.Column="2" 
+                                        Content="检测" 
+                                        Command="{Binding DetectGamesCommand}" 
+                                        IsEnabled="{Binding !IsDetectingGames}"
+                                        Classes="accent"
+                                        Padding="12,4"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 增强的公告系统 -->
+                    <Border Background="{DynamicResource BrandPanelBackground}" 
+                            BorderBrush="{DynamicResource BrandBorderBackground}"
+                            BorderThickness="1"
+                            CornerRadius="10" 
+                            Padding="16"
+                            BoxShadow="0 2 8 0 #00000015">
+                        <StackPanel Spacing="10">
+                            <!-- 公告标题栏 -->
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                                    <controls:RecolorImage 
+                                        Height="16" 
+                                        Width="16" 
+                                        VerticalAlignment="Center"
+                                        Source="/Assets/Images/tabs-icons/update.png" />
+                                    <TextBlock Text="系统公告" 
+                                               FontSize="15" 
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource BrandBlack}" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding ActiveAnnouncements.Count, StringFormat='{}{0} 条'}"
+                                           FontSize="11"
+                                           Opacity="0.6"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                            
+                            <!-- 公告内容列表 -->
+                            <ScrollViewer MaxHeight="160" 
+                                          VerticalScrollBarVisibility="Auto"
+                                          HorizontalScrollBarVisibility="Disabled">
+                                <ItemsControl ItemsSource="{Binding ActiveAnnouncements}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{DynamicResource BrandWhite}"
+                                                    CornerRadius="8"
+                                                    Padding="12"
+                                                    Margin="0,0,0,8"
+                                                    BorderThickness="1"
+                                                    BorderBrush="{DynamicResource BrandBorderBackground}"
+                                                    Cursor="Hand"
+                                                    PointerPressed="AnnouncementCard_PointerPressed">
+                                                <Grid ColumnDefinitions="Auto,*">
+                                                    <!-- 公告图标和优先级指示 -->
+                                                    <Border Grid.Column="0"
+                                                            Width="4"
+                                                            CornerRadius="2"
+                                                            Margin="0,0,10,0"
+                                                            VerticalAlignment="Stretch">
+                                                        <Border.Background>
+                                                            <SolidColorBrush Color="{Binding Priority, Converter={x:Static converters:AnnouncementPriorityColorConverter.Instance}}" />
+                                                        </Border.Background>
+                                                    </Border>
+                                                    
+                                                    <!-- 公告内容 -->
+                                                    <StackPanel Grid.Column="1" Spacing="4">
+                                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                                            <TextBlock Grid.Column="0"
+                                                                       Text="{Binding Type, Converter={x:Static converters:AnnouncementTypeIconConverter.Instance}}" 
+                                                                       FontSize="14"
+                                                                       Margin="0,0,6,0"
+                                                                       VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1"
+                                                                       Text="{Binding Title}" 
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="13"
+                                                                       TextWrapping="Wrap"/>
+                                                            <TextBlock Grid.Column="2"
+                                                                       Text="{Binding FormattedDate}" 
+                                                                       FontSize="10"
+                                                                       Opacity="0.5"
+                                                                       Margin="8,0,0,0"
+                                                                       VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                        <TextBlock Text="{Binding Content}" 
+                                                                   TextWrapping="Wrap"
+                                                                   FontSize="12"
+                                                                   Opacity="0.75"
+                                                                   MaxLines="2"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   LineHeight="18"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- 欢迎文本 -->
+                    <StackPanel>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Margin="0,0,0,10"
+                        Text="欢迎来到深海迷航联机世界" />
+                    <TextBlock
+                        FontSize="14"
+                        TextWrapping="Wrap"
+                        LineHeight="22"
+                        Text="与朋友一起探索神秘的海底世界！Nitrox是深海迷航的开源联机模组，提供稳定可靠的多人游戏体验。支持完整中文界面、高级功能管理和增强的服务器配置选项。" />
+                        </StackPanel>
+                </StackPanel>
+                
+                <!-- 右侧游戏启动区域 -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Top" Spacing="15">
                     <Border ClipToBounds="True" CornerRadius="10">
                         <controls:BlurControl BlurStrength="7">
                             <Border Background="{DynamicResource BrandPanelBackground}" Opacity=".90">
@@ -57,8 +215,8 @@
                                                     <Setter Property="FontSize" Value="10" />
                                                 </Style>
                                             </StackPanel.Styles>
-                                            <TextBlock Foreground="{DynamicResource BrandSubText}" Text="PLAY NITROX" />
-                                            <TextBlock Text="{Binding Version, FallbackValue='PHASE x.x.x.x'}" />
+                                            <TextBlock Foreground="{DynamicResource BrandSubText}" Text="NITROX 深海迷航联机" />
+                                            <TextBlock Text="版本 2.4.7.0" />
                                         </StackPanel>
                                         <controls:RecolorImage
                                             Width="19"
@@ -72,13 +230,13 @@
                                         HorizontalAlignment="Stretch"
                                         Classes="big primary"
                                         Command="{Binding StartMultiplayerCommand}"
-                                        ToolTip.Tip="Launch Subnautica with multiplayer enabled">
+                                        ToolTip.Tip="启动深海迷航联机模式">
                                         <Interaction.Behaviors>
                                             <behaviors:FocusOnViewShowBehavior />
                                         </Interaction.Behaviors>
                                         <StackPanel>
-                                            <TextBlock Text="PLAY" />
-                                            <TextBlock Text="MULTIPLAYER" />
+                                            <TextBlock Text="启动" />
+                                            <TextBlock Text="多人游戏" />
                                         </StackPanel>
                                     </Button>
                                     <Button
@@ -86,13 +244,13 @@
                                         HorizontalAlignment="Stretch"
                                         Classes="big"
                                         Command="{Binding StartSingleplayerCommand}"
-                                        ToolTip.Tip="Launch Subnautica">
+                                        ToolTip.Tip="启动深海迷航单人模式">
                                         <TextBlock
                                             Margin="0,-4,0,0"
                                             Padding="0,4,0,0"
                                             HorizontalAlignment="Center"
                                             FontSize="14"
-                                            Text="SINGLEPLAYER" />
+                                            Text="单人游戏" />
                                     </Button>
                                 </StackPanel>
                             </Border>
@@ -101,59 +259,9 @@
                 </StackPanel>
             </Grid>
 
-            <ItemsControl ItemsSource="{Binding GalleryImageSources, Mode=OneTime}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding GalleryImageSources, Converter={converters:ToIntConverter}}" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border
-                            Margin="6,0"
-                            ClipToBounds="True"
-                            CornerRadius="12">
-                            <Image Source="{Binding}" Stretch="UniformToFill" />
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock
-                    Margin="0,11,0,12"
-                    FontWeight="Bold"
-                    Text="Contributors" />
-                <StackPanel Margin="0,11,0,0" Spacing="6">
-                    <StackPanel.Styles>
-                        <Style Selector="StackPanel > TextBlock:nth-child(2n+1)">
-                            <Setter Property="FontSize" Value="10" />
-                            <Setter Property="Foreground" Value="{DynamicResource BrandSubText}" />
-                            <Setter Property="FontWeight" Value="Bold" />
-                        </Style>
-                        <Style Selector="StackPanel > TextBlock:nth-child(2n)">
-                            <Setter Property="LineHeight" Value="24" />
-                        </Style>
-                    </StackPanel.Styles>
 
-                    <TextBlock Text="AUTHOR" />
-                    <controls:RichTextBlock>[Sunrunner](github.com/Sunrunner37)</controls:RichTextBlock>
-                    <!--  Active contributors which have higher role than junior.  -->
-                    <TextBlock Text="CONTRIBUTORS" />
-                    <WrapPanel>
-                        <TextBlock Margin="0 0 12 0" VerticalAlignment="Center" Text="Tornac, Clément, Jannify, _HeN_, spacemonkeyy, Ohm, NinjaPedroX, Meas" />
-                        <Button Padding="5 2" Content="See contributions made in the last year" Command="{Binding OpenContributionsOfYearCommand}" />
-                    </WrapPanel>
-                    <TextBlock Text="STAFF" />
-                    <TextBlock>
-                        Werewolfs, Shalix, SavageJay, and a big thanks to the discord support team (Arctic-Peepers, Peepers)
-                    </TextBlock>
-                    <TextBlock Text="DESIGN" />
-                    <controls:RichTextBlock>
-                        [Rux](rux.gg)
-                    </controls:RichTextBlock>
-                </StackPanel>
-            </StackPanel>
+
 
         </StackPanel>
     </ScrollViewer>

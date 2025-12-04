@@ -1,0 +1,208 @@
+<UserControl
+    d:DesignWidth="700"
+    d:DesignHeight="1400"
+    mc:Ignorable="d"
+    x:Class="Nitrox.Launcher.Views.ManageBelowZeroServerView"
+    x:DataType="vm:ManageBelowZeroServerViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="clr-namespace:Nitrox.Launcher.Models.Controls"
+    xmlns:converters="clr-namespace:Nitrox.Launcher.Models.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:design="clr-namespace:Nitrox.Launcher.Models.Design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:server="clr-namespace:NitroxModel.Server;assembly=NitroxModel"
+    xmlns:vm="clr-namespace:Nitrox.Launcher.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Nitrox.Launcher.Models.Behaviors">
+    <Design.DataContext>
+        <vm:ManageBelowZeroServerViewModel />
+    </Design.DataContext>
+    <Grid
+        Background="{DynamicResource BrandWhite}"
+        Classes="viewPadding"
+        RowDefinitions="Auto,*,Auto">
+        <StackPanel>
+            <Button
+                Background="Transparent"
+                BorderThickness="0"
+                Command="{Binding BackToServersCommand}"
+                HorizontalAlignment="Left"
+                Margin="0,20,0,0"
+                Padding="0">
+                <StackPanel Orientation="Horizontal">
+                    <controls:RecolorImage
+                        Height="20"
+                        Margin="0,0,8,0"
+                        Source="/Assets/Images/world-manager/arrow-left.png"
+                        Width="20" />
+                    <TextBlock Text="← 返回服务器列表" />
+                </StackPanel>
+            </Button>
+
+            <TextBlock
+                FontSize="32"
+                FontWeight="600"
+                Margin="0,20,0,0"
+                Text="{Binding TargetServer.Name, StringFormat='管理 Below Zero 服务器: {0}'}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" Margin="0,20,0,0">
+            <StackPanel Spacing="20">
+                <!-- 服务器控制台 -->
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10">
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="600"
+                            Grid.Column="0"
+                            Text="服务器控制台"
+                            VerticalAlignment="Center" />
+
+                        <Button
+                            Classes="secondary"
+                            Command="{Binding RefreshServerStatusCommand}"
+                            Content="刷新状态"
+                            Grid.Column="1"
+                            Margin="0,0,8,0" />
+
+                        <Button
+                            Classes="primary"
+                            Command="{Binding StartServerCommand}"
+                            Content="启动服务器"
+                            Grid.Column="2"
+                            IsEnabled="{Binding !TargetServer.IsServerClosing}"
+                            IsVisible="{Binding !TargetServer.IsOnline}" />
+                        <Button
+                            Classes="secondary"
+                            Command="{Binding StopServerCommand}"
+                            Content="停止服务器"
+                            Grid.Column="2"
+                            IsEnabled="{Binding !TargetServer.IsServerClosing}"
+                            IsVisible="{Binding TargetServer.IsOnline}" />
+                    </Grid>
+
+                    <Border
+                        Background="{DynamicResource BrandBlack}"
+                        CornerRadius="8"
+                        Grid.Row="1"
+                        Height="300"
+                        Padding="12">
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto">
+                            <TextBlock
+                                FontFamily="Consolas,Courier New,monospace"
+                                FontSize="12"
+                                Foreground="{DynamicResource BrandWhite}"
+                                Text="{Binding ConsoleOutput}"
+                                TextWrapping="Wrap" />
+                        </ScrollViewer>
+                    </Border>
+
+                    <Grid ColumnDefinitions="*,Auto" Grid.Row="2" Margin="0,8,0,0">
+                        <TextBox
+                            Grid.Column="0"
+                            IsEnabled="{Binding TargetServer.IsOnline}"
+                            Text="{Binding ConsoleInput}"
+                            Watermark="输入服务器命令 (help - 显示可用命令)" />
+                        <Button
+                            Classes="primary"
+                            Command="{Binding SendConsoleCommandCommand}"
+                            Content="发送"
+                            Grid.Column="1"
+                            IsEnabled="{Binding TargetServer.IsOnline}"
+                            Margin="8,0,0,0" />
+                    </Grid>
+                </Grid>
+
+                <!-- Below Zero特色功能 -->
+                <StackPanel>
+                    <TextBlock
+                        FontSize="18"
+                        FontWeight="600"
+                        Margin="0,0,0,10"
+                        Text="Below Zero特色功能" />
+
+                    <!-- 天气控制 -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            Text="当前天气:"
+                            VerticalAlignment="Center"
+                            Width="100" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <Button Classes="secondary" Command="{Binding ChangeWeatherCommand}" CommandParameter="Clear" Content="晴朗" />
+                            <Button Classes="secondary" Command="{Binding ChangeWeatherCommand}" CommandParameter="Snow" Content="下雪" />
+                            <Button Classes="secondary" Command="{Binding ChangeWeatherCommand}" CommandParameter="Blizzard" Content="暴雪" />
+                            <Button Classes="secondary" Command="{Binding ChangeWeatherCommand}" CommandParameter="Aurora" Content="极光" />
+                            <TextBlock Text="{Binding CurrentWeather}" VerticalAlignment="Center" Margin="12,0,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- 温度设置 -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            Text="温度设置:"
+                            VerticalAlignment="Center"
+                            Width="100" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <NumericUpDown
+                                Increment="1"
+                                Maximum="5"
+                                Minimum="-50"
+                                Value="{Binding CurrentTemperature}"
+                                Width="100" />
+                            <TextBlock Text="°C" VerticalAlignment="Center" />
+                            <Button Classes="primary" Command="{Binding ChangeTemperatureCommand}" Content="设置" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Seatruck功能 -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            Text="Seatruck载具:"
+                            VerticalAlignment="Center"
+                            Width="100" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <CheckBox Content="启用Seatruck功能" IsChecked="{Binding TargetServer.EnableSeatruckFeatures}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- 冰层管理 -->
+                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,10">
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            Text="冰层管理:"
+                            VerticalAlignment="Center"
+                            Width="100" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <CheckBox Content="启用冰层管理" IsChecked="{Binding TargetServer.EnableIceLayerManagement}" />
+                            <Button Classes="secondary" Content="破冰" />
+                            <Button Classes="secondary" Content="修复" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- 地热发电 -->
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="0,0,12,0"
+                            Text="地热发电:"
+                            VerticalAlignment="Center"
+                            Width="100" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                            <Button Classes="secondary" Content="激活地热点" />
+                            <Button Classes="secondary" Content="关闭地热点" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

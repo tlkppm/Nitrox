@@ -16,6 +16,7 @@ using Nitrox.Launcher.ViewModels.Abstract;
 using NitroxModel.Discovery;
 using NitroxModel.Discovery.Models;
 using NitroxModel.Helper;
+using NitroxModel.Logger;
 using NitroxModel.Platforms.OS.Shared;
 
 namespace Nitrox.Launcher.ViewModels;
@@ -31,6 +32,12 @@ internal partial class OptionsViewModel(IKeyValueStore keyValueStore, StorageSer
 
     [ObservableProperty]
     private string logsFolderDir;
+
+    [ObservableProperty]
+    private string screenshotsFolderDir;
+
+    [ObservableProperty]
+    private string savesFolderDir;
 
     [ObservableProperty]
     private KnownGame selectedGame;
@@ -59,6 +66,8 @@ internal partial class OptionsViewModel(IKeyValueStore keyValueStore, StorageSer
             SelectedGame = new() { PathToGame = NitroxUser.GamePath, Platform = NitroxUser.GamePlatform?.Platform ?? Platform.NONE };
             LaunchArgs = keyValueStore.GetSubnauticaLaunchArguments(DefaultLaunchArg);
             LogsFolderDir = NitroxModel.Logger.Log.LogDirectory;
+            ScreenshotsFolderDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Subnautica", "Screenshots");
+            SavesFolderDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games", "Subnautica", "Saved Games");
             LightModeEnabled = keyValueStore.GetIsLightModeEnabled();
             AllowMultipleGameInstances = keyValueStore.GetIsMultipleGameInstancesAllowed();
             IsInReleaseMode = NitroxEnvironment.IsReleaseMode;
@@ -151,12 +160,70 @@ internal partial class OptionsViewModel(IKeyValueStore keyValueStore, StorageSer
     [RelayCommand]
     private void OpenLogsFolder()
     {
-        Process.Start(new ProcessStartInfo
+        try
         {
-            FileName = LogsFolderDir,
-            Verb = "open",
-            UseShellExecute = true
-        })?.Dispose();
+            using Process? process = Process.Start(new ProcessStartInfo
+            {
+                FileName = LogsFolderDir,
+                Verb = "open",
+                UseShellExecute = true
+            });
+            // Process will be automatically disposed when leaving using block
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to open logs folder: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private void OpenScreenshotsFolder()
+    {
+        try
+        {
+            // 确保文件夹存在
+            if (!Directory.Exists(ScreenshotsFolderDir))
+            {
+                Directory.CreateDirectory(ScreenshotsFolderDir);
+            }
+            
+            using Process? process = Process.Start(new ProcessStartInfo
+            {
+                FileName = ScreenshotsFolderDir,
+                Verb = "open",
+                UseShellExecute = true
+            });
+            // Process will be automatically disposed when leaving using block
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to open screenshots folder: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    private void OpenSavesFolder()
+    {
+        try
+        {
+            // 确保文件夹存在
+            if (!Directory.Exists(SavesFolderDir))
+            {
+                Directory.CreateDirectory(SavesFolderDir);
+            }
+            
+            using Process? process = Process.Start(new ProcessStartInfo
+            {
+                FileName = SavesFolderDir,
+                Verb = "open",
+                UseShellExecute = true
+            });
+            // Process will be automatically disposed when leaving using block
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to open saves folder: {ex.Message}");
+        }
     }
     
     partial void OnLightModeEnabledChanged(bool value)

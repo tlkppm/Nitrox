@@ -28,7 +28,7 @@ public sealed partial class uGUI_SceneIntro_IntroSequence_Patch : NitroxPatch, I
                .RemoveInstruction()
                // Replace GameInput.AnyKeyDown check with AnyKeyDownOrSubstitute()
                .MatchEndForward(
-                   new CodeMatch(OpCodes.Call, Reflect.Property(() => GameInput.AnyKeyDown).GetMethod)
+                   new CodeMatch(OpCodes.Call, AccessTools.PropertyGetter(typeof(GameInput), nameof(GameInput.AnyKeyDown)))
                )
                .SetOperandAndAdvance(Reflect.Method(() => AnyKeyDownOrSubstitute()))
                // Insert custom check if cinematic should be started => waiting for other player & enable skip functionality
@@ -131,7 +131,7 @@ public sealed partial class uGUI_SceneIntro_IntroSequence_Patch : NitroxPatch, I
         if (!packetSend)
         {
             uGuiSceneIntro.skipHintStartTime = Time.time;
-            uGuiSceneIntro.mainText.SetText(Language.main.GetFormat("Nitrox_IntroWaitingPartner", GameInput.FormatButton(GameInput.Button.UIMenu)));
+            uGuiSceneIntro.mainText.SetText(Language.main.GetFormat("Nitrox_IntroWaitingPartner", "[ESC]"));
             uGuiSceneIntro.mainText.SetState(true);
 
             Resolve<PlayerCinematics>().SetLocalIntroCinematicMode(IntroCinematicMode.WAITING);

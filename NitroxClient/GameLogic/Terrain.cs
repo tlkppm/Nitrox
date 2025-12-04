@@ -15,6 +15,7 @@ public class Terrain
     private readonly IPacketSender packetSender;
 
     private readonly HashSet<AbsoluteEntityCell> visibleCells = [];
+    private readonly HashSet<AbsoluteEntityCell> fullySpawnedCells = [];
     private readonly List<AbsoluteEntityCell> addedCells = [];
     private readonly List<AbsoluteEntityCell> removedCells = [];
 
@@ -26,6 +27,11 @@ public class Terrain
     {
         this.multiplayerSession = multiplayerSession;
         this.packetSender = packetSender;
+    }
+
+    public void AddFullySpawnedCell(AbsoluteEntityCell cell)
+    {
+        fullySpawnedCells.Add(cell);
     }
 
     public void CellLoaded(Int3 batchId, Int3 cellId, int level)

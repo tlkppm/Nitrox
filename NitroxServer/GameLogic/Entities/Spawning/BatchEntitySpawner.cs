@@ -15,6 +15,7 @@ namespace NitroxServer.GameLogic.Entities.Spawning;
 public class BatchEntitySpawner : IEntitySpawner
 {
     private readonly BatchCellsParser batchCellsParser;
+    private readonly CreatureSpawnManager creatureSpawnManager;
 
     private readonly HashSet<NitroxInt3> emptyBatches = [];
     private readonly Dictionary<string, PrefabPlaceholdersGroupAsset> placeholdersGroupsByClassId;
@@ -71,6 +72,7 @@ public class BatchEntitySpawner : IEntitySpawner
         Dictionary<string, PrefabPlaceholdersGroupAsset> placeholdersGroupsByClassId,
         PDAStateData pdaStateData,
         RandomSpawnSpoofer randomSpawnSpoofer,
+        CreatureSpawnManager creatureSpawnManager,
         string seed
     )
     {
@@ -82,6 +84,7 @@ public class BatchEntitySpawner : IEntitySpawner
         this.pdaStateData = pdaStateData;
         batchCellsParser = new BatchCellsParser(entitySpawnPointFactory, serializer);
         this.randomSpawnSpoofer = randomSpawnSpoofer;
+        this.creatureSpawnManager = creatureSpawnManager;
         this.seed = seed;
     }
 
@@ -263,9 +266,39 @@ public class BatchEntitySpawner : IEntitySpawner
         }
     }
 
+    /// <summary>
+    /// 检查给定的ClassId是否表示生物实体
+    /// </summary>
+    private bool IsCreatureClassId(string classId)
+    {
+        // 常见的鱼类和生物ClassId列表
+        string[] creatureClassIds = {
+            "Peeper", "Bladderfish", "Boomerang", "Eyeye", "Garryfish", "Holefish", "Hoverfish", "LavaEyeye",
+            "Oculus", "Reginald", "Spadefish", "Stalker", "BoneShark", "CaveCrawler", "Crash", "Floater",
+            "Gasopod", "LavaLizard", "Mesmer", "RabbitRay", "Sandshark", "Shuttlebug", "Spinefish", "Warper",
+            "SeaMoth", "Seamoth", "Exosuit", "CyclopsHull", "Cyclops", "SeaTruck", "Hoverbike",
+            "Bass", "Discus", "Feather", "Noot", "Spinner", "Symbiote", "Trout", "Booster", "Lily", "Triops"
+        };
+        
+        return creatureClassIds.Any(creature => classId.Contains(creature));
+    }
+
     /// <returns>The first entity is a <see cref="WorldEntity"/> and the following are its children</returns>
     private IEnumerable<Entity> CreateEntityWithChildren(EntitySpawnPoint entitySpawnPoint, string classId, NitroxTechType techType, bool prefabZUp, int cellLevel, NitroxVector3 localScale, DeterministicGenerator deterministicBatchGenerator, Entity parentEntity = null, bool randomPosition = false)
     {
+        // 检查生物生成限制
+        if (IsCreatureClassId(classId))
+        {
+            if (!creatureSpawnManager.CanSpawnCreature(entitySpawnPoint.AbsoluteEntityCell, classId, entitySpawnPoint.BiomeType))
+            {
+                // 生物生成被限制，返回空集合
+                yield break;
+            }
+            
+            // 记录生物生成
+            creatureSpawnManager.RegisterCreatureSpawn(entitySpawnPoint.AbsoluteEntityCell, classId);
+        }
+
         WorldEntity spawnedEntity;
         NitroxVector3 position = entitySpawnPoint.LocalPosition;
         NitroxQuaternion rotation = entitySpawnPoint.LocalRotation;

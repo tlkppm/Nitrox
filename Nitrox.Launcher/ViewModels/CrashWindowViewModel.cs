@@ -23,7 +23,7 @@ internal partial class CrashWindowViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanRestart))]
     private void Restart()
     {
-        ProcessEx.StartSelf("--allow-instances");
+        ProcessEx.StartSelf(new string[] { "--allow-instances" });
         Environment.Exit(0);
     }
 

@@ -105,4 +105,15 @@ internal partial class ServersViewModel : RoutableViewModelBase
         manageServerViewModel.LoadFrom(server);
         ChangeView(manageServerViewModel);
     }
+
+    [RelayCommand]
+    public async Task ShowPlayerList(ServerEntry server)
+    {
+        if (!server.IsOnline)
+        {
+            return;
+        }
+        
+        await dialogService.ShowAsync<PlayerListViewModel>(vm => vm.LoadServer(server));
+    }
 }

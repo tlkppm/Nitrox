@@ -10,4 +10,5 @@ public class SessionSettings
 {
     public bool FastHatch;
     public bool FastGrow;
+    public bool DisableConsole;
 }

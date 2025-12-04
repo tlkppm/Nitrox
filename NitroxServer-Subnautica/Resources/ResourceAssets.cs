@@ -4,7 +4,7 @@ using NitroxModel.Helper;
 using NitroxServer.Resources;
 using UWE;
 
-namespace NitroxServer_Subnautica.Resources;
+namespace Nitrox.Server.Subnautica.Resources;
 
 public class ResourceAssets
 {

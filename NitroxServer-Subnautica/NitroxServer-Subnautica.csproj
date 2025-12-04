@@ -12,6 +12,33 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- 新增：Generic Host 依赖 -->
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Web API 支持 -->
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- 配置文件 -->
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.Development.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="AssetsTools.NET" Version="3.0.0-preview1" />
         <PackageReference Include="SixLabors.ImageSharp" Version="[2.1.11]" />
     </ItemGroup>
@@ -27,4 +54,5 @@
     </ItemGroup>
 
     <Import Project="..\Nitrox.Shared.targets" />
+    <Import Project="GenericHostPackages.targets" />
 </Project>

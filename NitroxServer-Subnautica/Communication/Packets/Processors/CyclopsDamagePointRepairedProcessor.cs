@@ -2,7 +2,7 @@
 using NitroxServer.Communication.Packets.Processors.Abstract;
 using NitroxServer.GameLogic;
 
-namespace NitroxServer_Subnautica.Communication.Packets.Processors
+namespace Nitrox.Server.Subnautica.Communication.Packets.Processors
 {
     class CyclopsDamagePointRepairedProcessor : AuthenticatedPacketProcessor<CyclopsDamagePointRepaired>
     {
