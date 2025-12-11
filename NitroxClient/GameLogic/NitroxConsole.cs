@@ -11,7 +11,7 @@ namespace NitroxClient.GameLogic
 {
     public class NitroxConsole
     {
-        public static bool DisableConsole { get; set; } = true;
+        public static bool DisableConsole { get; set; } = false;
         
         /// <summary>
         /// 设置控制台禁用状态（从服务器配置读取）
