@@ -110,6 +110,15 @@ public partial class ServerEntry : ObservableObject
     [ObservableProperty]
     private bool useGenericHost = false;
 
+    [ObservableProperty]
+    private bool creatureSpawnLimitEnabled = true;
+
+    [ObservableProperty]
+    private int maxCreaturesPerSpecies = 3;
+
+    [ObservableProperty]
+    private int maxCreaturesPerCell = 15;
+
     internal ServerProcess? Process { get; private set; }
 
     public static ServerEntry? FromDirectory(string saveDir)
@@ -200,6 +209,9 @@ public partial class ServerEntry : ObservableObject
         InterceptedCommands = config.InterceptedCommands;
         UseGenericHost = config.UseGenericHost;
         DisableConsole = config.DisableConsole;
+        CreatureSpawnLimitEnabled = config.CreatureSpawnLimitEnabled;
+        MaxCreaturesPerSpecies = config.MaxCreaturesPerSpecies;
+        MaxCreaturesPerCell = config.MaxCreaturesPerCell;
         IsNewServer = !File.Exists(Path.Combine(saveDir, $"PlayerData{fileEnding}"));
         Version = serverVersion;
         IsEmbedded = config.IsEmbedded || RuntimeInformation.IsOSPlatform(OSPlatform.OSX); // Force embedded on MacOS

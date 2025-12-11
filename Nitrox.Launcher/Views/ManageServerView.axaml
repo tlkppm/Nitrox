@@ -417,6 +417,43 @@
                                 HorizontalAlignment="Right"
                                 IsChecked="{Binding ServerDisableConsole}" />
                         </Grid>
+
+                        <!-- 生物生成限制区域 -->
+                        <Border BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BrandBorderBackground}" Margin="0,15,0,15" />
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="启用生物生成限制" FontWeight="Bold" />
+                                <TextBlock Text="防止生物无限繁殖导致游戏卡顿（如跳跳鱼BUG）" FontSize="12" Opacity="0.7" Margin="0,2,0,0" />
+                            </StackPanel>
+                            <CheckBox
+                                Classes="switch"
+                                HorizontalAlignment="Right"
+                                IsChecked="{Binding ServerCreatureSpawnLimitEnabled}" />
+                        </Grid>
+                        
+                        <!-- 生物生成限制详细设置 -->
+                        <Grid IsVisible="{Binding ServerCreatureSpawnLimitEnabled}" ColumnDefinitions="*,30,*">
+                            <StackPanel>
+                                <TextBlock Text="每种生物最大数量" FontWeight="Bold" />
+                                <TextBlock Text="每个区域同种生物的数量上限" FontSize="12" Opacity="0.7" Margin="0,2,0,0" />
+                                <TextBox
+                                    Text="{Binding ServerMaxCreaturesPerSpecies, Converter={converters:IntToStringConverter}}"
+                                    Watermark="默认3"
+                                    Margin="0,8,0,0"
+                                    MaxLength="2"
+                                    design:NitroxAttached.IsNumericInput="True" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="区域生物总数上限" FontWeight="Bold" />
+                                <TextBlock Text="每个区域所有生物的数量上限" FontSize="12" Opacity="0.7" Margin="0,2,0,0" />
+                                <TextBox
+                                    Text="{Binding ServerMaxCreaturesPerCell, Converter={converters:IntToStringConverter}}"
+                                    Watermark="默认15"
+                                    Margin="0,8,0,0"
+                                    MaxLength="3"
+                                    design:NitroxAttached.IsNumericInput="True" />
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </StackPanel>
 

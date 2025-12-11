@@ -23,6 +23,18 @@ public class AnnouncementService
     {
         try
         {
+            // v2.4.8.0 生物生成限制与清除指令
+            announcements.Add(new AnnouncementItem
+            {
+                Id = "v2480_creature_spawn_control",
+                Title = "Nitrox v2.4.8.0 生物生成控制系统",
+                Content = "本次更新完善了生物生成管理和控制台禁用功能：【生物生成限制修复】修复了之前基于ClassId的生物检测无法识别GUID格式ClassId的问题，现在改用TechType进行精确识别，覆盖所有鱼类、利维坦等生物 【新增清除指令】添加clearCreatures服务器指令，可清除指定范围内的生物实体，支持按物种过滤，格式：clearCreatures [范围] [物种名]，用于清理已存在的过量生物 【控制台禁用修复】新增DevConsole.SetState拦截补丁，彻底阻止控制台通过任何方式打开，确保禁用游戏指令框选项生效 【完善的物种列表】扩展生物识别列表，包含深海迷航和零度之下的所有生物类型，支持School群体生物识别。建议在新存档中启用生物生成限制以获得最佳效果，已有存档可使用clearCreatures指令清理过量生物。",
+                Type = AnnouncementType.Feature,
+                Priority = AnnouncementPriority.High,
+                CreatedAt = DateTime.Now,
+                IsActive = true
+            });
+            
             // v2.4.7.0 BepInEx模组检测
             announcements.Add(new AnnouncementItem
             {

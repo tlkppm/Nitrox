@@ -129,43 +129,67 @@
                                             Grid.Column="1"
                                             HorizontalAlignment="Right"
                                             Orientation="Horizontal">
-                                            <Button Command="{Binding OpenSaveFolderCommand}" Content="打开世界文件夹" />
+                                            <Button Command="{Binding OpenSaveFolderCommand}" ToolTip.Tip="打开世界文件夹">
+                                                <Image Source="avares://Nitrox.Launcher/Assets/Images/world-manager/window.png" Width="16" Height="16" />
+                                            </Button>
                                             <Button
-                                                Content="管理"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).ManageServerCommand}"
                                                 CommandParameter="{Binding}"
-                                                IsVisible="{Binding !IsOnline}" />
+                                                IsVisible="{Binding !IsOnline}"
+                                                ToolTip.Tip="管理服务器">
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <Image Source="avares://Nitrox.Launcher/Assets/Images/world-manager/cog.png" Width="16" Height="16" />
+                                                    <TextBlock Text="管理" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
                                             <Button
                                                 Classes="secondary"
-                                                Content="玩家列表"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).ShowPlayerListCommand}"
                                                 CommandParameter="{Binding}"
                                                 IsEnabled="{Binding !IsServerClosing}"
-                                                IsVisible="{Binding IsOnline}" />
+                                                IsVisible="{Binding IsOnline}"
+                                                ToolTip.Tip="查看玩家列表">
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <Image Source="avares://Nitrox.Launcher/Assets/Images/tabs-icons/community.png" Width="16" Height="16" />
+                                                    <TextBlock Text="玩家列表" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
                                             <Button
                                                 Classes="primary"
-                                                Content="控制台"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).ManageServerCommand}"
                                                 CommandParameter="{Binding}"
-                                                IsEnabled="{Binding !IsServerClosing}">
+                                                IsEnabled="{Binding !IsServerClosing}"
+                                                ToolTip.Tip="打开控制台">
                                                 <Button.IsVisible>
                                                     <MultiBinding Converter="{x:Static BoolConverters.And}">
                                                         <Binding Path="IsOnline" />
                                                         <Binding Path="IsEmbedded" />
                                                     </MultiBinding>
                                                 </Button.IsVisible>
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <Image Source="avares://Nitrox.Launcher/Assets/Images/tabs-icons/tools.png" Width="16" Height="16" />
+                                                    <TextBlock Text="控制台" VerticalAlignment="Center"/>
+                                                </StackPanel>
                                             </Button>
                                             <Button
                                                 Classes="abort"
                                                 Command="{Binding StopCommand}"
-                                                Content="停止"
-                                                IsVisible="{Binding IsOnline}" />
+                                                IsVisible="{Binding IsOnline}">
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <Image Source="avares://Nitrox.Launcher/Assets/Images/world-manager/delete.png" Width="16" Height="16" />
+                                                    <TextBlock Text="停止" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
                                             <Button
                                                 Classes="primary"
                                                 Command="{Binding $parent[ItemsControl].((vm:ServersViewModel)DataContext).StartServerCommand}"
                                                 CommandParameter="{Binding}"
-                                                Content="启动"
-                                                IsVisible="{Binding !IsOnline}" />
+                                                IsVisible="{Binding !IsOnline}">
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <Image Source="avares://Nitrox.Launcher/Assets/Images/tabs-icons/play.png" Width="16" Height="16" />
+                                                    <TextBlock Text="启动" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
                                         </StackPanel>
                                     </Grid>
                                 </DockPanel>
@@ -184,12 +208,16 @@
                 <Button
                     Classes="primary big"
                     Command="{Binding CreateServerCommand}"
-                    Content="{x:Static services:LocalizationService+Servers.CreateNewServer}"
                     HorizontalAlignment="Center"
                     HotKey="Enter"
                     VerticalAlignment="Center"
                     Width="262"
-                    x:Name="CreateServerBtn" />
+                    x:Name="CreateServerBtn">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Image Source="avares://Nitrox.Launcher/Assets/Images/world-manager/plus.png" Width="20" Height="20" />
+                        <TextBlock Text="{x:Static services:LocalizationService+Servers.CreateNewServer}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
             </Border>
         </Grid>
     </Panel>

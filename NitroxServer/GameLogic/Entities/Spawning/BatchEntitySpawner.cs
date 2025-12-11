@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -266,37 +267,43 @@ public class BatchEntitySpawner : IEntitySpawner
         }
     }
 
-    /// <summary>
-    /// 检查给定的ClassId是否表示生物实体
-    /// </summary>
-    private bool IsCreatureClassId(string classId)
+    private static readonly HashSet<string> creatureTechTypes = new(StringComparer.OrdinalIgnoreCase)
     {
-        // 常见的鱼类和生物ClassId列表
-        string[] creatureClassIds = {
-            "Peeper", "Bladderfish", "Boomerang", "Eyeye", "Garryfish", "Holefish", "Hoverfish", "LavaEyeye",
-            "Oculus", "Reginald", "Spadefish", "Stalker", "BoneShark", "CaveCrawler", "Crash", "Floater",
-            "Gasopod", "LavaLizard", "Mesmer", "RabbitRay", "Sandshark", "Shuttlebug", "Spinefish", "Warper",
-            "SeaMoth", "Seamoth", "Exosuit", "CyclopsHull", "Cyclops", "SeaTruck", "Hoverbike",
-            "Bass", "Discus", "Feather", "Noot", "Spinner", "Symbiote", "Trout", "Booster", "Lily", "Triops"
-        };
-        
-        return creatureClassIds.Any(creature => classId.Contains(creature));
+        "Peeper", "Bladderfish", "Boomerang", "Eyeye", "Garryfish", "Holefish", "Hoverfish", "LavaEyeye",
+        "Oculus", "Reginald", "Spadefish", "Stalker", "BoneShark", "CaveCrawler", "Crash", "Floater",
+        "Gasopod", "LavaLizard", "Mesmer", "RabbitRay", "Sandshark", "Shuttlebug", "Spinefish", "Warper",
+        "Biter", "Bleeder", "Crabsnake", "CrabSquid", "GhostLeviathan", "GhostLeviathanJuvenile",
+        "ReaperLeviathan", "SeaDragon", "SeaEmperor", "SeaTreader", "Shocker", "SpineEel",
+        "Hoopfish", "ArcticPeeper", "Rockgrub", "Penguin", "PenguinBaby", "Pinnacarid",
+        "SymbioteSmall", "Skyray", "LavaLarva", "Jellyray", "GhostRay", "Cutefish",
+        "Jumper", "PrecursorDroid", "Rockpuncher", "SeaMonkey", "SnowStalker", "SnowStalkerBaby",
+        "Chelicerate", "ShadowLeviathan", "VoidLeviathan", "IceWorm", "Squidshark", "Cryptosuchus",
+        "GlowWhale", "Triops", "TitanHolefish", "FeatherFish", "FeatherFishRed", "Discus",
+        "NootFish", "SpinnerFish", "TrivalveBlue", "TrivalveYellow", "ArcticRay", "ArrowRay",
+        "BrinewingSchool", "LilyPaddler", "RockPuncher", "BruteShark"
+    };
+
+    private bool IsCreatureTechType(NitroxTechType techType)
+    {
+        if (techType == null) return false;
+        string techTypeName = techType.Name ?? string.Empty;
+        return creatureTechTypes.Contains(techTypeName) || 
+               techTypeName.EndsWith("School") ||
+               techTypeName.Contains("Fish") ||
+               techTypeName.Contains("Creature");
     }
 
     /// <returns>The first entity is a <see cref="WorldEntity"/> and the following are its children</returns>
     private IEnumerable<Entity> CreateEntityWithChildren(EntitySpawnPoint entitySpawnPoint, string classId, NitroxTechType techType, bool prefabZUp, int cellLevel, NitroxVector3 localScale, DeterministicGenerator deterministicBatchGenerator, Entity parentEntity = null, bool randomPosition = false)
     {
-        // 检查生物生成限制
-        if (IsCreatureClassId(classId))
+        if (IsCreatureTechType(techType))
         {
-            if (!creatureSpawnManager.CanSpawnCreature(entitySpawnPoint.AbsoluteEntityCell, classId, entitySpawnPoint.BiomeType))
+            string creatureKey = techType?.Name ?? classId;
+            if (!creatureSpawnManager.CanSpawnCreature(entitySpawnPoint.AbsoluteEntityCell, creatureKey, entitySpawnPoint.BiomeType))
             {
-                // 生物生成被限制，返回空集合
                 yield break;
             }
-            
-            // 记录生物生成
-            creatureSpawnManager.RegisterCreatureSpawn(entitySpawnPoint.AbsoluteEntityCell, classId);
+            creatureSpawnManager.RegisterCreatureSpawn(entitySpawnPoint.AbsoluteEntityCell, creatureKey);
         }
 
         WorldEntity spawnedEntity;

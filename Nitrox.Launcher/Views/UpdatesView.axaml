@@ -51,7 +51,7 @@
                         FontSize="12" 
                         Opacity="0.6" 
                         HorizontalAlignment="Right"
-                        Text="Version 2.4.7.0" />
+                        Text="Version 2.4.8.0" />
                     <TextBlock 
                         FontSize="10" 
                         Opacity="0.5" 
@@ -117,7 +117,7 @@
                                         FontSize="12"
                                         Opacity="0.6"
                                         Margin="0,5,0,0"
-                                        Text="当前版本: 2.4.7.0 Nitrox Mod" />
+                                        Text="当前版本: 2.4.8.0 Nitrox Mod" />
                                 </StackPanel>
                                 
                                 <StackPanel Grid.Column="2" VerticalAlignment="Center">

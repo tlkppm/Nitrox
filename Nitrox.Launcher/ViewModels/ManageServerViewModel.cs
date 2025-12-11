@@ -141,6 +141,18 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
     [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
     private bool serverDisableConsole;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private bool serverCreatureSpawnLimitEnabled;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private int serverMaxCreaturesPerSpecies;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand), nameof(UndoCommand), nameof(BackCommand), nameof(RestoreBackupCommand), nameof(StartServerCommand))]
+    private int serverMaxCreaturesPerCell;
+
     public static Array PlayerPerms => Enum.GetValues(typeof(Perms));
     public string? OriginalServerName => Server?.Name;
 
@@ -205,6 +217,9 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         ServerInterceptedCommands = Server.InterceptedCommands;
         ServerUseGenericHost = Server.UseGenericHost;
         ServerDisableConsole = Server.DisableConsole;
+        ServerCreatureSpawnLimitEnabled = Server.CreatureSpawnLimitEnabled;
+        ServerMaxCreaturesPerSpecies = Server.MaxCreaturesPerSpecies;
+        ServerMaxCreaturesPerCell = Server.MaxCreaturesPerCell;
         ServerEmbedded = Server.IsEmbedded || RuntimeInformation.IsOSPlatform(OSPlatform.OSX); // Force embedded on macOS
     }
 
@@ -227,7 +242,10 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
                                  ServerCommandInterceptionEnabled != Server.CommandInterceptionEnabled ||
                                  ServerInterceptedCommands != Server.InterceptedCommands ||
                                  ServerUseGenericHost != Server.UseGenericHost ||
-                                 ServerDisableConsole != Server.DisableConsole);
+                                 ServerDisableConsole != Server.DisableConsole ||
+                                 ServerCreatureSpawnLimitEnabled != Server.CreatureSpawnLimitEnabled ||
+                                 ServerMaxCreaturesPerSpecies != Server.MaxCreaturesPerSpecies ||
+                                 ServerMaxCreaturesPerCell != Server.MaxCreaturesPerCell);
 
     [RelayCommand(CanExecute = nameof(CanGoBackAndStartServer))]
     private void Back() => ChangeViewToPrevious<ServersViewModel>();
@@ -273,6 +291,9 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         Server.InterceptedCommands = ServerInterceptedCommands;
         Server.UseGenericHost = ServerUseGenericHost;
         Server.DisableConsole = ServerDisableConsole;
+        Server.CreatureSpawnLimitEnabled = ServerCreatureSpawnLimitEnabled;
+        Server.MaxCreaturesPerSpecies = ServerMaxCreaturesPerSpecies;
+        Server.MaxCreaturesPerCell = ServerMaxCreaturesPerCell;
 
         Config config = Config.Load(SaveFolderDirectory);
         using (config.Update(SaveFolderDirectory))
@@ -292,6 +313,9 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
             config.CommandInterceptionEnabled = Server.CommandInterceptionEnabled;
             config.InterceptedCommands = Server.InterceptedCommands;
             config.UseGenericHost = Server.UseGenericHost;
+            config.CreatureSpawnLimitEnabled = Server.CreatureSpawnLimitEnabled;
+            config.MaxCreaturesPerSpecies = Server.MaxCreaturesPerSpecies;
+            config.MaxCreaturesPerCell = Server.MaxCreaturesPerCell;
         }
 
         Undo(); // Used to update the UI with corrected values (Trims and ToUppers)
@@ -327,6 +351,9 @@ internal partial class ManageServerViewModel : RoutableViewModelBase
         ServerInterceptedCommands = Server.InterceptedCommands;
         ServerUseGenericHost = Server.UseGenericHost;
         ServerDisableConsole = Server.DisableConsole;
+        ServerCreatureSpawnLimitEnabled = Server.CreatureSpawnLimitEnabled;
+        ServerMaxCreaturesPerSpecies = Server.MaxCreaturesPerSpecies;
+        ServerMaxCreaturesPerCell = Server.MaxCreaturesPerCell;
     }
 
     private bool CanUndo() => !ServerIsOnline && HasChanges();

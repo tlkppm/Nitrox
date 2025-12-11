@@ -135,5 +135,14 @@ namespace NitroxModel.Serialization
 
         [PropertyDescription("启用后使用 .NET Generic Host 以改进服务器架构和性能")]
         public bool UseGenericHost { get; set; } = true;
+
+        [PropertyDescription("启用后限制每个区域的生物生成数量，防止生物无限繁殖导致卡顿")]
+        public bool CreatureSpawnLimitEnabled { get; set; } = true;
+
+        [PropertyDescription("每个区域同种生物的最大数量（默认3）")]
+        public int MaxCreaturesPerSpecies { get; set; } = 3;
+
+        [PropertyDescription("每个区域所有生物的最大总数（默认15）")]
+        public int MaxCreaturesPerCell { get; set; } = 15;
     }
 }
